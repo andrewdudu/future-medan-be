@@ -2,7 +2,7 @@
 
 ## Get Categories (by Id)
 
-+ Endpoint : ``/categories/{id}``
++ Endpoint : ``/categories``
 + HTTP Method : `GET`
 + Request param : 
     + id (optional)
@@ -53,7 +53,7 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Category with that Id.",
-    "path": "/categories/{id}"
+    "path": "/categories"
 }
 ```
 
@@ -108,7 +108,7 @@
 
 + Endpoint : ``/categories/{id}``
 + HTTP Method : ``PUT``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Body : 
     + name
@@ -156,7 +156,7 @@
 
 + Endpoint : ``/categories/{id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Header : 
 	+ Accept : ``application/json``

@@ -2,7 +2,7 @@
 
 ## Get Wishlist (by Id)
 
-+ Endpoint : ``/wishlists/{id}``
++ Endpoint : ``/wishlists``
 + HTTP Method : `GET`
 + Request param : 
     + id (optional)
@@ -49,7 +49,7 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Wishlist with that Id.",
-    "path": "/wishlists/{id}"
+    "path": "/wishlists"
 }
 ```
 
@@ -102,7 +102,7 @@
 
 + Endpoint : ``/wishlists/{id}``
 + HTTP Method : ``PUT``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Body : 
     + product_id
@@ -148,7 +148,7 @@
 
 + Endpoint : ``/wishlists/{id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Header : 
 	+ Accept : ``application/json``

@@ -2,7 +2,7 @@
 
 ## Get Merchants (by Id)
 
-+ Endpoint : ``/merchants/{id}``
++ Endpoint : ``/merchants``
 + HTTP Method : `GET`
 + Request param : 
     + id (optional)
@@ -53,7 +53,7 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Merchant with that Id.",
-    "path": "/merchantss/{id}"
+    "path": "/merchants"
 }
 ```
 
@@ -108,7 +108,7 @@
 
 + Endpoint : ``/merchants/{id}``
 + HTTP Method : ``PUT``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Body : 
     + name
@@ -156,7 +156,7 @@
 
 + Endpoint : ``/merchants/{id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Header : 
 	+ Accept : ``application/json``

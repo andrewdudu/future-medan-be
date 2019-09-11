@@ -2,7 +2,7 @@
 
 ## Get Products (by Id)
 
-+ Endpoint : ``/products/{id}``
++ Endpoint : ``/products``
 + HTTP Method : `GET`
 + Request param : 
     + id (optional)
@@ -65,7 +65,7 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Product with that Id.",
-    "path": "/products/{id}"
+    "path": "/products"
 }
 ```
 
@@ -165,7 +165,7 @@
 
 + Endpoint : ``/products/{id}``
 + HTTP Method : ``PUT``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Body : 
     + name
@@ -218,7 +218,7 @@
 
 + Endpoint : ``/products/{id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Header : 
 	+ Accept : ``application/json``

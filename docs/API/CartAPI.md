@@ -2,7 +2,7 @@
 
 ## Get Carts (by Id)
 
-+ Endpoint : ``/carts/{id}``
++ Endpoint : ``/carts``
 + HTTP Method : `GET`
 + Request param : 
     + id (optional)
@@ -53,7 +53,7 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Cart with that Id.",
-    "path": "/carts/{id}"
+    "path": "/carts"
 }
 ```
 
@@ -106,7 +106,7 @@
 
 + Endpoint : ``/carts/{id}``
 + HTTP Method : ``PUT``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Body : 
     + product_id
@@ -153,7 +153,7 @@
 
 + Endpoint : ``/carts/{id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Header : 
 	+ Accept : ``application/json``

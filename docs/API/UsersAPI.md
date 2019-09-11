@@ -2,7 +2,7 @@
 
 ## Get Users (by Id)
 
-+ Endpoint : ``/users/{id}``
++ Endpoint : ``/users``
 + HTTP Method : `GET`
 + Request param : 
     + id (optional)
@@ -42,7 +42,7 @@
     "status": 401,
     "error": "Unauthorized",
     "message": "Invalid Request: You are not allowed to access.",
-    "path": "/users/{id}"
+    "path": "/users"
 }
 ```
 ```json
@@ -51,7 +51,7 @@
     "status": 404,
     "error": "Not Found",
     "message": "Invalid Request: Cannot find User with that Id.",
-    "path": "/users/{id}"
+    "path": "/users"
 }
 ```
 
@@ -107,7 +107,7 @@
 
 + Endpoint : ``/users/{id}``
 + HTTP Method : ``PUT``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Body : 
     + username
@@ -156,7 +156,7 @@
 
 + Endpoint : ``/users/{id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Header : 
 	+ Accept : ``application/json``

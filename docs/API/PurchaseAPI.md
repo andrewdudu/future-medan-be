@@ -2,7 +2,7 @@
 
 ## Get Purchases (by Id) For Admin
 
-+ Endpoint : ``/purchases/{id}``
++ Endpoint : ``/purchases``
 + HTTP Method : `GET`
 + Request param : 
     + id (optional)
@@ -74,16 +74,17 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Purchase with that Id.",
-    "path": "/purchases/{id}"
+    "path": "/purchases"
 }
 ```
 
 ## Get Purchases (by user id) For Admin and Users
 
-+ Endpoint : ``/purchases/{purchaseId}/users/{userId}`` (purchaseId is optional)
++ Endpoint : ``/purchases/{purchaseId}/users/{userId}``
 + HTTP Method : `GET`
-+ Request param : 
-    + id (optional)
++ Path Variable : 
+    + purchaseId (optional)
+    + userId (optional)
 + Request Header : 
 	+ Accept: `application/json`
     + Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
@@ -216,7 +217,7 @@
 
 + Endpoint : ``/purchases/{id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
++ Path Variable : 
     + id (user id)
 + Request Header : 
 	+ Accept : ``application/json``
