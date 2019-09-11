@@ -1,11 +1,9 @@
 # Purchases API
 
-## Get Purchases (by Id) For Admin
+## Get Purchases For Admin
 
 + Endpoint : ``/purchases``
 + HTTP Method : `GET`
-+ Request param : 
-    + id (optional)
 + Request Header : 
 	+ Accept: `application/json`
     + Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
@@ -48,6 +46,30 @@
     }]
 }
 ```
+
++ Response Body (Fail) :
+
+```json
+{
+	"timestamp": "2019-08-23T04:22:26.690+0000",
+    "code": 404,
+    "status": "Not Found",
+    "message": "Invalid Request: Cannot find a Purchase with that Id.",
+    "path": "/purchases"
+}
+```
+
+## Get Purchases (by Id) For Admin
+
++ Endpoint : ``/purchases/{purchase-id}``
++ HTTP Method : `GET`
++ Path Variable : 
+    + purchase-id
++ Request Header : 
+	+ Accept: `application/json`
+    + Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
++ Response Body (Success) : 
+
 ```json
 {
     "code": 200,
@@ -74,7 +96,7 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Purchase with that Id.",
-    "path": "/purchases"
+    "path": "/purchases/{purchase-id}"
 }
 ```
 
@@ -166,10 +188,13 @@
 
 + Endpoint : ``/purchases``
 + HTTP Method : ``POST``
-+ Request Body : 
-	+ id
-    + product_id
-    + qty
++ Request Body :
+```json
+{
+    "product-id": 1,
+    "qty": 2
+}
+```
 + Request Header : 
 	+ Accept : ``application/json``
     + Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
@@ -215,10 +240,10 @@
 
 ## Delete Purchase by Id
 
-+ Endpoint : ``/purchases/{id}``
++ Endpoint : ``/purchases/{purchase-id}``
 + HTTP Method : ``DELETE``
 + Path Variable : 
-    + id (user id)
+    + purchase-id
 + Request Header : 
 	+ Accept : ``application/json``
 	+ Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjYyNDAyMjAsImlhdCI6MTU2NjIyMjIyMH0.sYLqMuG2Zr7zDEdK4YIIYX7WfTcroxl7Edc_YLU0dWncPliHfbgEfMYLoorYA_d01hPFF_fZhAyxLTIJYBRHuw`
@@ -238,7 +263,7 @@
 	"code" : "400",
     "status" : "Bad Request",
     "message" : "Invalid Request: Invalid user authentication or invalid request format",
-    "path" : "/purchases/{id}"
+    "path" : "/purchases/{purchase-id}"
 }
 ```
 ```json
@@ -247,6 +272,6 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Purchase with that Id.",
-    "path": "/purchases/{id}"
+    "path": "/purchases/{purchase-id}"
 }
 ```
