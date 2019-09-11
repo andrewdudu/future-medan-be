@@ -5,18 +5,22 @@
 + Endpoint : ``/user/register``
 + HTTP Method : `POST`
 + Request Body :
-	+ name
-	+ username
-	+ email
-	+ password
-	+ confirm-password
+```json
+{
+	"name": "Andrew",
+	"username": "andrewdudu",
+	"email": "andrew@gmail.com",
+	"password": "admin123",
+	"confirm-password": "admin123"
+}
+```
 + Request Header : 
 	+ Accept: `application/json`
 + Response Body (Success) : 
 
 ```json
 {
-	"token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg"
+	"signup" : "true"
 }
 ```
 
@@ -37,18 +41,22 @@
 + Endpoint : ``/merchant/register``
 + HTTP Method : `POST`
 + Request Body :
-	+ name
-	+ username
-	+ email
-	+ password
-	+ confirm-password
+```json
+{
+	"name": "Andrew",
+	"username": "andrewdudu",
+	"email": "andrew@gmail.com",
+	"password": "admin123",
+	"confirm-password": "admin123"
+}
+```
 + Request Header : 
 	+ Accept: `application/json`
 + Response Body (Success) : 
 
 ```json
 {
-	"token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg"
+	"signup" : "true"
 }
 ```
 
@@ -69,8 +77,18 @@
 + Endpoint : ``/login``
 + HTTP Method : ``POST``
 + Request Body : 
-	+ username or email
-	+ password
+```json
+{
+	"username": "andrewdudu",
+	"password": "admin123"
+}
+```
+```json
+{
+	"email": "example@gmail.com",
+	"password": "admin123"
+}
+```
 + Request Header : 
 	+ Accept : ``application/json``
 + Response Body (Success) :
