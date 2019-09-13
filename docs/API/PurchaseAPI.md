@@ -15,33 +15,33 @@
     "status": "OK",
     "data": [{
         "id": 1,
-        "user_id": 1,
+        "userId": 1,
         "price": 13000,
-        "product_name": "Book 1",
-        "product_description": "Description Example",
-        "product_sku": "123-ABC",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 1",
+        "productDescription": "Description Example",
+        "productSku": "123-ABC",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }, {
         "id": 1,
-        "user_id": 1,
+        "userId": 1,
         "price": 13000,
-        "product_name": "Book 1",
-        "product_description": "Description Example",
-        "product_sku": "123-ABC",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 1",
+        "productDescription": "Description Example",
+        "productSku": "123-ABC",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }, {
         "id": 1,
-        "user_id": 1,
+        "userId": 1,
         "price": 13000,
-        "product_name": "Book 1",
-        "product_description": "Description Example",
-        "product_sku": "123-ABC",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 1",
+        "productDescription": "Description Example",
+        "productSku": "123-ABC",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }]
 }
@@ -76,13 +76,13 @@
     "status": "OK",
     "data": {
         "id": 1,
-        "user_id": 1,
+        "userId": 1,
         "price": 13000,
-        "product_name": "Book 1",
-        "product_description": "Description Example",
-        "product_sku": "123-ABC",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 1",
+        "productDescription": "Description Example",
+        "productSku": "123-ABC",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }
 }
@@ -119,29 +119,29 @@
     "data": [{
         "id": 1,
         "price": 13000,
-        "product_name": "Book 1",
-        "product_description": "Description Example",
-        "product_sku": "123-ABC",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 1",
+        "productDescription": "Description Example",
+        "productSku": "123-ABC",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }, {
         "id": 2,
         "price": 14000,
-        "product_name": "Book 2",
-        "product_description": "Description Example",
-        "product_sku": "123-ABD",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 2",
+        "productDescription": "Description Example",
+        "productSku": "123-ABD",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }, {
         "id": 3,
         "price": 15000,
-        "product_name": "Book 3",
-        "product_description": "Description Example",
-        "product_sku": "123-ABE",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 3",
+        "productDescription": "Description Example",
+        "productSku": "123-ABE",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }]
 }
@@ -153,11 +153,11 @@
     "data": {
         "id": 1,
         "price": 13000,
-        "product_name": "Book 1",
-        "product_description": "Description Example",
-        "product_sku": "123-ABC",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 1",
+        "productDescription": "Description Example",
+        "productSku": "123-ABC",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }
 }
@@ -207,11 +207,11 @@
     "data": {
         "id": 1,
         "price": 13000,
-        "product_name": "Book 1",
-        "product_description": "Description Example",
-        "product_sku": "123-ABC",
-        "product_image": "google.com/image",
-        "author_name": "Andrew",
+        "productName": "Book 1",
+        "productDescription": "Description Example",
+        "productSku": "123-ABC",
+        "productImage": "google.com/image",
+        "authorName": "Andrew",
         "qty": 2
     }
 }

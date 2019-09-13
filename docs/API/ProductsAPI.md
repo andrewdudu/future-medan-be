@@ -19,7 +19,9 @@
         "description": "Example Description",
         "price": 13000,
         "image": "google.com/image",
-        "author": 1
+        "author": 1,
+        "newRelease": true,
+        "bestSeller": true
     }, {
         "id": 2,
         "name": "Book 2",
@@ -27,7 +29,9 @@
         "description": "Example Description",
         "price": 55000,
         "image": "google.com/image",
-        "author": 1
+        "author": 1,
+        "newRelease": false,
+        "bestSeller": true
     }, {
         "id": 3,
         "name": "Book 3",
@@ -35,7 +39,9 @@
         "description": "Example Description",
         "price": 105000,
         "image": "google.com/image",
-        "author": 1
+        "author": 1,
+        "newRelease": true,
+        "bestSeller": true
     }]
 }
 ```
@@ -61,7 +67,9 @@
         "description": "Example Description",
         "price": 55000,
         "image": "google.com/image",
-        "author": 1
+        "author": 1,
+        "newRelease": false,
+        "bestSeller": true
     }
 }
 ```
@@ -75,86 +83,6 @@
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Product with that Id.",
     "path": "/products/{product-id}"
-}
-```
-
-## Get New Release Products
-
-+ Endpoint : ``/products``
-+ HTTP Method : `GET`
-+ Request Header : 
-	+ Accept: `application/json`
-+ Response Body (Success) : 
-
-```json
-{
-    "code": 200,
-    "status": "OK",
-    "data": [{
-        "id": 1,
-        "name": "Book 1",
-        "sku": "1AB-H4M",
-        "description": "Example Description",
-        "price": 13000,
-        "image": "google.com/image",
-        "author": 1
-    }, {
-        "id": 2,
-        "name": "Book 2",
-        "sku": "1AC-H4M",
-        "description": "Example Description",
-        "price": 55000,
-        "image": "google.com/image",
-        "author": 1
-    }, {
-        "id": 3,
-        "name": "Book 3",
-        "sku": "1AD-H4M",
-        "description": "Example Description",
-        "price": 105000,
-        "image": "google.com/image",
-        "author": 1
-    }]
-}
-```
-
-## Get Bestseller Products
-
-+ Endpoint : ``/products/best-seller``
-+ HTTP Method : `GET`
-+ Request Header : 
-	+ Accept: `application/json`
-+ Response Body (Success) : 
-
-```json
-{
-    "code": 200,
-    "status": "OK",
-    "data": [{
-        "id": 1,
-        "name": "Book 1",
-        "sku": "1AB-H4M",
-        "description": "Example Description",
-        "price": 13000,
-        "image": "google.com/image",
-        "author": 1
-    }, {
-        "id": 2,
-        "name": "Book 2",
-        "sku": "1AC-H4M",
-        "description": "Example Description",
-        "price": 55000,
-        "image": "google.com/image",
-        "author": 1
-    }, {
-        "id": 3,
-        "name": "Book 3",
-        "sku": "1AD-H4M",
-        "description": "Example Description",
-        "price": 105000,
-        "image": "google.com/image",
-        "author": 1
-    }]
 }
 ```
 

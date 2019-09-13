@@ -11,7 +11,7 @@
 	"username": "andrewdudu",
 	"email": "andrew@gmail.com",
 	"password": "admin123",
-	"confirm-password": "admin123"
+	"confirmPassword": "admin123"
 }
 ```
 + Request Header : 
@@ -47,7 +47,7 @@
 	"username": "andrewdudu",
 	"email": "andrew@gmail.com",
 	"password": "admin123",
-	"confirm-password": "admin123"
+	"confirmPassword": "admin123"
 }
 ```
 + Request Header : 

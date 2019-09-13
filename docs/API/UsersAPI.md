@@ -100,7 +100,7 @@
     "email": "example@mail.com",
     "name": "Andrew Wijaya",
     "password": "admin123",
-    "confirm-password": "admin123"
+    "confirmPassword": "admin123"
 }
 ```
 + Request Header : 
@@ -155,7 +155,7 @@
     "email": "example@mail.com",
     "name": "Andrew Wijaya",
     "password": "admin123",
-    "confirm-password": "admin123"
+    "confirmPassword": "admin123"
 }
 ```
 + Request Header : 

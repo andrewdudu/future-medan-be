@@ -14,18 +14,18 @@
     "status": "OK",
     "data": [{
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }, {
         "id": 2,
-        "user_id": 2,
-        "product_id": 2,
+        "userId": 2,
+        "productId": 2,
         "qty": 2
     }, {
         "id": 3,
-        "user_id": 3,
-        "product_id": 3,
+        "userId": 3,
+        "productId": 3,
         "qty": 2
     }]
 }
@@ -47,8 +47,8 @@
     "status": "OK",
     "data": {
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }
 }
@@ -73,7 +73,7 @@
 + Request Body : 
 ```json
 {
-    "product-id": 1
+    "productId": 1
 }
 ```
 + Request Header : 
@@ -87,8 +87,8 @@
     "status": "OK",
     "data": {
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }
 }
@@ -124,7 +124,7 @@
 + Request Body :
 ```json
 {
-    "product-id": 1,
+    "productId": 1,
     "qty": 2
 }
 ```
@@ -139,8 +139,8 @@
     "status": "OK",
     "data": {
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }
 }
