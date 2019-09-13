@@ -2,10 +2,8 @@
 
 ## Get Users (by Id)
 
-+ Endpoint : ``/users/{id}``
++ Endpoint : ``/users``
 + HTTP Method : `GET`
-+ Request param : 
-    + id (optional)
 + Request Header : 
 	+ Accept: `application/json`
     + Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
@@ -42,7 +40,43 @@
     "status": 401,
     "error": "Unauthorized",
     "message": "Invalid Request: You are not allowed to access.",
-    "path": "/users/{id}"
+    "path": "/users"
+}
+```
+
+## Get Users (by Id)
+
++ Endpoint : ``/users/{user-id}``
++ HTTP Method : `GET`
++ Path Variable : 
+    + user-id
++ Request Header : 
+	+ Accept: `application/json`
+    + Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
++ Response Body (Success) : 
+
+```json
+{
+    "code": 200,
+    "status": "OK",
+    "data": {
+        "id": 1,
+        "name": "Andrew",
+        "email": "example@email.com",
+        "username": "exampleusername"
+    }
+}
+```
+
++ Response Body (Fail) :
+
+```json
+{
+	"timestamp": "2019-08-23T04:22:26.690+0000",
+    "status": 401,
+    "error": "Unauthorized",
+    "message": "Invalid Request: You are not allowed to access.",
+    "path": "/users/{user-id}"
 }
 ```
 ```json
@@ -51,7 +85,7 @@
     "status": 404,
     "error": "Not Found",
     "message": "Invalid Request: Cannot find User with that Id.",
-    "path": "/users/{id}"
+    "path": "/users/{user-id}"
 }
 ```
 
@@ -60,10 +94,15 @@
 + Endpoint : ``/users``
 + HTTP Method : ``POST``
 + Request Body : 
-	+ username
-    + email
-    + name
-	+ password
+```json
+{
+    "username": "andrewdudu",
+    "email": "example@mail.com",
+    "name": "Andrew Wijaya",
+    "password": "admin123",
+    "confirmPassword": "admin123"
+}
+```
 + Request Header : 
 	+ Accept : ``application/json``
     + Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
@@ -105,15 +144,20 @@
 
 ## Edit Users by Id
 
-+ Endpoint : ``/users/{id}``
++ Endpoint : ``/users/{user-id}``
 + HTTP Method : ``PUT``
-+ Request param : 
-    + id (user id)
++ Path Variable : 
+    + user-id
 + Request Body : 
-    + username
-    + email
-    + name
-    + password
+```json
+{
+    "username": "andrewdudu",
+    "email": "example@mail.com",
+    "name": "Andrew Wijaya",
+    "password": "admin123",
+    "confirmPassword": "admin123"
+}
+```
 + Request Header : 
 	+ Accept : ``application/json``
 	+ Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjYyNDAyMjAsImlhdCI6MTU2NjIyMjIyMH0.sYLqMuG2Zr7zDEdK4YIIYX7WfTcroxl7Edc_YLU0dWncPliHfbgEfMYLoorYA_d01hPFF_fZhAyxLTIJYBRHuw`
@@ -139,7 +183,7 @@
 	"status" : "400",
     "error" : "Bad Request",
     "message" : "Invalid Request: Invalid user authentication or invalid request format",
-    "path" : "/users/{id}"
+    "path" : "/users/{user-id}"
 }
 ```
 ```json
@@ -148,16 +192,16 @@
     "status": 404,
     "error": "Not Found",
     "message": "Invalid Request: Cannot find User with that Id.",
-    "path": "/users/{id}"
+    "path": "/users/{user-id}"
 }
 ```
 
 ## Delete User by Id
 
-+ Endpoint : ``/users/{id}``
++ Endpoint : ``/users/{user-id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
-    + id (user id)
++ Path Variable : 
+    + user-id
 + Request Header : 
 	+ Accept : ``application/json``
 	+ Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjYyNDAyMjAsImlhdCI6MTU2NjIyMjIyMH0.sYLqMuG2Zr7zDEdK4YIIYX7WfTcroxl7Edc_YLU0dWncPliHfbgEfMYLoorYA_d01hPFF_fZhAyxLTIJYBRHuw`
@@ -177,7 +221,7 @@
 	"status" : "400",
     "error" : "Bad Request",
     "message" : "Invalid Request: Invalid user authentication or invalid request format",
-    "path" : "/users/{id}"
+    "path" : "/users/{user-id}"
 }
 ```
 ```json
@@ -186,6 +230,6 @@
     "status": 404,
     "error": "Not Found",
     "message": "Invalid Request: Cannot find User with that Id.",
-    "path": "/users/{id}"
+    "path": "/users/{user-id}"
 }
 ```

@@ -1,22 +1,26 @@
-# User Authentication API
+# Authentication API
 
 ## User Sign Up
 
 + Endpoint : ``/user/register``
 + HTTP Method : `POST`
 + Request Body :
-	+ name
-	+ username
-	+ email
-	+ password
-	+ confirm-password
+```json
+{
+	"name": "Andrew",
+	"username": "andrewdudu",
+	"email": "andrew@gmail.com",
+	"password": "admin123",
+	"confirmPassword": "admin123"
+}
+```
 + Request Header : 
 	+ Accept: `application/json`
 + Response Body (Success) : 
 
 ```json
 {
-	"token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg"
+	"signup" : "true"
 }
 ```
 
@@ -32,13 +36,59 @@
 }
 ```
 
-## User Login
+## Merchant Sign Up
 
-+ Endpoint : ``/user/login``
++ Endpoint : ``/merchant/register``
++ HTTP Method : `POST`
++ Request Body :
+```json
+{
+	"name": "Andrew",
+	"username": "andrewdudu",
+	"email": "andrew@gmail.com",
+	"password": "admin123",
+	"confirmPassword": "admin123"
+}
+```
++ Request Header : 
+	+ Accept: `application/json`
++ Response Body (Success) : 
+
+```json
+{
+	"signup" : "true"
+}
+```
+
++ Response Body (Fail) :
+
+```json
+{
+	"timestamp": "2019-08-23T04:22:26.690+0000",
+    "code": 400,
+    "status": "Bad Request",
+    "message": "Invalid Request: Invalid request format",
+    "path": "/merchant/register"
+}
+```
+
+## User/Merchant/Admin Login
+
++ Endpoint : ``/login``
 + HTTP Method : ``POST``
 + Request Body : 
-	+ username or email
-	+ password
+```json
+{
+	"username": "andrewdudu",
+	"password": "admin123"
+}
+```
+```json
+{
+	"email": "example@gmail.com",
+	"password": "admin123"
+}
+```
 + Request Header : 
 	+ Accept : ``application/json``
 + Response Body (Success) :
@@ -57,13 +107,13 @@
     "code": 400,
     "status": "Bad Request",
     "message": "Invalid Request: Invalid user authentication or invalid request format",
-    "path": "/user/login"
+    "path": "/login"
 }
 ```
 
-## User Logout
+## User/Merchant/Admin Logout
 
-+ Endpoint : ``/user/logout``
++ Endpoint : ``/logout``
 + HTTP Method : ``POST``
 + Request Header : 
 	+ Accept : ``application/json``
@@ -83,6 +133,6 @@
 	"code" : "400",
     "status" : "Bad Request",
     "message" : "Invalid Request: Invalid user authentication or invalid request format",
-    "path" : "/user/logout"
+    "path" : "/logout"
 }
 ```
