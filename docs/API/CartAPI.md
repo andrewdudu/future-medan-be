@@ -1,11 +1,9 @@
 # Carts API
 
-## Get Carts (by Id)
+## Get Carts
 
-+ Endpoint : ``/carts/{id}``
++ Endpoint : ``/carts``
 + HTTP Method : `GET`
-+ Request param : 
-    + id (optional)
 + Request Header : 
 	+ Accept: `application/json`
 + Response Body (Success) : 
@@ -16,30 +14,41 @@
     "status": "OK",
     "data": [{
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }, {
         "id": 2,
-        "user_id": 2,
-        "product_id": 2,
+        "userId": 2,
+        "productId": 2,
         "qty": 2
     }, {
         "id": 3,
-        "user_id": 3,
-        "product_id": 3,
+        "userId": 3,
+        "productId": 3,
         "qty": 2
     }]
 }
 ```
+
+## Get Carts by Id
+
++ Endpoint : ``/carts/{cart-id}``
++ HTTP Method : `GET`
++ Path Variable : 
+    + cart-id
++ Request Header : 
+	+ Accept: `application/json`
++ Response Body (Success) : 
+
 ```json
 {
     "code": 200,
     "status": "OK",
     "data": {
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }
 }
@@ -53,7 +62,7 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Cart with that Id.",
-    "path": "/carts/{id}"
+    "path": "/carts/{cart-id}"
 }
 ```
 
@@ -62,7 +71,11 @@
 + Endpoint : ``/carts``
 + HTTP Method : ``POST``
 + Request Body : 
-    + product_id
+```json
+{
+    "productId": 1
+}
+```
 + Request Header : 
 	+ Accept : ``application/json``
     + Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
@@ -74,8 +87,8 @@
     "status": "OK",
     "data": {
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }
 }
@@ -104,13 +117,17 @@
 
 ## Edit Carts by Id (Users)
 
-+ Endpoint : ``/carts/{id}``
++ Endpoint : ``/carts/{cart-id}``
 + HTTP Method : ``PUT``
-+ Request param : 
-    + id (user id)
-+ Request Body : 
-    + product_id
-    + qty
++ Path Variable : 
+    + cart-id
++ Request Body :
+```json
+{
+    "productId": 1,
+    "qty": 2
+}
+```
 + Request Header : 
 	+ Accept : ``application/json``
 	+ Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjYyNDAyMjAsImlhdCI6MTU2NjIyMjIyMH0.sYLqMuG2Zr7zDEdK4YIIYX7WfTcroxl7Edc_YLU0dWncPliHfbgEfMYLoorYA_d01hPFF_fZhAyxLTIJYBRHuw`
@@ -122,8 +139,8 @@
     "status": "OK",
     "data": {
         "id": 1,
-        "user_id": 1,
-        "product_id": 1,
+        "userId": 1,
+        "productId": 1,
         "qty": 2
     }
 }
@@ -136,7 +153,7 @@
 	"code" : "400",
     "status" : "Bad Request",
     "message" : "Invalid Request: Invalid user authentication or invalid request format",
-    "path" : "/carts/{id}"
+    "path" : "/carts/{cart-id}"
 }
 ```
 ```json
@@ -145,16 +162,16 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Cart with that Id.",
-    "path": "/carts/{id}"
+    "path": "/carts/{cart-id}"
 }
 ```
 
 ## Delete Cart by Id
 
-+ Endpoint : ``/carts/{id}``
++ Endpoint : ``/carts/{cart-id}``
 + HTTP Method : ``DELETE``
-+ Request param : 
-    + id (user id)
++ Path Variable : 
+    + cart-id
 + Request Header : 
 	+ Accept : ``application/json``
 	+ Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjYyNDAyMjAsImlhdCI6MTU2NjIyMjIyMH0.sYLqMuG2Zr7zDEdK4YIIYX7WfTcroxl7Edc_YLU0dWncPliHfbgEfMYLoorYA_d01hPFF_fZhAyxLTIJYBRHuw`
@@ -174,7 +191,7 @@
 	"code" : "400",
     "status" : "Bad Request",
     "message" : "Invalid Request: Invalid user authentication or invalid request format",
-    "path" : "/carts/{id}"
+    "path" : "/carts/{cart-id}"
 }
 ```
 ```json
@@ -183,6 +200,6 @@
     "code": 404,
     "status": "Not Found",
     "message": "Invalid Request: Cannot find a Cart with that Id.",
-    "path": "/carts/{id}"
+    "path": "/carts/{cart-id}"
 }
 ```
