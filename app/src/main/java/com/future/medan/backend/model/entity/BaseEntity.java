@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Data
 @MappedSuperclass
 @EntityListeners(value = {AuditingEntityListener.class})
-public class BaseEntity {
+abstract class BaseEntity {
 
     @Id
     @Column(name = BaseEntityConstant.ID)
