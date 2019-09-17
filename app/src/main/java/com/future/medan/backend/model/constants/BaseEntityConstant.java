@@ -1,4 +1,4 @@
-package com.future.medan.backend.constant;
+package com.future.medan.backend.model.constants;
 
 public class BaseEntityConstant {
 

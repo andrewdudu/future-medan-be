@@ -1,6 +1,6 @@
 package com.future.medan.backend.model.entity;
 
-import com.future.medan.backend.constant.ProductConstant;
+import com.future.medan.backend.model.constants.ProductConstant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = ProductConstant.TABLE_NAME)
 public class Product extends BaseEntity {
 
-    @Column(name = ProductConstant.PRODUCCT_NAME)
+    @Column(name = ProductConstant.PRODUCT_NAME)
     private String name;
 
     @Column(name = ProductConstant.PRODUCT_SKU)
