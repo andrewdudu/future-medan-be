@@ -17,4 +17,12 @@ abstract class BaseEntity {
     @GeneratedValue(generator = BaseEntityConstant.SYSTEM_UUID)
     @GenericGenerator(name = BaseEntityConstant.SYSTEM_UUID, strategy = BaseEntityConstant.STRATEGY_UUID2)
     private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
