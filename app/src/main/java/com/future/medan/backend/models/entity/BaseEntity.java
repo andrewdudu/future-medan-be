@@ -1,6 +1,6 @@
-package com.future.medan.backend.model.entity;
+package com.future.medan.backend.models.entity;
 
-import com.future.medan.backend.model.constants.BaseEntityConstant;
+import com.future.medan.backend.models.constants.BaseEntityConstant;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

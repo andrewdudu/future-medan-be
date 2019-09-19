@@ -1,4 +1,4 @@
-package com.future.medan.backend.model.constants;
+package com.future.medan.backend.models.constants;
 
 public class CategoryConstant {
 
