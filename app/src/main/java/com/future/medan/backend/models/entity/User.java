@@ -1,6 +1,7 @@
 package com.future.medan.backend.models.entity;
 
 import com.future.medan.backend.models.constants.UserConstant;
+import com.future.medan.backend.models.enums.UserRoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class User extends BaseEntity {
 
     @NotNull(message = "{name.notnull}")
-    @Column(name = UserConstant.TABLE_NAME)
+    @Column(name = UserConstant.USER_NAME)
     private String name;
 
     @Column(name = UserConstant.USER_DESCRIPTION)
@@ -38,5 +39,5 @@ public class User extends BaseEntity {
 
     @Column(name = UserConstant.USER_ROLE)
     @Enumerated(EnumType.STRING)
-    private UserConstant.USER_ROLE_ENUM role;
+    private UserRoleEnum role;
 }
