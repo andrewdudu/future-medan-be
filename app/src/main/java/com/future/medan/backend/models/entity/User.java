@@ -15,11 +15,10 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = UserConstant.TABLE_NAME)
+@Table(name = "users")
 public class User extends BaseEntity {
 
-    @NotNull(message = "{name.notnull}")
-    @Column(name = UserConstant.USER_NAME)
+    @Column(name = "name")
     private String name;
 
     @Column(name = UserConstant.USER_DESCRIPTION)

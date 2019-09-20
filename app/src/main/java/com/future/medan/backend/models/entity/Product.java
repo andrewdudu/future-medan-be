@@ -14,10 +14,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = ProductConstant.TABLE_NAME)
+@Table(name = "products")
 public class Product extends BaseEntity {
 
-    @Column(name = ProductConstant.PRODUCT_NAME)
+    @Column(name = "name")
     private String name;
 
     @Column(name = ProductConstant.PRODUCT_SKU)
@@ -37,6 +37,6 @@ public class Product extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = ProductConstant.CATEGORY_FK)
+    @JoinColumn(name = ProductConstant.CATEGORY_ID)
     private Category category;
 }

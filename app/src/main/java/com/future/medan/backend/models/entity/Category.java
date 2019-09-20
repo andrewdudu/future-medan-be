@@ -15,10 +15,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = CategoryConstant.TABLE_NAME)
+@Table(name = "categories")
 public class Category extends BaseEntity {
 
-    @Column(name = CategoryConstant.CATEGORY_NAME)
+    @Column(name = "name")
     private String name;
 
     @Column(name = CategoryConstant.CATEGORY_DESCRIPTION)
