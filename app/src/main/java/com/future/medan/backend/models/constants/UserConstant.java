@@ -10,10 +10,4 @@ public class UserConstant {
     public static final String USER_DESCRIPTION = "description";
     public static final String USER_IMAGE = "image";
     public static final String USER_ROLE = "role";
-
-    public static enum USER_ROLE_ENUM {
-        ADMIN,
-        USER,
-        MERCHANT
-    }
 }
