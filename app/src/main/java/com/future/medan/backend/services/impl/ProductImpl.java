@@ -22,4 +22,9 @@ public class ProductImpl implements ProductService {
     public List<Product> getAll() {
         return productRepository.findAll();
     }
+
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
 }
