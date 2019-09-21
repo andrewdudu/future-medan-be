@@ -26,7 +26,7 @@ public class Cart extends BaseEntity {
     @JoinTable(
         name = "cart_product",
         joinColumns = @JoinColumn(name = CartConstant.CART_ID),
-        inverseJoinColumns = @JoinColumn(name = CartConstant.CART_PRODUCT_ID)
+        inverseJoinColumns = @JoinColumn(name = CartConstant.PRODUCT_ID)
     )
     private Set<Product> products;
 
@@ -34,4 +34,8 @@ public class Cart extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = CartConstant.CART_USER_ID)
     private User user;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    private Purchase purchase;
 }
