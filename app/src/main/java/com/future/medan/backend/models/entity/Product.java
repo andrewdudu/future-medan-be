@@ -48,4 +48,8 @@ public class Product extends BaseEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Wishlist> wishlists;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "products")
+    private Set<Cart> carts;
 }
