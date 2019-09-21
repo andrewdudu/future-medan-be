@@ -1,5 +1,6 @@
 package com.future.medan.backend.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.models.constants.UserConstant;
 import com.future.medan.backend.models.enums.UserRoleEnum;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Data
 @Builder
@@ -39,4 +41,8 @@ public class User extends BaseEntity {
     @Column(name = UserConstant.USER_ROLE)
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Review> reviews;
 }
