@@ -42,6 +42,11 @@ public class Product extends BaseEntity {
     private Category category;
 
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = ProductConstant.MERCHANT_ID)
+    private Merchant merchant;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Review> reviews;
 
