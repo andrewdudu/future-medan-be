@@ -7,5 +7,4 @@ public class UserConstant {
     public static final String USER_PASSWORD = "password";
     public static final String USER_DESCRIPTION = "description";
     public static final String USER_IMAGE = "image";
-    public static final String USER_ROLE = "role";
 }
