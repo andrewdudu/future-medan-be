@@ -38,6 +38,5 @@ public class Merchant extends BaseEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "merchant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = MerchantConstant.PRODUCT_ID)
     private Set<Product> products;
 }
