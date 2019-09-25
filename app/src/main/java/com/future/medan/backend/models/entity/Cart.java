@@ -23,11 +23,6 @@ public class Cart extends BaseEntity {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = CartConstant.PRODUCT_ID)
-//    @JoinTable(
-//        name = "cart_product",
-//        joinColumns = @JoinColumn(name = CartConstant.CART_ID),
-//        inverseJoinColumns = @JoinColumn(name = CartConstant.PRODUCT_ID)
-//    )
     private Product product;
 
     @JsonIgnore
