@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+//import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -42,6 +43,11 @@ public class Product extends BaseEntity {
     private Category category;
 
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = ProductConstant.MERCHANT_ID)
+    private Merchant merchant;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Review> reviews;
 
@@ -50,6 +56,6 @@ public class Product extends BaseEntity {
     private Set<Wishlist> wishlists;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Cart> carts;
 }

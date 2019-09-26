@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Builder
@@ -22,20 +21,16 @@ public class Cart extends BaseEntity {
     private Integer qty;
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "cart_product",
-        joinColumns = @JoinColumn(name = CartConstant.CART_ID),
-        inverseJoinColumns = @JoinColumn(name = CartConstant.PRODUCT_ID)
-    )
-    private Set<Product> products;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = CartConstant.PRODUCT_ID)
+    private Product product;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = CartConstant.CART_USER_ID)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = CartConstant.USER_ID)
     private User user;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Purchase purchase;
 }
