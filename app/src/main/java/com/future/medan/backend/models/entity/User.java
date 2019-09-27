@@ -36,6 +36,10 @@ public class User extends BaseEntity {
     @Column(name = UserConstant.USER_PASSWORD)
     private String password;
 
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = UserConstant.USER_ROLE)
+    private String role;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Cart> carts;
