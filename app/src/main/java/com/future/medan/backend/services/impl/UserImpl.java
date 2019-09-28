@@ -24,18 +24,13 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public User getById(String id){
-        return userRepository.getById(id);
+    public User getOne(String id){
+        return userRepository.getOne(id);
     }
 
     @Override
     public User save(User user){
         return userRepository.save(user);
-    }
-
-    @Override
-    public User editById(String id) {
-        return userRepository.editById(id);
     }
 
     @Override

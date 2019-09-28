@@ -10,4 +10,7 @@ public interface ProductService {
 
     Product save(Product product);
 
+    Product getOne(String id);
+
+    void deleteById(String id);
 }

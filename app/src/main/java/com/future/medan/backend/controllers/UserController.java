@@ -28,18 +28,13 @@ public class UserController {
     }
 
     @GetMapping(ApiPath.USER_BY_USER_ID)
-    public User getById(@PathVariable String id){
-        return userService.getById(id);
+    public User getOne(@PathVariable String id){
+        return userService.getOne(id);
     }
 
     @PostMapping(value = ApiPath.USERS, consumes = MediaType.APPLICATION_JSON_VALUE)
     public User save(@RequestBody User user) throws Exception {
         return userService.save(user);
-    }
-
-    @PutMapping(value = ApiPath.USER_BY_USER_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User editById(@PathVariable String id){
-        return userService.editById(id);
     }
 
     @DeleteMapping(ApiPath.USER_BY_USER_ID)
