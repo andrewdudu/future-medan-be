@@ -43,19 +43,20 @@ public class Product extends BaseEntity {
     private Category category;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = ProductConstant.MERCHANT_ID)
-    private Merchant merchant;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Review> reviews;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = ProductConstant.WISHLIST_ID,
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = ProductConstant.WISHLIST_ID)
+    )
     private Set<Wishlist> wishlists;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = ProductConstant.CART_ID,
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = ProductConstant.CART_ID)
+    )
     private Set<Cart> carts;
 }

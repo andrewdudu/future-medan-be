@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Builder
@@ -21,9 +22,9 @@ public class Wishlist extends BaseEntity {
     private Integer qty;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "wishlists", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = WishlistConstant.PRODUCT_ID)
-    private Product product;
+    private Set<Product> product;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)

@@ -39,7 +39,7 @@ public class Purchase extends BaseEntity {
     private Integer qty;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = PurchaseConstant.CART_ID)
-    private Cart cart;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = PurchaseConstant.USER_ID)
+    private User user;
 }

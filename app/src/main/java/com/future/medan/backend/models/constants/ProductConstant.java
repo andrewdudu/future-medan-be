@@ -8,5 +8,6 @@ public class ProductConstant {
     public static final String PRODUCT_IMAGE = "image";
     public static final String PRODUCT_AUTHOR = "author";
     public static final String CATEGORY_ID = "category_id";
-    public static final String MERCHANT_ID = "merchant_id";
+    public static final String WISHLIST_ID = "wishlist_id";
+    public static final String CART_ID = "cart_id";
 }
