@@ -27,4 +27,8 @@ public class Category extends BaseEntity {
     @Column(name = CategoryConstant.CATEGORY_IMAGE)
     private String image;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name = CategoryConstant.PRODUCT_ID)
+    private Set<Product> products;
 }

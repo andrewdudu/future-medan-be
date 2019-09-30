@@ -22,8 +22,12 @@ public class Cart extends BaseEntity {
     private Integer qty;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "carts", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = CartConstant.PRODUCT_ID)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = CartConstant.PRODUCT_ID,
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = CartConstant.PRODUCT_ID)
+    )
     private Set<Product> products;
 
     @JsonIgnore

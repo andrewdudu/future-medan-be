@@ -46,17 +46,9 @@ public class Product extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = ProductConstant.WISHLIST_ID,
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = ProductConstant.WISHLIST_ID)
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = ProductConstant.WISHLIST_ID, referencedColumnName = "id")
     )
     private Set<Wishlist> wishlists;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = ProductConstant.CART_ID,
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = ProductConstant.CART_ID)
-    )
-    private Set<Cart> carts;
 }

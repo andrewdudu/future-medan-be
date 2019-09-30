@@ -23,7 +23,7 @@ public class Wishlist extends BaseEntity {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "wishlists", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = WishlistConstant.PRODUCT_ID)
+    //@JoinColumn(name = WishlistConstant.PRODUCT_ID)
     private Set<Product> product;
 
     @JsonIgnore
