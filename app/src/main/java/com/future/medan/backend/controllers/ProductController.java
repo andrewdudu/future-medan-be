@@ -22,12 +22,12 @@ public class ProductController {
         this.productService = service;
     }
 
-    @GetMapping(ApiPath.PRODUCTS)
+    @GetMapping(path = ApiPath.PRODUCTS)
     public List<Product> getAll() {
         return productService.getAll();
     }
 
-    @GetMapping(ApiPath.PRODUCT_BY_PRODUCT_ID)
+    @GetMapping(path = ApiPath.PRODUCT_BY_PRODUCT_ID)
     public Product getOne(@PathVariable String id){
         return productService.getOne(id);
     }

@@ -9,4 +9,7 @@ public class ApiPath {
 
     public static final String USERS = API + "/users";
     public static final String USER_BY_USER_ID = USERS + "/{id}";
+
+    public static final String CATEGORIES = API + "/categories";
+    public static final String CATEGORY_BY_CATEGORY_ID = CATEGORIES + "/{id}";
 }
