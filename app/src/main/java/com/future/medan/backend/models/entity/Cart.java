@@ -1,6 +1,5 @@
 package com.future.medan.backend.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.models.constants.CartConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,18 +20,11 @@ public class Cart extends BaseEntity {
     @Column(name = CartConstant.CART_QTY)
     private Integer qty;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = CartConstant.PRODUCT_ID,
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = CartConstant.PRODUCT_ID)
-    )
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = CartConstant.PRODUCT_ID)
     private Set<Product> products;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = CartConstant.USER_ID)
     private User user;
-
 }

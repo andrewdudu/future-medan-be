@@ -1,6 +1,5 @@
 package com.future.medan.backend.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.models.constants.CategoryConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +26,6 @@ public class Category extends BaseEntity {
     @Column(name = CategoryConstant.CATEGORY_IMAGE)
     private String image;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Column(name = CategoryConstant.PRODUCT_ID)
     private Set<Product> products;

@@ -37,8 +37,8 @@ public class User extends BaseEntity {
     @Column(name = UserConstant.USER_PASSWORD)
     private String password;
 
-    @JsonIgnore
+    @Enumerated(EnumType.STRING)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = UserConstant.ROLE_ID)
-    private Role role;
+    private RoleEnum role;
 }

@@ -1,6 +1,5 @@
 package com.future.medan.backend.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.models.constants.ProductConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,18 +36,7 @@ public class Product extends BaseEntity {
     @Column(name = ProductConstant.PRODUCT_AUTHOR)
     private String author;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = ProductConstant.CATEGORY_ID)
     private Category category;
-
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = ProductConstant.WISHLIST_ID,
-            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = ProductConstant.WISHLIST_ID, referencedColumnName = "id")
-    )
-    private Set<Wishlist> wishlists;
-
 }
