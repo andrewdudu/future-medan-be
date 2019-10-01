@@ -17,7 +17,10 @@ import java.util.Set;
 @Table(name = "categories")
 public class Category extends BaseEntity {
 
-    @Column(name = "name")
+    @Column(name = CategoryConstant.PARENT_ID)
+    private Integer parent_id;
+
+    @Column(name = CategoryConstant.CATEGORY_NAME)
     private String name;
 
     @Column(name = CategoryConstant.CATEGORY_DESCRIPTION)

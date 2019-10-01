@@ -17,9 +17,6 @@ import java.util.Set;
 @Table(name = "carts")
 public class Cart extends BaseEntity {
 
-    @Column(name = CartConstant.CART_QTY)
-    private Integer qty;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = CartConstant.PRODUCT_ID)
     private Set<Product> products;
