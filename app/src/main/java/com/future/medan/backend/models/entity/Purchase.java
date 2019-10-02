@@ -42,7 +42,7 @@ public class Purchase extends BaseEntity {
     @JoinColumn(name = PurchaseConstant.USER_ID)
     private User user;
 
-    @OneToMany(mappedBy = "purchases", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = PurchaseConstant.PRODUCT_ID)
     private Product product;
 }
