@@ -2,6 +2,7 @@ package com.future.medan.backend.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.models.constants.UserConstant;
+import com.future.medan.backend.models.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,15 +37,7 @@ public class User extends BaseEntity {
     @Column(name = UserConstant.USER_PASSWORD)
     private String password;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Cart> carts;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Review> reviews;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Wishlist wishlist;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = UserConstant.ROLE_ID)
+    private Role role;
 }

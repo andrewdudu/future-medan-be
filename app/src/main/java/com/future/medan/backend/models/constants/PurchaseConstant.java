@@ -9,5 +9,6 @@ public class PurchaseConstant {
     public static final String PURCHASE_PRODUCT_IMAGE = "product_image";
     public static final String PURCHASE_AUTHOR_NAME = "author_name";
     public static final String PURCHASE_QTY = "qty";
-    public static final String CART_ID = "cart_id";
+    public static final String USER_ID = "user_id";
+    public static final String PRODUCT_ID = "product_id";
 }

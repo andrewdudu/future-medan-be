@@ -9,8 +9,4 @@ public interface ProductService {
     List<Product> getAll();
 
     Product save(Product product);
-
-    Product getOne(String id);
-
-    void deleteById(String id);
 }

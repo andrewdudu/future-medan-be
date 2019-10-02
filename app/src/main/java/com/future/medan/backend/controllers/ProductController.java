@@ -2,17 +2,19 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.responses.Response;
+import com.future.medan.backend.responses.ResponseHelper;
+import com.future.medan.backend.responses.WebResponseConstructor;
 import com.future.medan.backend.services.ProductService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Api
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductController {
 
     private ProductService productService;
@@ -22,21 +24,16 @@ public class ProductController {
         this.productService = service;
     }
 
-    @GetMapping(path = ApiPath.PRODUCTS)
-    public List<Product> getAll() {
-        return productService.getAll();
+    @GetMapping(ApiPath.PRODUCTS)
+    public Response getAll() {
+        return ResponseHelper.ok(productService.getAll()
+                .stream()
+                .map(product -> WebResponseConstructor.toWebResponse(product))
+                .collect(Collectors.toList()));
     }
 
-    @GetMapping(path = ApiPath.PRODUCT_BY_PRODUCT_ID)
-    public Product getOne(@PathVariable String id){
-        return productService.getOne(id);
-    }
-
-    @PostMapping(value = ApiPath.PRODUCTS, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = ApiPath.PRODUCTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Product save(@RequestBody Product product) throws Exception {
         return productService.save(product);
     }
-
-    @DeleteMapping(ApiPath.PRODUCT_BY_PRODUCT_ID)
-    public void deleteById(@PathVariable String id) { productService.deleteById(id); }
 }

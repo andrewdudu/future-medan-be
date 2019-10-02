@@ -24,15 +24,7 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public User getOne(String id){
-        return userRepository.getOne(id);
-    }
-
-    @Override
     public User save(User user){
         return userRepository.save(user);
     }
-
-    @Override
-    public void deleteById(String id) { userRepository.deleteById(id); }
 }

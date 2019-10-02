@@ -2,17 +2,19 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.Category;
+import com.future.medan.backend.responses.Response;
+import com.future.medan.backend.responses.ResponseHelper;
+import com.future.medan.backend.responses.WebResponseConstructor;
 import com.future.medan.backend.services.CategoryService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Api
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoryController {
 
     private CategoryService categoryService;
@@ -23,23 +25,16 @@ public class CategoryController {
     }
 
     @GetMapping(ApiPath.CATEGORIES)
-    public List<Category> getAll(){
-        return categoryService.getAll();
+    public Response getAll(){
+        return ResponseHelper.ok(categoryService.getAll().
+                stream()
+                .map(category -> WebResponseConstructor.toWebResponse(category))
+                .collect(Collectors.toList())
+        ) ;
     }
 
-    @GetMapping(ApiPath.CATEGORY_BY_CATEGORY_ID)
-    public Category getOne(@PathVariable String id){
-        return categoryService.getOne(id);
-    }
-
-    @PostMapping(ApiPath.CATEGORIES)
-    public Category save(Category category){
+    @PostMapping(value = ApiPath.CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Category save(Category category) throws Exception {
         return categoryService.save(category);
     }
-
-    @DeleteMapping(ApiPath.CATEGORY_BY_CATEGORY_ID)
-    public void deleteById(@PathVariable String id){
-        categoryService.deleteById(id);
-    }
-
 }

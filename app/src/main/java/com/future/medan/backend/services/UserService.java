@@ -8,9 +8,5 @@ public interface UserService {
 
     List<User> getAll();
 
-    User getOne(String id);
-
     User save(User user);
-
-    void deleteById(String id);
 }

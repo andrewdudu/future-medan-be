@@ -2,17 +2,19 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.User;
+import com.future.medan.backend.responses.ResponseHelper;
+import com.future.medan.backend.responses.WebResponseConstructor;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.xml.ws.Response;
+import java.util.stream.Collectors;
 
 @Api
 @RestController
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     private UserService userService;
@@ -23,20 +25,15 @@ public class UserController {
     }
 
     @GetMapping(ApiPath.USERS)
-    public List<User> getAll(){
-        return userService.getAll();
+    public Response getAll(){
+        return (Response) ResponseHelper.ok(userService.getAll()
+                .stream()
+                .map(user -> WebResponseConstructor.toWebResponse(user))
+                .collect(Collectors.toList()));
     }
 
-    @GetMapping(ApiPath.USER_BY_USER_ID)
-    public User getOne(@PathVariable String id){
-        return userService.getOne(id);
-    }
-
-    @PostMapping(value = ApiPath.USERS, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = ApiPath.USERS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public User save(@RequestBody User user) throws Exception {
         return userService.save(user);
     }
-
-    @DeleteMapping(ApiPath.USER_BY_USER_ID)
-    public void deleteById(@PathVariable String id) { userService.deleteById(id); }
 }
