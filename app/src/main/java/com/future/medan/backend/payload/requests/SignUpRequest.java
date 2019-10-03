@@ -1,4 +1,4 @@
-package com.future.medan.backend.payload;
+package com.future.medan.backend.payload.requests;
 
 import lombok.Data;
 

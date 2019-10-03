@@ -1,4 +1,4 @@
-package com.future.medan.backend.payload;
+package com.future.medan.backend.payload.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

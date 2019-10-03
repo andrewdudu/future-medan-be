@@ -32,11 +32,17 @@ public class DatabaseSeeder {
     }
 
     private void seedRolesTable() {
-        String sql = "SELECT name FROM roles R WHERE R.name = 'ROLE_ADMIN'";
+        seedRole("ROLE_ADMIN", RoleEnum.ROLE_ADMIN);
+        seedRole("ROLE_MERCHANT", RoleEnum.ROLE_MERCHANT);
+        seedRole("ROLE_USER", RoleEnum.ROLE_USER);
+    }
+
+    private void seedRole(String roleName, RoleEnum roleEnum) {
+        String sql = "SELECT name FROM roles R WHERE R.name = '" + roleName + "'";
         List<Role> u = jdbcTemplate.query(sql, (resultSet, rowNum) -> null);
         if (u == null || u.size() <= 0) {
             Role role = new Role();
-            role.setName(RoleEnum.ROLE_ADMIN);
+            role.setName(roleEnum);
 
             roleRepository.save(role);
         }

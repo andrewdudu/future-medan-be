@@ -1,6 +1,6 @@
 package com.future.medan.backend.models.entity;
 
-import com.future.medan.backend.models.constants.BaseEntityConstant;
+import com.future.medan.backend.constants.BaseEntityConstant;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;

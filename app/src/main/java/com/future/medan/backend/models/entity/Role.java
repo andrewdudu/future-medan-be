@@ -1,6 +1,6 @@
 package com.future.medan.backend.models.entity;
 
-import com.future.medan.backend.models.constants.RoleConstant;
+import com.future.medan.backend.constants.RoleConstant;
 import com.future.medan.backend.models.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;

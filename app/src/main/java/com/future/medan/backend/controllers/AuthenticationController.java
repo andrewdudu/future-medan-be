@@ -1,13 +1,14 @@
 package com.future.medan.backend.controllers;
 
+import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.exceptions.AppException;
 import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
-import com.future.medan.backend.payload.ApiResponse;
-import com.future.medan.backend.payload.JwtAuthenticationResponse;
-import com.future.medan.backend.payload.LoginRequest;
-import com.future.medan.backend.payload.SignUpRequest;
+import com.future.medan.backend.payload.responses.AuthenticationApiResponse;
+import com.future.medan.backend.payload.responses.JwtAuthenticationResponse;
+import com.future.medan.backend.payload.requests.LoginRequest;
+import com.future.medan.backend.payload.requests.SignUpRequest;
 import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
 import com.future.medan.backend.security.JwtTokenProvider;
@@ -30,7 +31,6 @@ import java.net.URI;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/api/auth")
 public class AuthenticationController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class AuthenticationController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-    @PostMapping("/signin")
+    @PostMapping(ApiPath.LOGIN)
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -64,25 +64,43 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    @PostMapping(ApiPath.MERCHANT_REGISTER)
+    public ResponseEntity<?> registerMerchant(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
+            return new ResponseEntity<>(new AuthenticationApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
+            return new ResponseEntity<>(new AuthenticationApiResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Creating user's account
+        return createUser(signUpRequest, RoleEnum.ROLE_MERCHANT);
+    }
+
+    @PostMapping(ApiPath.USER_REGISTER)
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return new ResponseEntity<>(new AuthenticationApiResponse(false, "Username is already taken!"),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return new ResponseEntity<>(new AuthenticationApiResponse(false, "Email Address already in use!"),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        return createUser(signUpRequest, RoleEnum.ROLE_USER);
+    }
+
+    private ResponseEntity<?> createUser(@RequestBody @Valid SignUpRequest signUpRequest, RoleEnum role) {
         User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
                 signUpRequest.getEmail(), signUpRequest.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role userRole = roleRepository.findByName(RoleEnum.ROLE_ADMIN)
+        Role userRole = roleRepository.findByName(role)
                 .orElseThrow(() -> new AppException("User Role not set."));
 
         user.setRoles(Collections.singleton(userRole));
@@ -93,6 +111,6 @@ public class AuthenticationController {
                 .fromCurrentContextPath().path("/api/users/{username}")
                 .buildAndExpand(result.getUsername()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return ResponseEntity.created(location).body(new AuthenticationApiResponse(true, "User registered successfully"));
     }
 }

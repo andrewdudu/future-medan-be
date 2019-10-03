@@ -1,4 +1,4 @@
-package com.future.medan.backend.responses;
+package com.future.medan.backend.payload.responses;
 
 import org.springframework.http.HttpStatus;
 

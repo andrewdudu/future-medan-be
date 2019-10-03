@@ -66,15 +66,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors()
-                .and()
+            .and()
                 .csrf()
                 .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
-                .and()
+            .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+            .and()
                 .authorizeRequests()
                 .antMatchers("/",
                         "/favicon.ico",
@@ -85,9 +85,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js")
-                .permitAll()
-                .antMatchers("/api/auth/**")
-                .permitAll()
+                    .permitAll()
+                .antMatchers("/api/user/register",
+                        "/api/merchant/register",
+                        "/api/login")
+                    .permitAll()
                 .anyRequest()
                 .authenticated();
 

@@ -1,6 +1,6 @@
 package com.future.medan.backend.models.entity;
 
-import com.future.medan.backend.models.constants.ReviewConstant;
+import com.future.medan.backend.constants.ReviewConstant;
 import com.future.medan.backend.models.enums.ReviewStarEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

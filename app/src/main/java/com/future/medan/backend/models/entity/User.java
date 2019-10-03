@@ -1,9 +1,6 @@
 package com.future.medan.backend.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.future.medan.backend.models.constants.ReviewConstant;
-import com.future.medan.backend.models.constants.UserConstant;
-import com.future.medan.backend.models.enums.RoleEnum;
+import com.future.medan.backend.constants.UserConstant;
 import lombok.*;
 
 import javax.persistence.*;

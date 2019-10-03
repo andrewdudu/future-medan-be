@@ -1,14 +1,12 @@
 package com.future.medan.backend.models.entity;
 
-import com.future.medan.backend.models.constants.ProductConstant;
+import com.future.medan.backend.constants.ProductConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-//import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Builder
