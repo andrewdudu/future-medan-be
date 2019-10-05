@@ -1,5 +1,6 @@
 package com.future.medan.backend.controllers;
 
+import com.future.medan.backend.exception.ResourceNotFoundException;
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.responses.Response;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Api
@@ -28,13 +30,44 @@ public class CategoryController {
     public Response getAll(){
         return ResponseHelper.ok(categoryService.getAll().
                 stream()
-                .map(category -> WebResponseConstructor.toWebResponse(category))
+                .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList())
         ) ;
     }
 
+    @GetMapping(ApiPath.CATEGORY_BY_CATEGORY_ID)
+    public Response getById(@PathVariable String id) {
+        Optional<Category> category = categoryService.getById(id);
+
+        if (!category.isPresent())
+            throw new ResourceNotFoundException("Category", "id", id);
+
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(category.get()));
+    }
+
     @PostMapping(value = ApiPath.CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Category save(Category category) throws Exception {
-        return categoryService.save(category);
+    public Response save(@RequestBody Category category) {
+        return ResponseHelper.ok(categoryService.save(category));
+    }
+
+    @PutMapping(value = ApiPath.CATEGORY_BY_CATEGORY_ID, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Response editById(@RequestBody Category category, @PathVariable String id){
+        Optional<Category> findCategory = categoryService.getById(id);
+
+        if (!findCategory.isPresent())
+            throw new ResourceNotFoundException("Category", "id", id);
+
+        category.setId(id);
+        return ResponseHelper.ok(categoryService.save(category));
+    }
+
+    @DeleteMapping(value = ApiPath.CATEGORY_BY_CATEGORY_ID)
+    public void deleteById(String id){
+        Optional<Category> category = categoryService.getById(id);
+
+        if (!category.isPresent())
+            throw new ResourceNotFoundException("Category", "id", id);
+
+        categoryService.deleteById(id);
     }
 }

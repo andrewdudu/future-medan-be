@@ -20,9 +20,13 @@ public class Wishlist extends BaseEntity {
     @Column(name = WishlistConstant.WISHLIST_QTY)
     private Integer qty;
 
-    @OneToMany(mappedBy = "wishlists", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "wishlists", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = WishlistConstant.PRODUCT_ID)
+//    private Set<Product> products;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = WishlistConstant.PRODUCT_ID)
-    private Set<Product> products;
+    private Product product;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = WishlistConstant.USER_ID)

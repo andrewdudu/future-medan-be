@@ -1,12 +1,16 @@
 package com.future.medan.backend.services.impl;
 
+import com.future.medan.backend.exception.BadRequestException;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.ProductService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductImpl implements ProductService {
@@ -24,7 +28,17 @@ public class ProductImpl implements ProductService {
     }
 
     @Override
+    public Optional<Product> getById(String id){
+        return productRepository.findById(id);
+    }
+
+    @Override
     public Product save(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    public void deleteById(String id){
+        productRepository.deleteById(id);
     }
 }

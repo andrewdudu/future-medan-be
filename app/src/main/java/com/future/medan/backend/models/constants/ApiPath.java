@@ -12,4 +12,6 @@ public class ApiPath {
 
     public static final String CATEGORIES = API + "/categories";
     public static final String CATEGORY_BY_CATEGORY_ID = CATEGORIES + "/{id}";
+
+    public static final String ROLES = API + "/roles";
 }

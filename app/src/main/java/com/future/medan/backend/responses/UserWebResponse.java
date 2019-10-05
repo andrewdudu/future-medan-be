@@ -1,6 +1,5 @@
 package com.future.medan.backend.responses;
 
-import com.future.medan.backend.models.constants.UserConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
