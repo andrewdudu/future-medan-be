@@ -17,4 +17,7 @@ public class ApiPath {
 
     public static final String WISHLISTS = API + "/wishlists";
     public static final String WISHLIST_BY_WISHLIST_ID = WISHLISTS + "/{id}";
+
+    public static final String PURCHASES = API + "/purchases";
+    public static final String PURCHASE_BY_PURCHASE_ID = PURCHASES + "/{id}";
 }
