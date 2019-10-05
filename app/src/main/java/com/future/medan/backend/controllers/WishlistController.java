@@ -49,7 +49,7 @@ public class WishlistController {
 
     @PostMapping(value = ApiPath.WISHLISTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response save(@RequestBody Wishlist wishlist){
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist)));
+        return ResponseHelper.ok(wishlistService.save(wishlist));
     }
 
     @PutMapping(value = ApiPath.WISHLIST_BY_WISHLIST_ID, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -60,7 +60,7 @@ public class WishlistController {
             throw new ResourceNotFoundException("Wishlist", "id", id);
 
         wishlist.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist)));
+        return ResponseHelper.ok(wishlistService.save(wishlist));
     }
 
     @DeleteMapping(ApiPath.WISHLIST_BY_WISHLIST_ID)

@@ -47,7 +47,7 @@ public class UserController {
 
     @PostMapping(value = ApiPath.USERS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response save(@RequestBody User user) {
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
+        return ResponseHelper.ok(userService.save(user));
     }
 
     @PutMapping(value = ApiPath.USER_BY_USER_ID, produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -58,7 +58,7 @@ public class UserController {
             throw new ResourceNotFoundException("User", "id", id);
 
         user.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
+        return ResponseHelper.ok(userService.save(user));
     }
 
     @DeleteMapping(value = ApiPath.USER_BY_USER_ID)

@@ -20,4 +20,7 @@ public class ApiPath {
 
     public static final String PURCHASES = API + "/purchases";
     public static final String PURCHASE_BY_PURCHASE_ID = PURCHASES + "/{id}";
+
+    public static final String CARTS = API + "/carts";
+    public static final String CART_BY_CART_ID = CARTS + "/{id}";
 }

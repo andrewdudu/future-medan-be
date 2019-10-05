@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Builder
-public class WishlistWebResponse {
+public class CartWebResponse {
 }
