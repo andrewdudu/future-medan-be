@@ -1,12 +1,9 @@
 package com.future.medan.backend.services.impl;
 
-import com.future.medan.backend.exception.BadRequestException;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.ProductService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

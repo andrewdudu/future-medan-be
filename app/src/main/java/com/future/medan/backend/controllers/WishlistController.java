@@ -1,6 +1,6 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.exception.ResourceNotFoundException;
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.Wishlist;
 import com.future.medan.backend.responses.Response;
@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

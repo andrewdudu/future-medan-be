@@ -1,6 +1,6 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.exception.ResourceNotFoundException;
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.responses.Response;

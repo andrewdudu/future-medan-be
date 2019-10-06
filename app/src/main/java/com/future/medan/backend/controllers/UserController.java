@@ -1,11 +1,10 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.exception.ResourceNotFoundException;
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.responses.ResponseHelper;
 import com.future.medan.backend.responses.Response;
-import com.future.medan.backend.responses.UserWebResponse;
 import com.future.medan.backend.responses.WebResponseConstructor;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
