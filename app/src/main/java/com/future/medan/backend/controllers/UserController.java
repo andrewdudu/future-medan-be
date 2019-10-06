@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping(ApiPath.USERS)
-    public Response getAll(){
+    public Response<List<UserWebResponse>> getAll(){
         return ResponseHelper.ok(userService.getAll()
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping(ApiPath.USER_BY_USER_ID)
-    public com.future.medan.backend.responses.Response getById(@PathVariable String id) {
+    public Response<UserWebResponse> getById(@PathVariable String id) {
         Optional<User> user = userService.getById(id);
 
         if (!user.isPresent())
@@ -46,19 +47,19 @@ public class UserController {
     }
 
     @PostMapping(value = ApiPath.USERS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response save(@RequestBody User user) {
-        return ResponseHelper.ok(userService.save(user));
+    public Response<UserWebResponse> save(@RequestBody User user) {
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
     }
 
     @PutMapping(value = ApiPath.USER_BY_USER_ID, produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response editById(@RequestBody User user, @PathVariable String id){
+    public Response<UserWebResponse> editById(@RequestBody User user, @PathVariable String id){
         Optional<User> findUser = userService.getById(id);
 
         if (!findUser.isPresent())
             throw new ResourceNotFoundException("User", "id", id);
 
         user.setId(id);
-        return ResponseHelper.ok(userService.save(user));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
     }
 
     @DeleteMapping(value = ApiPath.USER_BY_USER_ID)

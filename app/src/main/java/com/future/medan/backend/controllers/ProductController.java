@@ -3,6 +3,7 @@ package com.future.medan.backend.controllers;
 import com.future.medan.backend.exception.ResourceNotFoundException;
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.responses.ProductWebResponse;
 import com.future.medan.backend.responses.Response;
 import com.future.medan.backend.responses.ResponseHelper;
 import com.future.medan.backend.responses.WebResponseConstructor;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping(ApiPath.PRODUCTS)
-    public Response getAll() {
+    public Response<List<ProductWebResponse>> getAll() {
         return ResponseHelper.ok(productService.getAll()
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
@@ -35,7 +37,7 @@ public class ProductController {
     }
 
     @GetMapping(ApiPath.PRODUCT_BY_PRODUCT_ID)
-    public Response getById(@PathVariable String id) {
+    public Response<ProductWebResponse> getById(@PathVariable String id) {
         Optional<Product> product = productService.getById(id);
 
         if (!product.isPresent())
@@ -45,12 +47,12 @@ public class ProductController {
     }
 
     @PostMapping(value = ApiPath.PRODUCTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response save(@RequestBody Product product) {
-        return ResponseHelper.ok(productService.save(product));
+    public Response<ProductWebResponse> save(@RequestBody Product product) {
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }
 
     @PutMapping(value = ApiPath.PRODUCT_BY_PRODUCT_ID, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response editById(@RequestBody Product product, @PathVariable String id) {
+    public Response<ProductWebResponse> editById(@RequestBody Product product, @PathVariable String id) {
         Optional<Product> findProduct = productService.getById(id);
 
         if (!findProduct.isPresent())
@@ -58,7 +60,7 @@ public class ProductController {
 
         product.setId(id);
 
-        return ResponseHelper.ok(productService.save(product));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }
 
     @DeleteMapping(ApiPath.PRODUCT_BY_PRODUCT_ID)

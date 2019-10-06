@@ -3,6 +3,7 @@ package com.future.medan.backend.controllers;
 import com.future.medan.backend.exception.ResourceNotFoundException;
 import com.future.medan.backend.models.constants.ApiPath;
 import com.future.medan.backend.models.entity.Purchase;
+import com.future.medan.backend.responses.PurchaseWebResponse;
 import com.future.medan.backend.responses.Response;
 import com.future.medan.backend.responses.ResponseHelper;
 import com.future.medan.backend.responses.WebResponseConstructor;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,7 @@ public class PurchaseController {
     }
 
     @GetMapping(ApiPath.PURCHASES)
-    public Response getAll(){
+    public Response<List<PurchaseWebResponse>> getAll(){
         return ResponseHelper.ok(purchaseService.getAll()
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
@@ -36,7 +38,7 @@ public class PurchaseController {
     }
 
     @GetMapping(ApiPath.PURCHASE_BY_PURCHASE_ID)
-    public Response getById(@PathVariable String id){
+    public Response<PurchaseWebResponse> getById(@PathVariable String id){
         Optional<Purchase> purchase = purchaseService.getById(id);
 
         if (!purchase.isPresent())
@@ -46,19 +48,19 @@ public class PurchaseController {
     }
 
     @PostMapping(value = ApiPath.PURCHASES, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response save(@RequestBody Purchase purchase){
-        return ResponseHelper.ok(purchaseService.save(purchase));
+    public Response<PurchaseWebResponse> save(@RequestBody Purchase purchase){
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
     }
 
     @PutMapping(value = ApiPath.PURCHASES, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response editById(@RequestBody Purchase purchase, @PathVariable String id) {
+    public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
         Optional<Purchase> findPurchase = purchaseService.getById(id);
 
         if (!findPurchase.isPresent())
             throw new ResourceNotFoundException("Purchase", "id", id);
 
         purchase.setId(id);
-        return ResponseHelper.ok(purchaseService.save(purchase));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
     }
 
     @DeleteMapping(ApiPath.PURCHASE_BY_PURCHASE_ID)
