@@ -1,6 +1,6 @@
 # Wishlist API
 
-## Get Wishlist (by Id)
+## Get Wishlist
 
 + Endpoint : ``/wishlists``
 + HTTP Method : `GET`

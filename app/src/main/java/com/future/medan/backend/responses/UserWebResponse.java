@@ -1,27 +1,25 @@
-package com.future.medan.backend.payload.responses;
+package com.future.medan.backend.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class ProductWebResponse {
+public class UserWebResponse {
 
     private String name;
 
-    private String sku;
-
     private String description;
 
-    private BigDecimal price;
+    private String email;
+
+    private String username;
 
     private String image;
 
-    private String author;
+    private String password;
 }
