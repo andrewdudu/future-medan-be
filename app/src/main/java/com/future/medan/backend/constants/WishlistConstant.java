@@ -1,4 +1,4 @@
-package com.future.medan.backend.models.constants;
+package com.future.medan.backend.constants;
 
 public class WishlistConstant {
 

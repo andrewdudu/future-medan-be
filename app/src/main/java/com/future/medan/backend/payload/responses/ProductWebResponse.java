@@ -1,22 +1,27 @@
-package com.future.medan.backend.responses;
+package com.future.medan.backend.payload.responses;
 
-import com.future.medan.backend.models.constants.CategoryConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CategoryWebResponse {
-
-    private Integer parent_id;
+public class ProductWebResponse {
 
     private String name;
 
+    private String sku;
+
     private String description;
 
+    private BigDecimal price;
+
     private String image;
+
+    private String author;
 }
