@@ -1,12 +1,12 @@
 package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
-import com.future.medan.backend.models.constants.ApiPath;
+import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.models.entity.Product;
-import com.future.medan.backend.responses.ProductWebResponse;
-import com.future.medan.backend.responses.Response;
-import com.future.medan.backend.responses.ResponseHelper;
-import com.future.medan.backend.responses.WebResponseConstructor;
+import com.future.medan.backend.payload.responses.ProductWebResponse;
+import com.future.medan.backend.payload.responses.Response;
+import com.future.medan.backend.payload.responses.ResponseHelper;
+import com.future.medan.backend.payload.responses.WebResponseConstructor;
 import com.future.medan.backend.services.ProductService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

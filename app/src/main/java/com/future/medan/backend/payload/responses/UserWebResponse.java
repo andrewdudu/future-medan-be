@@ -1,22 +1,25 @@
-package com.future.medan.backend.responses;
+package com.future.medan.backend.payload.responses;
 
-import com.future.medan.backend.models.constants.CategoryConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CategoryWebResponse {
-
-    private Integer parent_id;
+public class UserWebResponse {
 
     private String name;
 
     private String description;
 
+    private String email;
+
+    private String username;
+
     private String image;
+
+    private String password;
 }
