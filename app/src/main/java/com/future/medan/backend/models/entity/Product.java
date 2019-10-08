@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 //import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -28,7 +28,7 @@ public class Product extends BaseEntity {
     private String description;
 
     @Column(name = ProductConstant.PRODUCT_PRICE)
-    private Float price;
+    private BigDecimal price;
 
     @Column(name = ProductConstant.PRODUCT_IMAGE)
     private String image;
