@@ -1,16 +1,13 @@
 package com.future.medan.backend.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.future.medan.backend.models.constants.UserConstant;
-import com.future.medan.backend.models.enums.RoleEnum;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.future.medan.backend.constants.UserConstant;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,6 +15,13 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
+
+    public User(String name, String username, String email, String password) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     @Column(name = "name")
     private String name;
@@ -37,8 +41,9 @@ public class User extends BaseEntity {
     @Column(name = UserConstant.USER_PASSWORD)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = UserConstant.ROLE_ID)
-    private RoleEnum role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 }

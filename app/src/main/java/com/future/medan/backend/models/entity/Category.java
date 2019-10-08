@@ -1,6 +1,6 @@
 package com.future.medan.backend.models.entity;
 
-import com.future.medan.backend.models.constants.CategoryConstant;
+import com.future.medan.backend.constants.CategoryConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
