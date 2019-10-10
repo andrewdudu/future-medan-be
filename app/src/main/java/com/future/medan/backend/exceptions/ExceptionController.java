@@ -1,5 +1,6 @@
 package com.future.medan.backend.exceptions;
 
+import com.future.medan.backend.payload.responses.ResponseHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,6 @@ public class ExceptionController {
     }
 
     private ResponseEntity<Object> errorResponse (HttpStatus httpStatus, String message){
-        return ResponseEntity.status(httpStatus).body(message);
+        return ResponseEntity.status(httpStatus).body(ResponseHelper.error(httpStatus, message));
     }
 }
