@@ -39,6 +39,11 @@ public class CartController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.getById(id)));
     }
 
+    @GetMapping("/carts/{user_id}")
+    public Response<CartWebResponse> getByUserId(@PathVariable String user_id){
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.getByUserId(user_id)));
+    }
+
     @PostMapping(value = "/carts", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CartWebResponse> save(@RequestBody Cart cart){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart)));

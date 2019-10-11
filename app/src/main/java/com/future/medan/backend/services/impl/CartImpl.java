@@ -30,6 +30,11 @@ public class CartImpl implements CartService {
     }
 
     @Override
+    public Cart getByUserId(String user_id){
+        return cartRepository.findByUserId(user_id).orElseThrow(() -> new ResourceNotFoundException("Cart", "user id", user_id));
+    }
+
+    @Override
     public Cart save(Cart cart){
         return cartRepository.save(cart);
     }

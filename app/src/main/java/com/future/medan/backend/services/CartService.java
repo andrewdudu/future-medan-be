@@ -10,6 +10,8 @@ public interface CartService {
 
     Cart getById(String id);
 
+    Cart getByUserId(String user_id);
+
     Cart save(Cart cart);
 
     Cart save(Cart cart, String id);
