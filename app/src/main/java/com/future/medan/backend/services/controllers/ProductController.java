@@ -1,6 +1,5 @@
 package com.future.medan.backend.services.controllers;
 
-import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.payload.responses.ProductWebResponse;
 import com.future.medan.backend.payload.responses.Response;
@@ -26,7 +25,7 @@ public class ProductController {
         this.productService = service;
     }
 
-    @GetMapping(ApiPath.PRODUCTS)
+    @GetMapping("/products")
     public Response<List<ProductWebResponse>> getAll() {
         return ResponseHelper.ok(productService.getAll()
                 .stream()
@@ -34,23 +33,23 @@ public class ProductController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping(ApiPath.PRODUCT_BY_PRODUCT_ID)
+    @GetMapping("/products/{id}")
     public Response<ProductWebResponse> getById(@PathVariable String id) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.getById(id)));
     }
 
-    @PostMapping(value = ApiPath.PRODUCTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProductWebResponse> save(@RequestBody Product product) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }
 
-    @PutMapping(value = ApiPath.PRODUCT_BY_PRODUCT_ID, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProductWebResponse> editById(@RequestBody Product product, @PathVariable String id) {
         product.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product, id)));
     }
 
-    @DeleteMapping(ApiPath.PRODUCT_BY_PRODUCT_ID)
+    @DeleteMapping("/products")
     public void deleteById(@PathVariable String id){
         productService.deleteById(id);
     }

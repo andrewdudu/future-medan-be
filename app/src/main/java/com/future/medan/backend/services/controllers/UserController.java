@@ -28,7 +28,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(ApiPath.USERS)
+    @GetMapping("/users")
     public Response<List<UserWebResponse>> getAll(){
         return ResponseHelper.ok(userService.getAll()
                 .stream()
@@ -36,7 +36,7 @@ public class UserController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping(ApiPath.USER_BY_USER_ID)
+    @GetMapping("/users/{id}")
     public Response<UserWebResponse> getById(@PathVariable String id) {
         Optional<User> user = userService.getById(id);
 
@@ -46,12 +46,12 @@ public class UserController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(user.get()));
     }
 
-    @PostMapping(value = ApiPath.USERS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> save(@RequestBody User user) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
     }
 
-    @PutMapping(value = ApiPath.USER_BY_USER_ID, produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/users/{id}", produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> editById(@RequestBody User user, @PathVariable String id){
         Optional<User> findUser = userService.getById(id);
 
@@ -62,7 +62,7 @@ public class UserController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
     }
 
-    @DeleteMapping(value = ApiPath.USER_BY_USER_ID)
+    @DeleteMapping(value = "/users/{id}")
     public void deleteById(@PathVariable String id){
         Optional<User> user = userService.getById(id);
 

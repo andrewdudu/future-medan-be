@@ -1,10 +1,8 @@
 package com.future.medan.backend.services;
 
 import com.future.medan.backend.models.entity.Product;
-import javafx.util.Pair;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 

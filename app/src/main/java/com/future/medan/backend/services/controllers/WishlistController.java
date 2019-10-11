@@ -28,7 +28,7 @@ public class WishlistController {
         this.wishlistService = wishlistService;
     }
 
-    @GetMapping(ApiPath.WISHLISTS)
+    @GetMapping("/wishlists")
     public Response<List<WishlistWebResponse>> getAll(){
         return ResponseHelper.ok(wishlistService.getAll()
                 .stream()
@@ -37,7 +37,7 @@ public class WishlistController {
         );
     }
 
-    @GetMapping(ApiPath.WISHLIST_BY_WISHLIST_ID)
+    @GetMapping("/wishlists/{id}")
     public Response<WishlistWebResponse> getById(@PathVariable String id){
         Optional<Wishlist> wishlist = wishlistService.getById(id);
 
@@ -47,12 +47,12 @@ public class WishlistController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlist.get()));
     }
 
-    @PostMapping(value = ApiPath.WISHLISTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/wishlists", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<WishlistWebResponse> save(@RequestBody Wishlist wishlist){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist)));
     }
 
-    @PutMapping(value = ApiPath.WISHLIST_BY_WISHLIST_ID, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/wishlists/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<WishlistWebResponse> editById(@RequestBody Wishlist wishlist, @PathVariable String id){
         Optional<Wishlist> findWishlist = wishlistService.getById(id);
 
@@ -63,8 +63,8 @@ public class WishlistController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist)));
     }
 
-    @DeleteMapping(ApiPath.WISHLIST_BY_WISHLIST_ID)
-    public void deleteById(String id){
+    @DeleteMapping("/wishlists/{id}")
+    public void deleteById(@PathVariable String id){
         Optional<Wishlist> wishlist = wishlistService.getById(id);
 
         if (!wishlist.isPresent())
