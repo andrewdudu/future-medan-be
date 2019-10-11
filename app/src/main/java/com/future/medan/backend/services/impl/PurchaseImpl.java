@@ -35,6 +35,14 @@ public class PurchaseImpl implements PurchaseService {
     }
 
     @Override
+    public Purchase save(Purchase purchase, String id){
+        if (!purchaseRepository.existsById(id))
+            throw new ResourceNotFoundException("Purchase", "id", id);
+        else
+            return purchaseRepository.save(purchase);
+    }
+
+    @Override
     public void deleteById(String id){
         if (!purchaseRepository.existsById(id))
             throw new ResourceNotFoundException("Purchase", "id", id);

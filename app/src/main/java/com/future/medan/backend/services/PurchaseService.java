@@ -12,5 +12,7 @@ public interface PurchaseService {
 
     Purchase save(Purchase purchase);
 
+    Purchase save(Purchase purchase, String id);
+
     void deleteById(String id);
 }
