@@ -13,5 +13,9 @@ public interface UserService {
 
     User save(User user);
 
+    boolean requestPasswordReset(String email);
+
+    boolean resetPassword(String token, String password);
+
     void deleteById(String id);
 }
