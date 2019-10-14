@@ -1,4 +1,4 @@
-package com.future.medan.backend.services.controllers;
+package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.payload.responses.ProductWebResponse;
@@ -25,7 +25,7 @@ public class ProductController {
         this.productService = service;
     }
 
-    @GetMapping("/products")
+    @GetMapping("/api/products")
     public Response<List<ProductWebResponse>> getAll() {
         return ResponseHelper.ok(productService.getAll()
                 .stream()
@@ -33,23 +33,23 @@ public class ProductController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/api/products/{id}")
     public Response<ProductWebResponse> getById(@PathVariable String id) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.getById(id)));
     }
 
-    @PostMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProductWebResponse> save(@RequestBody Product product) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }
 
-    @PutMapping(value = "/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProductWebResponse> editById(@RequestBody Product product, @PathVariable String id) {
         product.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product, id)));
     }
 
-    @DeleteMapping("/products")
+    @DeleteMapping("/api/products/{id}")
     public void deleteById(@PathVariable String id){
         productService.deleteById(id);
     }

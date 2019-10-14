@@ -1,4 +1,4 @@
-package com.future.medan.backend.services.controllers;
+package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.responses.ResponseHelper;
@@ -25,7 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/api/users")
     public Response<List<UserWebResponse>> getAll(){
         return ResponseHelper.ok(userService.getAll()
                 .stream()
@@ -33,23 +33,23 @@ public class UserController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/api/users/{id}")
     public Response<UserWebResponse> getById(@PathVariable String id) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.getById(id)));
     }
 
-    @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> save(@RequestBody User user) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
     }
 
-    @PutMapping(value = "/users/{id}", produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/users/{id}", produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> editById(@RequestBody User user, @PathVariable String id){
         user.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user, id)));
     }
 
-    @DeleteMapping(value = "/users/{id}")
+    @DeleteMapping(value = "/api/users/{id}")
     public void deleteById(@PathVariable String id){
         userService.deleteById(id);
     }

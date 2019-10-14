@@ -88,13 +88,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                         )
                     .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/user/register",
+                .antMatchers("/api/user/register",
                         "/api/merchant/register",
-                        "/api/login"
+                        "/api/login",
+                        "/api/products"
+                        , "/api/products/**"
                         )
                     .permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/products"
+                        , "/api/products/**")
+                .permitAll()
+        .anyRequest()
+        .authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

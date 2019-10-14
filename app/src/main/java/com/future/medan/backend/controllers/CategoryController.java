@@ -1,4 +1,4 @@
-package com.future.medan.backend.services.controllers;
+package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.payload.responses.CategoryWebResponse;
@@ -25,7 +25,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/api/categories")
     public Response<List<CategoryWebResponse>> getAll(){
         return ResponseHelper.ok(categoryService.getAll()
                 .stream()
@@ -34,23 +34,23 @@ public class CategoryController {
         ) ;
     }
 
-    @GetMapping("/categories/{id}")
+    @GetMapping("/api/categories/{id}")
     public Response<CategoryWebResponse> getById(@PathVariable String id) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.getById(id)));
     }
 
-    @PostMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/categories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CategoryWebResponse> save(@RequestBody Category category) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category)));
     }
 
-    @PutMapping(value = "/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CategoryWebResponse> editById(@RequestBody Category category, @PathVariable String id){
         category.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category, id)));
     }
 
-    @DeleteMapping(value = "/categories/{id}")
+    @DeleteMapping(value = "/api/categories/{id}")
     public void deleteById(@PathVariable String id){
         categoryService.deleteById(id);
     }

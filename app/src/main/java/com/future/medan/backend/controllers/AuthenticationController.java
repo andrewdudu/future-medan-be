@@ -1,4 +1,4 @@
-package com.future.medan.backend.services.controllers;
+package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.exceptions.AppException;

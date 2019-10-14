@@ -1,4 +1,4 @@
-package com.future.medan.backend.services.controllers;
+package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Cart;
 import com.future.medan.backend.payload.responses.Response;
@@ -25,7 +25,7 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/carts")
+    @GetMapping("/api/carts")
     public Response<List<CartWebResponse>> getAll(){
         return ResponseHelper.ok(cartService.getAll()
                 .stream()
@@ -34,28 +34,28 @@ public class CartController {
         );
     }
 
-    @GetMapping("/carts/{id}")
+    @GetMapping("/api/carts/{id}")
     public Response<CartWebResponse> getById(@PathVariable String id){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.getById(id)));
     }
 
-    @GetMapping("/carts/{user_id}")
+    @GetMapping("/api/carts/{user_id}")
     public Response<CartWebResponse> getByUserId(@PathVariable String user_id){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.getByUserId(user_id)));
     }
 
-    @PostMapping(value = "/carts", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/carts", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CartWebResponse> save(@RequestBody Cart cart){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart)));
     }
 
-    @PutMapping(value = "/carts/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/carts/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CartWebResponse> editById(@RequestBody Cart cart, @PathVariable String id){
         cart.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart, id)));
     }
 
-    @DeleteMapping("/carts/{id}")
+    @DeleteMapping("/api/carts/{id}")
     public void deleteById(@PathVariable String id){
         cartService.deleteById(id);
     }

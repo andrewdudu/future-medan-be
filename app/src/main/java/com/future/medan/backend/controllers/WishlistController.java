@@ -1,4 +1,4 @@
-package com.future.medan.backend.services.controllers;
+package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Wishlist;
 import com.future.medan.backend.payload.responses.Response;
@@ -25,7 +25,7 @@ public class WishlistController {
         this.wishlistService = wishlistService;
     }
 
-    @GetMapping("/wishlists")
+    @GetMapping("/api/wishlists")
     public Response<List<WishlistWebResponse>> getAll(){
         return ResponseHelper.ok(wishlistService.getAll()
                 .stream()
@@ -34,23 +34,23 @@ public class WishlistController {
         );
     }
 
-    @GetMapping("/wishlists/{id}")
+    @GetMapping("/api/wishlists/{id}")
     public Response<WishlistWebResponse> getById(@PathVariable String id){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.getById(id)));
     }
 
-    @PostMapping(value = "/wishlists", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/wishlists", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<WishlistWebResponse> save(@RequestBody Wishlist wishlist){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist)));
     }
 
-    @PutMapping(value = "/wishlists/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/wishlists/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<WishlistWebResponse> editById(@RequestBody Wishlist wishlist, @PathVariable String id){
         wishlist.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist, id)));
     }
 
-    @DeleteMapping("/wishlists/{id}")
+    @DeleteMapping("/api/wishlists/{id}")
     public void deleteById(@PathVariable String id){
         wishlistService.deleteById(id);
     }

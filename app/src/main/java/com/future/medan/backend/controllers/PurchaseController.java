@@ -1,4 +1,4 @@
-package com.future.medan.backend.services.controllers;
+package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.payload.responses.PurchaseWebResponse;
@@ -25,7 +25,7 @@ public class PurchaseController {
         this.purchaseService = purchaseService;
     }
 
-    @GetMapping("/purchase")
+    @GetMapping("/api/purchase")
     public Response<List<PurchaseWebResponse>> getAll(){
         return ResponseHelper.ok(purchaseService.getAll()
                 .stream()
@@ -34,23 +34,23 @@ public class PurchaseController {
             );
     }
 
-    @GetMapping("/purchase/{id}")
+    @GetMapping("/api/purchase/{id}")
     public Response<PurchaseWebResponse> getById(@PathVariable String id){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.getById(id)));
     }
 
-    @PostMapping(value = "/purchase", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/purchase", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<PurchaseWebResponse> save(@RequestBody Purchase purchase){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
     }
 
-    @PutMapping(value = "/purchase/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/purchase/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
         purchase.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
     }
 
-    @DeleteMapping("/purchase/{id}")
+    @DeleteMapping("/api/purchase/{id}")
     public void deleteById(@PathVariable String id) {
         purchaseService.deleteById(id);
     }
