@@ -163,4 +163,35 @@ public class ProductControllerTests {
 
         verify(service, times(1)).deleteById(findId);
     }
+
+    // Still failed
+    @Test
+    public void testGetById_NotFound() throws Exception {
+        when(service.getById(findId2)).thenReturn(null);
+
+        mockMvc.perform(get(ApiPath.PRODUCTS + "/" + findId2))
+                .andExpect(status().isNotFound());
+
+        verify(service, times(1)).getById(findId2);
+    }
+
+    @Test
+    public void testEditById_NotFound() throws Exception {
+
+        mockMvc.perform(put(ApiPath.PRODUCTS + "/" + findId2))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isNotFound());
+
+        verify(service, times(1)).save(product2, findId2);
+    }
+
+    @Test
+    public void testDeleteById_NotFound() throws Exception {
+        //doNothing().when(service).deleteById("hehe");
+
+        mockMvc.perform(delete(ApiPath.PRODUCTS+"/" + "hehe"))
+                .andExpect(status().isNotFound());
+
+        verify(service, times(1)).deleteById("hehe");
+    }
 }
