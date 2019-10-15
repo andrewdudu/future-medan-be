@@ -7,14 +7,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MailImpl implements MailService {
+public class MailServiceImpl implements MailService {
 
     private JavaMailSender javaMailSender;
 
     @Value("${frontend.url}/password-reset")
     private String url;
 
-    public MailImpl(JavaMailSender javaMailSender) {
+    public MailServiceImpl(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
@@ -29,7 +29,7 @@ public class UserImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserImpl(
+    public UserServiceImpl(
             UserRepository userRepository,
             JwtTokenProvider jwtTokenProvider,
             PasswordResetTokenRepository passwordResetTokenRepository,
