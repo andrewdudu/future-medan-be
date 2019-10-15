@@ -91,17 +91,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/register",
                         "/api/merchant/register",
                         "/api/login",
-                        "/api/products"
-                        , "/api/products/**"
+                        "/api/products/**",
+                        "/api/carts/**",
+                        "/api/purchases/**",
+                        "/api/categories/**",
+                        "/api/users/**",
+                        "/api/wishlists/**",
+                        "/api/products",
+                        "/api/carts",
+                        "/api/purchases",
+                        "/api/categories",
+                        "/api/users",
+                        "/api/wishlists"
                         )
                     .permitAll()
                 .anyRequest()
-                .authenticated()
-                .antMatchers(HttpMethod.DELETE, "/api/products"
-                        , "/api/products/**")
-                .permitAll()
-        .anyRequest()
-        .authenticated();
+                .authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

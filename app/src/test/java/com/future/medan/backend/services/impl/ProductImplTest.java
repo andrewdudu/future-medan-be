@@ -5,20 +5,25 @@ import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.ProductService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ProductImplTest {
 
+    @Mock
     private ProductRepository productRepository;
 
+    @InjectMocks
     private ProductService productService;
 
     private Product product, product2;
@@ -50,31 +55,6 @@ public class ProductImplTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    public void testGetAll() {
-        // given
-        List<Product> expectedProducts = Arrays.asList(product, product2);
-
-        // when
-        List<Product> actualProducts = productService.getAll();
-        when(actualProducts).thenReturn(expectedProducts);
-
-        // then
-        assertEquals(actualProducts, expectedProducts);
-    }
-
-    @Test
-    public void testGetById(){
-        Product result = new Product();
-        result.setName("my Product");
-
-        Product actual = this.productService.getById(findId);
-        Product actual2 = this.productService.getById(findId2);
-
-        assertEquals(actual.getName(), result.getName());
-        assertNull(actual2);
     }
 
     @Test

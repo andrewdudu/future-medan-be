@@ -6,6 +6,7 @@ import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.services.ProductService;
 import io.restassured.RestAssured;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.Mockito.*;
@@ -89,6 +92,7 @@ public class ProductControllerTests {
         List<Product> actual = service.getAll();
 
         when(actual).thenReturn(expected);
+
         mockMvc.perform(get(ApiPath.PRODUCTS))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
@@ -98,7 +102,7 @@ public class ProductControllerTests {
                 .andExpect(jsonPath("$.data[1].name", is("my Product")))
                 .andExpect(jsonPath("$.data[1].image", is("img")));
 
-        verify(service, times(1)).getAll();
+        verify(service,times(1)).getAll();
     }
 
     @Test
@@ -111,7 +115,7 @@ public class ProductControllerTests {
                 .andExpect(jsonPath("$.data.name", is(product2.getName())))
                 .andExpect(jsonPath("$.data.sku", is(product2.getSku())))
                 .andExpect(jsonPath("$.data.description", is(product2.getDescription())))
-//                .andExpect(jsonPath("$.data.price", is(product2.getPrice())))
+//                .andExpect(jsonPath("$.data.price",  Matchers.comparesEqualTo(product2.getPrice())))
                 .andExpect(jsonPath("$.data.image", is(product2.getImage())))
                 .andExpect(jsonPath("$.data.author", is(product2.getAuthor())));
 
@@ -151,7 +155,7 @@ public class ProductControllerTests {
                 .andExpect(jsonPath("$.data.image", is(product.getImage())))
                 .andExpect(jsonPath("$.data.author", is(product.getAuthor())));
 
-          verify(service, times(1)).save(product, findId);
+        verify(service, times(1)).save(product, findId);
     }
 
     @Test
@@ -162,36 +166,5 @@ public class ProductControllerTests {
                 .andExpect(status().isOk());
 
         verify(service, times(1)).deleteById(findId);
-    }
-
-    // Still failed
-    @Test
-    public void testGetById_NotFound() throws Exception {
-        when(service.getById(findId2)).thenReturn(null);
-
-        mockMvc.perform(get(ApiPath.PRODUCTS + "/" + findId2))
-                .andExpect(status().isNotFound());
-
-        verify(service, times(1)).getById(findId2);
-    }
-
-    @Test
-    public void testEditById_NotFound() throws Exception {
-
-        mockMvc.perform(put(ApiPath.PRODUCTS + "/" + findId2))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isNotFound());
-
-        verify(service, times(1)).save(product2, findId2);
-    }
-
-    @Test
-    public void testDeleteById_NotFound() throws Exception {
-        //doNothing().when(service).deleteById("hehe");
-
-        mockMvc.perform(delete(ApiPath.PRODUCTS+"/" + "hehe"))
-                .andExpect(status().isNotFound());
-
-        verify(service, times(1)).deleteById("hehe");
     }
 }

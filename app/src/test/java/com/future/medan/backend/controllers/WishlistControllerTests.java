@@ -3,8 +3,8 @@ package com.future.medan.backend.controllers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.future.medan.backend.constants.ApiPath;
-import com.future.medan.backend.models.entity.Cart;
-import com.future.medan.backend.services.CartService;
+import com.future.medan.backend.models.entity.Wishlist;
+import com.future.medan.backend.services.WishlistService;
 import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
@@ -23,31 +23,29 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class CartControllerTests {
+public class WishlistControllerTests {
     @Value("${local.server.port}")
     private int port;
 
     @MockBean
-    private CartService service;
-    
+    private WishlistService service;
+
     private ObjectMapper mapper;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private Cart cart, cart2;
+    private Wishlist wishlist, wishlist2;
     private String findId, findId2;
 
     @Before
@@ -56,12 +54,10 @@ public class CartControllerTests {
 
         mapper = new ObjectMapper();
 
-        this.findId = "ABCD";
+        this.findId = "wishlist-id-1";
         this.findId2 = "id-unavailable";
-        this.cart = Cart.builder().build();
-//                .parent_id(1)
-        this.cart2 = Cart.builder().build();
-//                .parent_id(1)
+        this.wishlist = Wishlist.builder().build();
+        this.wishlist2 = Wishlist.builder().build();
 
         mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
     }
@@ -75,7 +71,7 @@ public class CartControllerTests {
     public void testDeleteById_Ok() throws Exception {
         doNothing().when(service).deleteById(findId);
 
-        mockMvc.perform(delete(ApiPath.CARTS + "/" + findId))
+        mockMvc.perform(delete(ApiPath.WISHLISTS + "/" + findId))
                 .andExpect(status().isOk());
 
         verify(service, times(1)).deleteById(findId);

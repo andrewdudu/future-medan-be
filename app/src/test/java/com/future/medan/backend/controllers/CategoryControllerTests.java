@@ -36,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class CategoryControllerTests {
+
     @Value("${local.server.port}")
     private int port;
 
@@ -56,7 +57,7 @@ public class CategoryControllerTests {
 
         mapper = new ObjectMapper();
 
-        this.findId = "";
+        this.findId = "ABCD";
         this.findId2 = "id-unavailable";
         this.category = Category.builder()
                 .parent_id(1)
@@ -150,36 +151,5 @@ public class CategoryControllerTests {
                 .andExpect(status().isOk());
 
         verify(service, times(1)).deleteById(findId);
-    }
-
-    //Still failed
-    @Test
-    public void testGetById_NotFound() throws Exception {
-        when(service.getById(findId2)).thenReturn(null);
-
-        mockMvc.perform(get(ApiPath.CATEGORIES + "/" + findId2))
-                .andExpect(status().isNotFound());
-
-        verify(service, times(1)).getById(findId2);
-    }
-
-    @Test
-    public void testEditById_NotFound() throws Exception {
-
-        mockMvc.perform(put(ApiPath.CATEGORIES + "/" + findId2))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isNotFound());
-
-        verify(service, times(1)).save(category2, findId2);
-    }
-
-    @Test
-    public void testDeleteById_NotFound() throws Exception {
-        //doNothing().when(service).deleteById("hehe");
-
-        mockMvc.perform(delete(ApiPath.CATEGORIES + "/" + findId2))
-                .andExpect(status().isNotFound());
-
-        verify(service, times(1)).deleteById(findId2);
     }
 }

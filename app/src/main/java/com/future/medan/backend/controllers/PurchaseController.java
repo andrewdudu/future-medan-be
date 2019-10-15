@@ -25,7 +25,7 @@ public class PurchaseController {
         this.purchaseService = purchaseService;
     }
 
-    @GetMapping("/api/purchase")
+    @GetMapping("/api/purchases")
     public Response<List<PurchaseWebResponse>> getAll(){
         return ResponseHelper.ok(purchaseService.getAll()
                 .stream()
@@ -34,23 +34,23 @@ public class PurchaseController {
             );
     }
 
-    @GetMapping("/api/purchase/{id}")
+    @GetMapping("/api/purchases/{id}")
     public Response<PurchaseWebResponse> getById(@PathVariable String id){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.getById(id)));
     }
 
-    @PostMapping(value = "/api/purchase", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/purchases", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<PurchaseWebResponse> save(@RequestBody Purchase purchase){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
     }
 
-    @PutMapping(value = "/api/purchase/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/purchases/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
         purchase.setId(id);
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
     }
 
-    @DeleteMapping("/api/purchase/{id}")
+    @DeleteMapping("/api/purchases/{id}")
     public void deleteById(@PathVariable String id) {
         purchaseService.deleteById(id);
     }
