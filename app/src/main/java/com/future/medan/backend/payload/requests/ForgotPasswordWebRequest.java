@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 
 @Data
-public class ForgotPasswordRequest {
+public class ForgotPasswordWebRequest {
 
     @Email
     private String email;

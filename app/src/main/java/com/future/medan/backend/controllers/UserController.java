@@ -3,8 +3,8 @@ package com.future.medan.backend.controllers;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.models.entity.User;
-import com.future.medan.backend.payload.requests.ForgotPasswordRequest;
-import com.future.medan.backend.payload.requests.ResetPasswordRequest;
+import com.future.medan.backend.payload.requests.ForgotPasswordWebRequest;
+import com.future.medan.backend.payload.requests.ResetPasswordWebRequest;
 import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
@@ -58,7 +58,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Response<ForgotPasswordWebResponse> forgotPassword(@RequestBody ForgotPasswordRequest passwordReqResetRequestModel) {
+    public Response<ForgotPasswordWebResponse> forgotPassword(@RequestBody ForgotPasswordWebRequest passwordReqResetRequestModel) {
         return ResponseHelper.ok(WebResponseConstructor.toForgotPasswordWebResponse(userService.requestPasswordReset(passwordReqResetRequestModel.getEmail())));
     }
 
@@ -66,7 +66,7 @@ public class UserController {
             path = "/api/reset-password",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Response<ResetPasswordWebResponse> resetPassword(@RequestBody ResetPasswordRequest passwordResetModel) {
+    public Response<ResetPasswordWebResponse> resetPassword(@RequestBody ResetPasswordWebRequest passwordResetModel) {
         return ResponseHelper.ok(WebResponseConstructor.toResetPasswordWebResponse(userService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword())));
     }
 

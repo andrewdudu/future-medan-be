@@ -1,7 +1,6 @@
 package com.future.medan.backend.payload.responses;
 
 import com.future.medan.backend.models.entity.*;
-import com.future.medan.backend.payload.requests.ForgotPasswordRequest;
 
 public class WebResponseConstructor {
 

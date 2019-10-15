@@ -3,7 +3,7 @@ package com.future.medan.backend.payload.requests;
 import lombok.Data;
 
 @Data
-public class ResetPasswordRequest {
+public class ResetPasswordWebRequest {
 
     private String token;
 
