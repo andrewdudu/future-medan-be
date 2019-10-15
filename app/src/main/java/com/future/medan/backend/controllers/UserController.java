@@ -3,8 +3,8 @@ package com.future.medan.backend.controllers;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.models.entity.User;
-import com.future.medan.backend.payload.requests.PasswordReqResetRequest;
-import com.future.medan.backend.payload.requests.PasswordResetRequest;
+import com.future.medan.backend.payload.requests.ForgotPasswordRequest;
+import com.future.medan.backend.payload.requests.ResetPasswordRequest;
 import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
@@ -54,40 +54,20 @@ public class UserController {
     }
 
     @PostMapping(
-            path="/api/password-reset-request",
+            path="/api/forgot-password",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public PasswordResetResponse requestReset(@RequestBody PasswordReqResetRequest passwordReqResetRequestModel) {
-        PasswordResetResponse returnValue = new PasswordResetResponse();
-
-        boolean operationResult = userService.requestPasswordReset(passwordReqResetRequestModel.getEmail());
-
-        returnValue.setOperationName("REQUEST_PASSWORD_RESET");
-        returnValue.setOperationResult("ERROR");
-
-        if (operationResult)
-            returnValue.setOperationResult("SUCCESS");
-
-        return returnValue;
+    public Response<ForgotPasswordWebResponse> forgotPassword(@RequestBody ForgotPasswordRequest passwordReqResetRequestModel) {
+        return ResponseHelper.ok(WebResponseConstructor.toForgotPasswordWebResponse(userService.requestPasswordReset(passwordReqResetRequestModel.getEmail())));
     }
 
     @PostMapping(
-            path = "/api/password-reset",
+            path = "/api/reset-password",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public PasswordResetResponse resetPassword(@RequestBody PasswordResetRequest passwordResetModel) {
-        PasswordResetResponse returnValue = new PasswordResetResponse();
-
-        boolean operationResult = userService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword());
-
-        returnValue.setOperationName("PASSWORD_RESET");
-        returnValue.setOperationResult("ERROR");
-
-        if (operationResult)
-            returnValue.setOperationResult("SUCCESS");
-
-        return returnValue;
+    public Response<ResetPasswordWebResponse> resetPassword(@RequestBody ResetPasswordRequest passwordResetModel) {
+        return ResponseHelper.ok(WebResponseConstructor.toResetPasswordWebResponse(userService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword())));
     }
 
     @PutMapping(value = ApiPath.USER_BY_USER_ID, produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

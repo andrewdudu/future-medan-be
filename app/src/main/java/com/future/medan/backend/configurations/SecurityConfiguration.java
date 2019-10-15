@@ -91,7 +91,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/merchant/register",
                         "/api/login")
                     .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/password-reset-request", "/api/password-reset")
+                .antMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset-password")
                     .permitAll()
                 .anyRequest()
                 .authenticated();

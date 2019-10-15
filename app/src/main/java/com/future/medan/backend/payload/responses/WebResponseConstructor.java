@@ -1,6 +1,7 @@
 package com.future.medan.backend.payload.responses;
 
 import com.future.medan.backend.models.entity.*;
+import com.future.medan.backend.payload.requests.ForgotPasswordRequest;
 
 public class WebResponseConstructor {
 
@@ -51,5 +52,17 @@ public class WebResponseConstructor {
 
     public static CartWebResponse toWebResponse(Cart cart){
         return CartWebResponse.builder().build();
+    }
+
+    public static ForgotPasswordWebResponse toForgotPasswordWebResponse(boolean status) {
+        return ForgotPasswordWebResponse.builder()
+                .success(status)
+                .build();
+    }
+
+    public static ResetPasswordWebResponse toResetPasswordWebResponse(boolean status) {
+        return ResetPasswordWebResponse.builder()
+                .success(status)
+                .build();
     }
 }
