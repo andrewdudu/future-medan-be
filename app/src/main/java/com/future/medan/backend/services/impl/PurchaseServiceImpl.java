@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PurchaseImpl implements PurchaseService {
+public class PurchaseServiceImpl implements PurchaseService {
 
     private PurchaseRepository purchaseRepository;
 
     @Autowired
-    public PurchaseImpl (PurchaseRepository purchaseRepository){
+    public PurchaseServiceImpl(PurchaseRepository purchaseRepository){
         this.purchaseRepository = purchaseRepository;
     }
 

@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class WishlistImpl implements WishlistService {
+public class WishlistServiceImpl implements WishlistService {
 
     private WishlistRepository wishlistRepository;
 
     @Autowired
-    public WishlistImpl(WishlistRepository wishlistRepository){
+    public WishlistServiceImpl(WishlistRepository wishlistRepository){
         this.wishlistRepository = wishlistRepository;
     }
 

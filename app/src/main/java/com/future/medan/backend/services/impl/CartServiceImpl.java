@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CartImpl implements CartService {
+public class CartServiceImpl implements CartService {
 
     private CartRepository cartRepository;
 
     @Autowired
-    public CartImpl (CartRepository cartRepository){
+    public CartServiceImpl(CartRepository cartRepository){
         this.cartRepository = cartRepository;
     }
 

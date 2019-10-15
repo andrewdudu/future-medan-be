@@ -6,6 +6,7 @@ import com.future.medan.backend.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -89,6 +90,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/register",
                         "/api/merchant/register",
                         "/api/login")
+                    .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset-password")
                     .permitAll()
                 .anyRequest()
                 .authenticated();
