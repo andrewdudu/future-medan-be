@@ -115,7 +115,7 @@ public class ProductControllerTests {
                 .andExpect(jsonPath("$.data.name", is(product2.getName())))
                 .andExpect(jsonPath("$.data.sku", is(product2.getSku())))
                 .andExpect(jsonPath("$.data.description", is(product2.getDescription())))
-//                .andExpect(jsonPath("$.data.price",  Matchers.comparesEqualTo(product2.getPrice())))
+                .andExpect(jsonPath("$.data.price").value(product2.getPrice()))
                 .andExpect(jsonPath("$.data.image", is(product2.getImage())))
                 .andExpect(jsonPath("$.data.author", is(product2.getAuthor())));
 
