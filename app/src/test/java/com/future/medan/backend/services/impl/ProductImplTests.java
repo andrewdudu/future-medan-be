@@ -95,7 +95,8 @@ public class ProductImplTests {
     @Test(expected = ResourceNotFoundException.class)
     public void testDeleteById_OK(){
         when(productRepository.existsById(findId)).thenReturn(Boolean.TRUE);
-        when(productRepository.findById(findId)).thenThrow(ResourceNotFoundException.class);
+        when(productRepository.findById(findId))
+                .thenThrow(new ResourceNotFoundException("Product", "id", findId2));
 
         productService.deleteById(findId);
         productService.getById(findId2);
@@ -103,21 +104,24 @@ public class ProductImplTests {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetById_NotFound(){
-        when(productRepository.findById(findId2)).thenThrow(ResourceNotFoundException.class);
+        when(productRepository.findById(findId2))
+                .thenThrow(new ResourceNotFoundException("Product", "id", findId2));
 
         productService.getById(findId2);
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void testEditById_NotFound(){
-        when(productRepository.existsById(findId2)).thenThrow(ResourceNotFoundException.class);
+        when(productRepository.existsById(findId2))
+                .thenThrow(new ResourceNotFoundException("Product", "id", findId2));
 
         productService.save(product2, findId2);
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void testDeleteById_NotFound(){
-        when(productRepository.existsById(findId2)).thenThrow(ResourceNotFoundException.class);
+        when(productRepository.existsById(findId2))
+                .thenThrow(new ResourceNotFoundException("Product", "id", findId2));
 
         productService.deleteById(findId2);
     }

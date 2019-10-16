@@ -59,9 +59,7 @@ public class CartControllerTests {
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";
         this.cart = Cart.builder().build();
-//                .parent_id(1)
         this.cart2 = Cart.builder().build();
-//                .parent_id(1)
 
         mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
     }
