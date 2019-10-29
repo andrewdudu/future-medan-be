@@ -1,7 +1,5 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.exceptions.ResourceNotFoundException;
-import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.payload.responses.CategoryWebResponse;
 import com.future.medan.backend.payload.responses.Response;
@@ -14,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Api
@@ -28,7 +25,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(ApiPath.CATEGORIES)
+    @GetMapping("/api/categories")
     public Response<List<CategoryWebResponse>> getAll(){
         return ResponseHelper.ok(categoryService.getAll()
                 .stream()
@@ -37,39 +34,24 @@ public class CategoryController {
         ) ;
     }
 
-    @GetMapping(ApiPath.CATEGORY_BY_CATEGORY_ID)
+    @GetMapping("/api/categories/{id}")
     public Response<CategoryWebResponse> getById(@PathVariable String id) {
-        Optional<Category> category = categoryService.getById(id);
-
-        if (!category.isPresent())
-            throw new ResourceNotFoundException("Category", "id", id);
-
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(category.get()));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.getById(id)));
     }
 
-    @PostMapping(value = ApiPath.CATEGORIES, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/categories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CategoryWebResponse> save(@RequestBody Category category) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category)));
     }
 
-    @PutMapping(value = ApiPath.CATEGORY_BY_CATEGORY_ID, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CategoryWebResponse> editById(@RequestBody Category category, @PathVariable String id){
-        Optional<Category> findCategory = categoryService.getById(id);
-
-        if (!findCategory.isPresent())
-            throw new ResourceNotFoundException("Category", "id", id);
-
         category.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category)));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category, id)));
     }
 
-    @DeleteMapping(value = ApiPath.CATEGORY_BY_CATEGORY_ID)
-    public void deleteById(String id){
-        Optional<Category> category = categoryService.getById(id);
-
-        if (!category.isPresent())
-            throw new ResourceNotFoundException("Category", "id", id);
-
+    @DeleteMapping(value = "/api/categories/{id}")
+    public void deleteById(@PathVariable String id){
         categoryService.deleteById(id);
     }
 }

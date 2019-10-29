@@ -21,6 +21,7 @@ public class WebResponseConstructor {
                 .description(user.getDescription())
                 .email(user.getEmail())
                 .username(user.getUsername())
+                .image(user.getImage())
                 .password(user.getPassword())
                 .build();
     }

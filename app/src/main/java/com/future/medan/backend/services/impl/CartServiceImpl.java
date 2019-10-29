@@ -1,5 +1,6 @@
 package com.future.medan.backend.services.impl;
 
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Cart;
 import com.future.medan.backend.repositories.CartRepository;
 import com.future.medan.backend.services.CartService;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -25,8 +25,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Optional<Cart> getById(String id){
-        return cartRepository.findById(id);
+    public Cart getById(String id){
+        return cartRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", id));
+    }
+
+    @Override
+    public Cart getByUserId(String user_id){
+        return cartRepository.findByUserId(user_id).orElseThrow(() -> new ResourceNotFoundException("Cart", "user id", user_id));
     }
 
     @Override
@@ -35,7 +40,18 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public Cart save(Cart cart, String id){
+        if (!cartRepository.existsById(id))
+            throw new ResourceNotFoundException("Cart", "id", id);
+        else
+            return cartRepository.save(cart);
+    }
+
+    @Override
     public void deleteById(String id){
-        cartRepository.deleteById(id);
+        if (!cartRepository.existsById(id))
+            throw new ResourceNotFoundException("Cart", "id", id);
+        else
+            cartRepository.deleteById(id);
     }
 }

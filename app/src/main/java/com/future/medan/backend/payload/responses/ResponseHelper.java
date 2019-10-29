@@ -2,6 +2,8 @@ package com.future.medan.backend.payload.responses;
 
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
+
 public class ResponseHelper {
 
     /**
@@ -12,11 +14,22 @@ public class ResponseHelper {
      * @return response ok
      */
     public static <T> Response<T> ok(T data) {
-        Response<T> response = new Response<T>();
+        Response<T> response = new Response<>();
 
         response.setCode(HttpStatus.OK.value());
         response.setStatus(HttpStatus.OK.name());
         response.setData(data);
+
+        return response;
+    }
+
+    public static <T> ErrorResponse<T> error(HttpStatus status, T message) {
+        ErrorResponse<T> response = new ErrorResponse<>();
+
+        response.setTimestamp(LocalDateTime.now());
+        response.setCode(status.value());
+        response.setStatus(status.name());
+        response.setMessage(message);
 
         return response;
     }

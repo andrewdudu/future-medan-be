@@ -1,5 +1,6 @@
 package com.future.medan.backend.services.impl;
 
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.PasswordResetToken;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.repositories.PasswordResetTokenRepository;
@@ -48,8 +49,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getById(String id){
-        return userRepository.findById(id);
+    public User getById(String id){
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+    }
+
+    @Override
+    public User save(User user, String id){
+        if (!userRepository.existsById(id))
+            throw new ResourceNotFoundException("User", "id", id);
+        else
+            return userRepository.save(user);
     }
 
     @Override
