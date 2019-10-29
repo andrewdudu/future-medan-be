@@ -33,7 +33,7 @@ public class WishlistImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.wishlistService = new WishlistImpl(wishlistRepository);
+        this.wishlistService = new WishlistServiceImpl(wishlistRepository);
 
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";

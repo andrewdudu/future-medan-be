@@ -34,7 +34,7 @@ public class ProductImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.productService = new ProductImpl(productRepository);
+        this.productService = new ProductServiceImpl(productRepository);
 
         this.findId = "7892b1a2-0953-4071-9ffe-a5e193255585";
         this.findId2 = "id-unavailable";

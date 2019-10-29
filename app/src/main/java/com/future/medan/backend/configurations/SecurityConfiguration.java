@@ -105,6 +105,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/wishlists"
                         )
                     .permitAll()
+                .antMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset-password")
+                    .permitAll()
                 .anyRequest()
                 .authenticated();
 

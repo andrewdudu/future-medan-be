@@ -7,8 +7,8 @@ import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
 import com.future.medan.backend.payload.responses.AuthenticationApiResponse;
 import com.future.medan.backend.payload.responses.JwtAuthenticationResponse;
-import com.future.medan.backend.payload.requests.LoginRequest;
-import com.future.medan.backend.payload.requests.SignUpRequest;
+import com.future.medan.backend.payload.requests.LoginWebRequest;
+import com.future.medan.backend.payload.requests.SignUpWebRequest;
 import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
 import com.future.medan.backend.security.JwtTokenProvider;
@@ -48,12 +48,12 @@ public class AuthenticationController {
     JwtTokenProvider tokenProvider;
 
     @PostMapping(ApiPath.LOGIN)
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginWebRequest loginWebRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsernameOrEmail(),
-                        loginRequest.getPassword()
+                        loginWebRequest.getUsernameOrEmail(),
+                        loginWebRequest.getPassword()
                 )
         );
 
@@ -64,7 +64,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(ApiPath.MERCHANT_REGISTER)
-    public ResponseEntity<?> registerMerchant(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerMerchant(@Valid @RequestBody SignUpWebRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new AuthenticationApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
@@ -79,7 +79,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(ApiPath.USER_REGISTER)
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpWebRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new AuthenticationApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
@@ -93,7 +93,7 @@ public class AuthenticationController {
         return createUser(signUpRequest, RoleEnum.ROLE_USER);
     }
 
-    private ResponseEntity<?> createUser(@RequestBody @Valid SignUpRequest signUpRequest, RoleEnum role) {
+    private ResponseEntity<?> createUser(@RequestBody @Valid SignUpWebRequest signUpRequest, RoleEnum role) {
         User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
                 signUpRequest.getEmail(), signUpRequest.getPassword());
 

@@ -33,7 +33,7 @@ public class CategoryImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.categoryService = new CategoryImpl(categoryRepository);
+        this.categoryService = new CategoryServiceImpl(categoryRepository);
 
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";

@@ -2,12 +2,16 @@ package com.future.medan.backend.services.impl;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.User;
+import com.future.medan.backend.repositories.PasswordResetTokenRepository;
 import com.future.medan.backend.repositories.UserRepository;
+import com.future.medan.backend.security.JwtTokenProvider;
+import com.future.medan.backend.services.MailService;
 import com.future.medan.backend.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +28,18 @@ public class UserImplTests {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Mock
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Mock
+    private MailService mailService;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private UserService userService;
 
     private User user, user2;
@@ -33,7 +49,12 @@ public class UserImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.userService = new UserImpl(userRepository);
+        this.userService = new UserServiceImpl(
+                userRepository,
+                jwtTokenProvider,
+                passwordResetTokenRepository,
+                mailService,
+                passwordEncoder);
 
         this.findId = "user1-id";
         this.findId2 = "id-unavailable";

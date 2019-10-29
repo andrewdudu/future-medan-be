@@ -20,6 +20,9 @@ public class JwtTokenProvider {
     @Value("${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 
+    @Value("3600000")
+    private int passwordResetExpirationInMs;
+
     public String generateToken(Authentication authentication) {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
@@ -35,6 +38,14 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String generatePasswordResetToken(String userId) {
+        return Jwts.builder()
+                .setSubject(userId)
+                .setExpiration(new Date(System.currentTimeMillis() + passwordResetExpirationInMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
     public String getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
@@ -42,6 +53,17 @@ public class JwtTokenProvider {
                 .getBody();
 
         return claims.getSubject();
+    }
+
+    public boolean hasTokenExpired(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token).getBody();
+
+        Date tokenExpirationDate = claims.getExpiration();
+        Date todayDate = new Date();
+
+        return tokenExpirationDate.before(todayDate);
     }
 
     public boolean validateToken(String authToken) {

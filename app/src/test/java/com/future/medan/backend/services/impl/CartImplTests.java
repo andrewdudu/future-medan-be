@@ -33,7 +33,7 @@ public class CartImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.cartService = new CartImpl(cartRepository);
+        this.cartService = new CartServiceImpl(cartRepository);
 
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";

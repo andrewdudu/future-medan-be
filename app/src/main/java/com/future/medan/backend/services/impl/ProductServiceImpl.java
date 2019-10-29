@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductImpl implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 
     @Autowired
-    public ProductImpl(ProductRepository repository) {
+    public ProductServiceImpl(ProductRepository repository) {
         this.productRepository = repository;
     }
 

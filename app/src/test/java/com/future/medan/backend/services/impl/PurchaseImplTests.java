@@ -34,7 +34,7 @@ public class PurchaseImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.purchaseService = new PurchaseImpl(purchaseRepository);
+        this.purchaseService = new PurchaseServiceImpl(purchaseRepository);
 
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";
