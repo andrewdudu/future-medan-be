@@ -9,9 +9,15 @@ public interface UserService {
 
     List<User> getAll();
 
-    Optional<User> getById(String id);
+    User getById(String id);
 
     User save(User user);
+
+    User save(User user, String id);
+
+    boolean requestPasswordReset(String email);
+
+    boolean resetPassword(String token, String password);
 
     void deleteById(String id);
 }

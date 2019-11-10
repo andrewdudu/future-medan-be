@@ -1,5 +1,6 @@
 package com.future.medan.backend.services.impl;
 
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.ProductService;
@@ -7,15 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ProductImpl implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 
     @Autowired
-    public ProductImpl(ProductRepository repository) {
+    public ProductServiceImpl(ProductRepository repository) {
         this.productRepository = repository;
     }
 
@@ -25,8 +25,8 @@ public class ProductImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> getById(String id){
-        return productRepository.findById(id);
+    public Product getById(String id){
+        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
 
     @Override
@@ -35,7 +35,18 @@ public class ProductImpl implements ProductService {
     }
 
     @Override
+    public Product save(Product product, String id){
+        if (!productRepository.existsById(id))
+            throw new ResourceNotFoundException("Product", "id", id);
+        else
+            return productRepository.save(product);
+    }
+
+    @Override
     public void deleteById(String id){
-        productRepository.deleteById(id);
+        if (!productRepository.existsById(id))
+            throw new ResourceNotFoundException("Product", "id", id);
+        else
+            productRepository.deleteById(id);
     }
 }

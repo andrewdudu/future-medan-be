@@ -1,7 +1,5 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.exceptions.ResourceNotFoundException;
-import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.models.entity.Cart;
 import com.future.medan.backend.payload.responses.Response;
 import com.future.medan.backend.payload.responses.ResponseHelper;
@@ -14,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Api
@@ -28,7 +25,7 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping(ApiPath.CARTS)
+    @GetMapping("/api/carts")
     public Response<List<CartWebResponse>> getAll(){
         return ResponseHelper.ok(cartService.getAll()
                 .stream()
@@ -37,39 +34,29 @@ public class CartController {
         );
     }
 
-    @GetMapping(ApiPath.CART_BY_CART_ID)
-    public Response<CartWebResponse> getById(String id){
-        Optional<Cart> cart = cartService.getById(id);
-
-        if (!cart.isPresent())
-            throw new ResourceNotFoundException("Cart", "id", id);
-
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cart.get()));
+    @GetMapping("/api/carts/{id}")
+    public Response<CartWebResponse> getById(@PathVariable String id){
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.getById(id)));
     }
 
-    @PostMapping(value = ApiPath.CARTS, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/api/carts/{user_id}")
+    public Response<CartWebResponse> getByUserId(@PathVariable String user_id){
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.getByUserId(user_id)));
+    }
+
+    @PostMapping(value = "/api/carts", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CartWebResponse> save(@RequestBody Cart cart){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart)));
     }
 
-    @PutMapping(value = ApiPath.CART_BY_CART_ID, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/api/carts/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CartWebResponse> editById(@RequestBody Cart cart, @PathVariable String id){
-        Optional<Cart> findCart = cartService.getById(id);
-
-        if (!findCart.isPresent())
-            throw new ResourceNotFoundException("Cart", "id", id);
-
         cart.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart)));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart, id)));
     }
 
-    @DeleteMapping(ApiPath.CART_BY_CART_ID)
+    @DeleteMapping("/api/carts/{id}")
     public void deleteById(@PathVariable String id){
-        Optional<Cart> cart = cartService.getById(id);
-
-        if (!cart.isPresent())
-            throw new ResourceNotFoundException("Cart", "id", id);
-
         cartService.deleteById(id);
     }
 }

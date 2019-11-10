@@ -21,6 +21,7 @@ public class WebResponseConstructor {
                 .description(user.getDescription())
                 .email(user.getEmail())
                 .username(user.getUsername())
+                .image(user.getImage())
                 .password(user.getPassword())
                 .build();
     }
@@ -51,5 +52,17 @@ public class WebResponseConstructor {
 
     public static CartWebResponse toWebResponse(Cart cart){
         return CartWebResponse.builder().build();
+    }
+
+    public static ForgotPasswordWebResponse toForgotPasswordWebResponse(boolean status) {
+        return ForgotPasswordWebResponse.builder()
+                .success(status)
+                .build();
+    }
+
+    public static ResetPasswordWebResponse toResetPasswordWebResponse(boolean status) {
+        return ResetPasswordWebResponse.builder()
+                .success(status)
+                .build();
     }
 }
