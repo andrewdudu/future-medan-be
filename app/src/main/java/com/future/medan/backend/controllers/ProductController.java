@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/api/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<ProductWebResponse> save(@RequestBody Product product) {
+    public Response<ProductWebResponse> save(@RequestBody Product product) throws IOException {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }
 
