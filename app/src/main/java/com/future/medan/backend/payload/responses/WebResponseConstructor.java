@@ -12,6 +12,7 @@ public class WebResponseConstructor {
                 .description(product.getDescription())
                 .image(product.getImage())
                 .price(product.getPrice())
+                .pdf(product.getPdf())
                 .build();
     }
 

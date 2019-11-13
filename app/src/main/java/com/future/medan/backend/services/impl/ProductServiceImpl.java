@@ -1,8 +1,10 @@
 package com.future.medan.backend.services.impl;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
+import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
+import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
 import com.future.medan.backend.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,11 @@ public class ProductServiceImpl implements ProductService {
 
     private StorageService storageService;
 
+    private CategoryService categoryService;
+
     @Autowired
-    public ProductServiceImpl(ProductRepository repository, StorageService storageService) {
+    public ProductServiceImpl(ProductRepository repository, StorageService storageService, CategoryService categoryService) {
+        this.categoryService = categoryService;
         this.storageService = storageService;
         this.productRepository = repository;
     }

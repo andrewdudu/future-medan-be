@@ -32,6 +32,9 @@ public class Product extends BaseEntity {
     @Column(name = ProductConstant.PRODUCT_IMAGE)
     private String image;
 
+    @Column(name = ProductConstant.PRODUCT_PDF)
+    private String pdf;
+
     @Column(name = ProductConstant.PRODUCT_AUTHOR)
     private String author;
 
