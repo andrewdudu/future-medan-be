@@ -7,5 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "storage")
 public class StorageProperties {
 
-    private String location;
+    private String locationBook;
+
+    private String locationImage;
 }

@@ -66,4 +66,10 @@ public class WebResponseConstructor {
                 .success(status)
                 .build();
     }
+
+    public static FileWebResponse toFileWebResponse(String base64) {
+        return FileWebResponse.builder()
+                .base64(base64)
+                .build();
+    }
 }

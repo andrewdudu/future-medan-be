@@ -20,6 +20,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
+    public Purchase getByProductIdAndUserId(String productId, String userId) {
+        return purchaseRepository.getByProductIdAndUserId(productId, userId);
+    }
+
+    @Override
     public List<Purchase> getAll(){
         return purchaseRepository.findAll();
     }

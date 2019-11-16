@@ -41,8 +41,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product product) throws IOException {
-        String imagePath = storageService.storePdf(product.getImage(), product.getSku());
+        String pdfPath = storageService.storePdf(product.getPdf(), product.getSku());
+        String imagePath = storageService.storeImage(product.getImage(), product.getSku());
 
+        product.setPdf(pdfPath);
         product.setImage(imagePath);
 
         return productRepository.save(product);
