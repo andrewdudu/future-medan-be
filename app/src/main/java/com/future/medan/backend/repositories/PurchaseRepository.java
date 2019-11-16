@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, String> {
+
+    Purchase getByProductIdAndUserId(String productId, String userId);
 }

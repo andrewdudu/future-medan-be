@@ -12,6 +12,7 @@ public class WebResponseConstructor {
                 .description(product.getDescription())
                 .image(product.getImage())
                 .price(product.getPrice())
+                .pdf(product.getPdf())
                 .build();
     }
 
@@ -63,6 +64,12 @@ public class WebResponseConstructor {
     public static ResetPasswordWebResponse toResetPasswordWebResponse(boolean status) {
         return ResetPasswordWebResponse.builder()
                 .success(status)
+                .build();
+    }
+
+    public static FileWebResponse toFileWebResponse(String base64) {
+        return FileWebResponse.builder()
+                .base64(base64)
                 .build();
     }
 }

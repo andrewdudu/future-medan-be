@@ -10,6 +10,8 @@ public interface PurchaseService {
 
     Purchase getById(String id);
 
+    Purchase getByProductIdAndUserId(String productId, String userId);
+
     Purchase save(Purchase purchase);
 
     Purchase save(Purchase purchase, String id);

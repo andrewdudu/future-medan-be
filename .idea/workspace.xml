@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="540b33c6-72c8-48a6-a58b-413af377e157" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/models/entity/PasswordResetToken.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/requests/ForgotPasswordWebRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/requests/ResetPasswordWebRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/responses/ForgotPasswordWebResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/responses/ResetPasswordWebResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/repositories/PasswordResetTokenRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/MailService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/MailServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/configurations/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/configurations/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/controllers/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/controllers/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/requests/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/requests/LoginWebRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/requests/SignUpRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/requests/SignUpWebRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/responses/WebResponseConstructor.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/payload/responses/WebResponseConstructor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/security/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/CartImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/CartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/CategoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/CategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/ProductImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/PurchaseImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/PurchaseServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/WishlistImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/future/medan/backend/services/impl/WishlistServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\junqu\Documents\blibli\future-medan-bee\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1SselJvckbHwJs2OQIhwYpA17d5" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="[]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="540b33c6-72c8-48a6-a58b-413af377e157" name="Default Changelist" comment="" />
+      <created>1572356879747</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1572356879747</updated>
+      <workItem from="1572356880965" duration="30000" />
+      <workItem from="1572356913604" duration="86000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

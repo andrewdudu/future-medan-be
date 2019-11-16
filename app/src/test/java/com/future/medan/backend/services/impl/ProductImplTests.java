@@ -3,12 +3,15 @@ package com.future.medan.backend.services.impl;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
+import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
+import com.future.medan.backend.services.StorageService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +28,12 @@ public class ProductImplTests {
     @Mock
     private ProductRepository productRepository;
 
+    @Mock
     private ProductService productService;
+
+    private StorageService storageService;
+
+    private CategoryService categoryService;
 
     private Product product, product2;
     private String findId, findId2;
@@ -34,7 +42,7 @@ public class ProductImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.productService = new ProductServiceImpl(productRepository);
+        this.productService = new ProductServiceImpl(productRepository, storageService, categoryService);
 
         this.findId = "7892b1a2-0953-4071-9ffe-a5e193255585";
         this.findId2 = "id-unavailable";
@@ -76,7 +84,7 @@ public class ProductImplTests {
     }
 
     @Test
-    public void testSave(){
+    public void testSave() throws IOException {
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
         assertThat(productService.save(product), is(notNullValue()));

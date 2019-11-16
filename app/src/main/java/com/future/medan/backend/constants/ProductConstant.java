@@ -7,5 +7,6 @@ public class ProductConstant {
     public static final String PRODUCT_PRICE = "price";
     public static final String PRODUCT_IMAGE = "image";
     public static final String PRODUCT_AUTHOR = "author";
+    public static final String PRODUCT_PDF = "pdf";
     public static final String CATEGORY_ID = "category_id";
 }

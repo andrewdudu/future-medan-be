@@ -2,6 +2,7 @@ package com.future.medan.backend.services;
 
 import com.future.medan.backend.models.entity.Product;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
@@ -10,7 +11,7 @@ public interface ProductService {
 
     Product getById(String id);
 
-    Product save(Product product);
+    Product save(Product product) throws IOException;
 
     Product save(Product product, String id);
 

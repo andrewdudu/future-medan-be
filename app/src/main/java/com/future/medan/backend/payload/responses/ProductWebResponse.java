@@ -23,5 +23,7 @@ public class ProductWebResponse {
 
     private String image;
 
+    private String pdf;
+
     private String author;
 }
