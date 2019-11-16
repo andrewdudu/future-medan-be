@@ -1,12 +1,16 @@
 package com.future.medan.backend.services.impl;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
+import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
+import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
+import com.future.medan.backend.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -14,8 +18,14 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 
+    private StorageService storageService;
+
+    private CategoryService categoryService;
+
     @Autowired
-    public ProductServiceImpl(ProductRepository repository) {
+    public ProductServiceImpl(ProductRepository repository, StorageService storageService, CategoryService categoryService) {
+        this.categoryService = categoryService;
+        this.storageService = storageService;
         this.productRepository = repository;
     }
 
@@ -30,7 +40,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(Product product) {
+    public Product save(Product product) throws IOException {
+        String pdfPath = storageService.storePdf(product.getPdf(), product.getSku());
+        String imagePath = storageService.storeImage(product.getImage(), product.getSku());
+
+        product.setPdf(pdfPath);
+        product.setImage(imagePath);
+
         return productRepository.save(product);
     }
 
