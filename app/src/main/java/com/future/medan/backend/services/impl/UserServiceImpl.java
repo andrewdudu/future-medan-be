@@ -62,6 +62,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User block(String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));;
+        user.setStatus(!user.getStatus());
+
+        return userRepository.save(user);
+    }
+
+    @Override
     public User save(User user){
         return userRepository.save(user);
     }
