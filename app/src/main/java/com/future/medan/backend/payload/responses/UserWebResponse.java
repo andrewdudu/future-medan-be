@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserWebResponse {
 
+    private String id;
+
     private String name;
 
     private String description;
@@ -21,5 +23,5 @@ public class UserWebResponse {
 
     private String image;
 
-    private String password;
+    private Boolean status;
 }

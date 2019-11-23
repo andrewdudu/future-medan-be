@@ -18,12 +18,13 @@ public class WebResponseConstructor {
 
     public static UserWebResponse toWebResponse(User user) {
         return UserWebResponse.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .description(user.getDescription())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .image(user.getImage())
-                .password(user.getPassword())
+                .status(user.getStatus())
                 .build();
     }
 

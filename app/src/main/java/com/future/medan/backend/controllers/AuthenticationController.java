@@ -12,6 +12,7 @@ import com.future.medan.backend.payload.requests.SignUpWebRequest;
 import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
 import com.future.medan.backend.security.JwtTokenProvider;
+import com.future.medan.backend.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,8 +60,10 @@ public class AuthenticationController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userPrincipal.getAuthorities()));
     }
 
     @PostMapping(ApiPath.MERCHANT_REGISTER)
@@ -103,6 +106,7 @@ public class AuthenticationController {
                 .orElseThrow(() -> new AppException("User Role not set."));
 
         user.setRoles(Collections.singleton(userRole));
+        user.setStatus(true);
 
         User result = userRepository.save(user);
 

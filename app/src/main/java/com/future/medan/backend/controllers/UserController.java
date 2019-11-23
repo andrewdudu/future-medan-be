@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
+    @RolesAllowed("ROLE_ADMIN")
     public Response<List<UserWebResponse>> getAll(){
         return ResponseHelper.ok(userService.getAll()
                 .stream()

@@ -41,6 +41,9 @@ public class User extends BaseEntity {
     @Column(name = UserConstant.USER_PASSWORD)
     private String password;
 
+    @Column(name = UserConstant.USER_STATUS)
+    private Boolean status;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
