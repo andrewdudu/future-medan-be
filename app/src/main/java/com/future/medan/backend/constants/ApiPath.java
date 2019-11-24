@@ -28,4 +28,6 @@ public class ApiPath {
 
     public static final String CARTS = API + "/carts";
     public static final String CART_BY_CART_ID = CARTS + "/{id}";
+
+    public static final String VALIDATE_TOKEN = API + "/validate-token";
 }

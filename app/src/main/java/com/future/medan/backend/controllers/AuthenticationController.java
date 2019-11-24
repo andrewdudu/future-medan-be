@@ -5,8 +5,7 @@ import com.future.medan.backend.exceptions.AppException;
 import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
-import com.future.medan.backend.payload.responses.AuthenticationApiResponse;
-import com.future.medan.backend.payload.responses.JwtAuthenticationResponse;
+import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.payload.requests.LoginWebRequest;
 import com.future.medan.backend.payload.requests.SignUpWebRequest;
 import com.future.medan.backend.repositories.RoleRepository;
@@ -21,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +64,11 @@ public class AuthenticationController {
 
         String jwt = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userPrincipal.getAuthorities()));
+    }
+
+    @PostMapping(ApiPath.VALIDATE_TOKEN)
+    public Response<AuthenticationApiResponse> validateToken(@RequestBody String token) {
+        return ResponseHelper.ok(WebResponseConstructor.toValidateToken(tokenProvider.validateToken(token)));
     }
 
     @PostMapping(ApiPath.MERCHANT_REGISTER)

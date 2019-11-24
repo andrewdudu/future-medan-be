@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getById(String id){
-        return categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", id));
+        return categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }
 
     @Override

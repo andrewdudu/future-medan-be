@@ -52,6 +52,13 @@ public class WebResponseConstructor {
                 .build();
     }
 
+    public static AuthenticationApiResponse toValidateToken(Boolean success) {
+        return AuthenticationApiResponse.builder()
+                .message(null)
+                .success(success)
+                .build();
+    }
+
     public static CartWebResponse toWebResponse(Cart cart){
         return CartWebResponse.builder().build();
     }
