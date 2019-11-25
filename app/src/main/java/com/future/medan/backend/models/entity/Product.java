@@ -38,7 +38,23 @@ public class Product extends BaseEntity {
     @Column(name = ProductConstant.PRODUCT_AUTHOR)
     private String author;
 
+    @Column(name = ProductConstant.PRODUCT_HIDDEN)
+    private Boolean hidden;
+
+    @PrePersist
+    public void prePersist() {
+        this.hidden = false;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = ProductConstant.CATEGORY_ID)
     private Category category;
+
+    public boolean getHidden() {
+        return this.hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
 }

@@ -48,6 +48,11 @@ public class ProductController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.getById(id)));
     }
 
+    @PostMapping(value = "/api/products/hide/{id}")
+    public Response<ProductWebResponse> hideProduct(@PathVariable String id) {
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.hide(id)));
+    }
+
     @PostMapping(value = "/api/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<ProductWebResponse> save(@Validated @RequestBody ProductWebRequest productWebRequest) throws IOException {
         Product product = WebRequestConstructor.toProductEntity(productWebRequest);

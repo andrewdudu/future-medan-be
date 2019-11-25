@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
@@ -66,9 +67,22 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userPrincipal.getAuthorities()));
     }
 
-    @PostMapping(ApiPath.VALIDATE_TOKEN)
-    public Response<AuthenticationApiResponse> validateToken(@RequestBody String token) {
-        return ResponseHelper.ok(WebResponseConstructor.toValidateToken(tokenProvider.validateToken(token)));
+    @PostMapping(ApiPath.VALIDATE_ADMIN_TOKEN)
+    @RolesAllowed("ROLE_ADMIN")
+    public Response<AuthenticationApiResponse> validateAdminToken(@RequestBody String token) {
+        return ResponseHelper.ok(WebResponseConstructor.toValidateToken(true));
+    }
+
+    @PostMapping(ApiPath.VALIDATE_USER_TOKEN)
+    @RolesAllowed("ROLE_USER")
+    public Response<AuthenticationApiResponse> validateUserToken(@RequestBody String token) {
+        return ResponseHelper.ok(WebResponseConstructor.toValidateToken(true));
+    }
+
+    @PostMapping(ApiPath.VALIDATE_MERCHANT_TOKEN)
+    @RolesAllowed("ROLE_MERCHANT")
+    public Response<AuthenticationApiResponse> validateMerchantToken(@RequestBody String token) {
+        return ResponseHelper.ok(WebResponseConstructor.toValidateToken(true));
     }
 
     @PostMapping(ApiPath.MERCHANT_REGISTER)

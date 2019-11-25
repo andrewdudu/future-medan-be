@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 @Builder
 public class ProductWebResponse {
 
+    private String id;
+
     private String name;
 
     private String sku;
@@ -26,4 +28,6 @@ public class ProductWebResponse {
     private String pdf;
 
     private String author;
+
+    private Boolean hidden;
 }

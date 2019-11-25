@@ -6,6 +6,7 @@ public class WebResponseConstructor {
 
     public static ProductWebResponse toWebResponse(Product product) {
         return ProductWebResponse.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .sku(product.getSku())
                 .author(product.getAuthor())
@@ -13,6 +14,7 @@ public class WebResponseConstructor {
                 .image(product.getImage())
                 .price(product.getPrice())
                 .pdf(product.getPdf())
+                .hidden(product.getHidden())
                 .build();
     }
 
