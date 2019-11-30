@@ -3,13 +3,12 @@ package com.future.medan.backend.controllers;
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.payload.requests.CategoryWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
-import com.future.medan.backend.payload.responses.CategoryWebResponse;
-import com.future.medan.backend.payload.responses.Response;
-import com.future.medan.backend.payload.responses.ResponseHelper;
-import com.future.medan.backend.payload.responses.WebResponseConstructor;
+import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.services.CategoryService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +23,9 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    @Autowired
     public CategoryController(CategoryService categoryService){
         this.categoryService = categoryService;
     }
@@ -35,6 +37,16 @@ public class CategoryController {
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList())
         ) ;
+    }
+
+    @GetMapping(value = "/api/categories/paginate", params = {"page", "size"})
+    public PaginationResponse<List<CategoryWebResponse>> findPaginated(@RequestParam("page") final int page, @RequestParam("size") final int size) {
+        Page<Category> resultPage = categoryService.findPaginated(page, size);
+
+        return ResponseHelper.ok(resultPage.getContent()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()), resultPage.getTotalElements(), resultPage.getTotalPages());
     }
 
     @GetMapping("/api/categories/{id}")

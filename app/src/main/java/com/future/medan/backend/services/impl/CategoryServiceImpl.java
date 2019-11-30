@@ -6,9 +6,13 @@ import com.future.medan.backend.repositories.CategoryRepository;
 import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,6 +33,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAll(){
         return categoryRepository.findAll();
+    }
+
+    @Override
+    public Page<Category> findPaginated(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+
+        return categoryRepository.findAll(paging);
     }
 
     @Override
