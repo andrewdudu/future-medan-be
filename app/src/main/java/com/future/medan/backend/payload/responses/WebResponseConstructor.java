@@ -32,10 +32,11 @@ public class WebResponseConstructor {
 
     public static CategoryWebResponse toWebResponse(Category category){
         return CategoryWebResponse.builder()
-                .parent_id(category.getParent_id())
+                .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
                 .image(category.getImage())
+                .hidden(category.getHidden())
                 .build();
     }
 

@@ -1,6 +1,8 @@
 package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Category;
+import com.future.medan.backend.payload.requests.CategoryWebRequest;
+import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.CategoryWebResponse;
 import com.future.medan.backend.payload.responses.Response;
 import com.future.medan.backend.payload.responses.ResponseHelper;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,13 +43,21 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/api/categories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<CategoryWebResponse> save(@RequestBody Category category) {
+    public Response<CategoryWebResponse> save(@RequestBody CategoryWebRequest categoryWebRequest) throws IOException {
+        Category category = WebRequestConstructor.toCategoryEntity(categoryWebRequest);
+
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category)));
     }
 
+    @PostMapping(value = "/api/categories/hide/{id}")
+    public Response<CategoryWebResponse> hide(@PathVariable String id) {
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.hide(id)));
+    }
+
     @PutMapping(value = "/api/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<CategoryWebResponse> editById(@RequestBody Category category, @PathVariable String id){
-        category.setId(id);
+    public Response<CategoryWebResponse> editById(@RequestBody CategoryWebRequest categoryWebRequest, @PathVariable String id) throws IOException {
+        Category category = WebRequestConstructor.toCategoryEntity(categoryWebRequest);
+
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category, id)));
     }
 

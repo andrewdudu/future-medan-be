@@ -1,5 +1,6 @@
 package com.future.medan.backend.payload.requests;
 
+import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.Purchase;
 
@@ -26,6 +27,15 @@ public class WebRequestConstructor {
                 .product_name(purchaseWebRequest.getProduct_name())
                 .product_sku(purchaseWebRequest.getProduct_sku())
                 .qty(purchaseWebRequest.getQty())
+                .build();
+    }
+
+    public static Category toCategoryEntity(CategoryWebRequest categoryWebRequest) {
+        return Category.builder()
+                .description(categoryWebRequest.getDescription())
+                .name(categoryWebRequest.getName())
+                .image(categoryWebRequest.getImage())
+                .hidden(categoryWebRequest.getHidden())
                 .build();
     }
 }
