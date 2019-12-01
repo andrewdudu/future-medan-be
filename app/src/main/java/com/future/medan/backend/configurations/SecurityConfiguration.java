@@ -90,20 +90,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .antMatchers("/api/user/register",
                         "/api/merchant/register",
-                        "/api/login",
+                        "/api/login"
+                        )
+                    .permitAll()
+                .antMatchers(HttpMethod.GET,
                         "/api/products/**",
                         "/api/carts/**",
                         "/api/purchases/**",
                         "/api/categories/**",
-                        "/api/users/**",
                         "/api/wishlists/**",
                         "/api/products",
                         "/api/carts",
                         "/api/purchases",
                         "/api/categories",
-                        "/api/users",
-                        "/api/wishlists"
-                        )
+                        "/api/wishlists")
                     .permitAll()
                 .antMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset-password")
                     .permitAll()

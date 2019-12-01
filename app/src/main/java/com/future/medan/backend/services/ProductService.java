@@ -11,6 +11,8 @@ public interface ProductService {
 
     Product getById(String id);
 
+    Product hide(String id);
+
     Product save(Product product) throws IOException;
 
     Product save(Product product, String id);

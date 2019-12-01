@@ -51,7 +51,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String storeImage(String fileStr, String fileName) throws IOException {
-        return store(fileStr, fileName + ".png", this.rootLocationImage);
+        return "/images/" + store(fileStr, fileName + ".png", this.rootLocationImage);
     }
 
     private String store(String fileStr, String fileName, Path path) {

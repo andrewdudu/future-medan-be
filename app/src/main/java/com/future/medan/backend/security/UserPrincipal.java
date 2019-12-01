@@ -23,6 +23,8 @@ public class UserPrincipal implements UserDetails {
 
     private String username;
 
+    private Boolean status;
+
     @JsonIgnore
     private String email;
 
@@ -31,12 +33,13 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(String id, String name, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(String id, String name, String username, String email, String password, Boolean status, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.status = status;
         this.authorities = authorities;
     }
 
@@ -51,6 +54,7 @@ public class UserPrincipal implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getStatus(),
                 authorities
         );
     }

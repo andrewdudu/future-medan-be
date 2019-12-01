@@ -40,6 +40,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product hide(String id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+        product.setHidden(!product.getHidden());
+
+        return productRepository.save(product);
+    }
+
+    @Override
     public Product save(Product product) throws IOException {
         String pdfPath = storageService.storePdf(product.getPdf(), product.getSku());
         String imagePath = storageService.storeImage(product.getImage(), product.getSku());

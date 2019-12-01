@@ -23,6 +23,25 @@ public class ResponseHelper {
         return response;
     }
 
+    /**
+     * Create OK Response based on given data
+     *
+     * @param data
+     * @param <T>
+     * @return response ok
+     */
+    public static <T> PaginationResponse<T> ok(T data, long totalElements, int totalPages) {
+        PaginationResponse<T> response = new PaginationResponse<>();
+
+        response.setCode(HttpStatus.OK.value());
+        response.setStatus(HttpStatus.OK.name());
+        response.setData(data);
+        response.setTotalElements(totalElements);
+        response.setTotalPages(totalPages);
+
+        return response;
+    }
+
     public static <T> ErrorResponse<T> error(HttpStatus status, T message) {
         ErrorResponse<T> response = new ErrorResponse<>();
 

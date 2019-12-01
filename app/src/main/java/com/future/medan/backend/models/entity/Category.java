@@ -17,9 +17,6 @@ import java.util.Set;
 @Table(name = "categories")
 public class Category extends BaseEntity {
 
-    @Column(name = CategoryConstant.PARENT_ID)
-    private Integer parent_id;
-
     @Column(name = CategoryConstant.CATEGORY_NAME)
     private String name;
 
@@ -28,6 +25,14 @@ public class Category extends BaseEntity {
 
     @Column(name = CategoryConstant.CATEGORY_IMAGE)
     private String image;
+
+    @Column(name = CategoryConstant.CATEGORY_HIDDEN)
+    private Boolean hidden;
+
+    @PrePersist
+    public void prePersist() {
+        this.hidden = false;
+    }
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Column(name = CategoryConstant.PRODUCT_ID)

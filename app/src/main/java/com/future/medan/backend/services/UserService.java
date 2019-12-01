@@ -15,6 +15,8 @@ public interface UserService {
 
     User save(User user, String id);
 
+    User block(String id);
+
     boolean requestPasswordReset(String email);
 
     boolean resetPassword(String token, String password);
