@@ -60,13 +60,11 @@ public class CategoryControllerTests {
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";
         this.category = Category.builder()
-                .parent_id(1)
                 .name("category 1")
                 .description("one")
                 .image("string")
                 .build();
         this.category2 = Category.builder()
-                .parent_id(1)
                 .name("category 2")
                 .description("not available")
                 .image("img")

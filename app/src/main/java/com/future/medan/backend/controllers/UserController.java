@@ -3,6 +3,7 @@ package com.future.medan.backend.controllers;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.ForgotPasswordWebRequest;
 import com.future.medan.backend.payload.requests.ResetPasswordWebRequest;
+import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
+    @RolesAllowed("ROLE_ADMIN")
     public Response<List<UserWebResponse>> getAll(){
         return ResponseHelper.ok(userService.getAll()
                 .stream()
@@ -43,6 +46,11 @@ public class UserController {
     @PostMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> save(@RequestBody User user) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
+    }
+
+    @PostMapping(value = "/api/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Response<UserWebResponse> blockUser(@PathVariable String id) {
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.block(id)));
     }
 
     @PostMapping(

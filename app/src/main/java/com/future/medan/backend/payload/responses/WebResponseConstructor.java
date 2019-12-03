@@ -6,6 +6,7 @@ public class WebResponseConstructor {
 
     public static ProductWebResponse toWebResponse(Product product) {
         return ProductWebResponse.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .sku(product.getSku())
                 .author(product.getAuthor())
@@ -13,26 +14,29 @@ public class WebResponseConstructor {
                 .image(product.getImage())
                 .price(product.getPrice())
                 .pdf(product.getPdf())
+                .hidden(product.getHidden())
                 .build();
     }
 
     public static UserWebResponse toWebResponse(User user) {
         return UserWebResponse.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .description(user.getDescription())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .image(user.getImage())
-                .password(user.getPassword())
+                .status(user.getStatus())
                 .build();
     }
 
     public static CategoryWebResponse toWebResponse(Category category){
         return CategoryWebResponse.builder()
-                .parent_id(category.getParent_id())
+                .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
                 .image(category.getImage())
+                .hidden(category.getHidden())
                 .build();
     }
 
@@ -48,6 +52,13 @@ public class WebResponseConstructor {
                 .productSku(purchase.getProduct_sku())
                 .productImage(purchase.getProduct_image())
                 .authorName(purchase.getAuthor_name())
+                .build();
+    }
+
+    public static AuthenticationApiResponse toValidateToken(Boolean success) {
+        return AuthenticationApiResponse.builder()
+                .message(null)
+                .success(success)
                 .build();
     }
 
