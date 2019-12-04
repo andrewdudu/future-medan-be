@@ -13,7 +13,6 @@ public class WebRequestConstructor {
                 .description(productWebRequest.getDescription())
                 .image(productWebRequest.getImage())
                 .price(productWebRequest.getPrice())
-                .sku(productWebRequest.getSku())
                 .pdf(productWebRequest.getPdf())
                 .build();
     }

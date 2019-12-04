@@ -7,8 +7,9 @@ public class WebResponseConstructor {
     public static ProductWebResponse toWebResponse(Product product) {
         return ProductWebResponse.builder()
                 .id(product.getId())
-                .name(product.getName())
                 .sku(product.getSku())
+                .variant(product.getVariant())
+                .name(product.getName())
                 .author(product.getAuthor())
                 .description(product.getDescription())
                 .image(product.getImage())
