@@ -23,6 +23,9 @@ public class Product extends BaseEntity {
     @Column(name = ProductConstant.PRODUCT_SKU)
     private String sku;
 
+    @Column(name = ProductConstant.PRODUCT_VARIANT)
+    private String variant;
+
     @Column(name = ProductConstant.PRODUCT_DESCRIPTION)
     private String description;
 

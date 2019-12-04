@@ -6,6 +6,7 @@ import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
+import com.future.medan.backend.services.SequenceService;
 import com.future.medan.backend.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,11 @@ public class ProductServiceImpl implements ProductService {
 
     private StorageService storageService;
 
-    private CategoryService categoryService;
+    private SequenceService sequenceService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository repository, StorageService storageService, CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public ProductServiceImpl(ProductRepository repository, StorageService storageService, SequenceService sequenceService) {
+        this.sequenceService = sequenceService;
         this.storageService = storageService;
         this.productRepository = repository;
     }
@@ -49,6 +50,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product save(Product product) throws IOException {
+        String sku = sequenceService.save(product.getName().replaceAll("\\s+","").substring(0, 3).toUpperCase());
+        product.setSku(sku);
+
+        String variant = sequenceService.save(sku);
+        product.setVariant(variant);
+
         String pdfPath = storageService.storePdf(product.getPdf(), product.getSku());
         String imagePath = storageService.storeImage(product.getImage(), product.getSku());
 
@@ -59,11 +66,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(Product product, String id){
-        if (!productRepository.existsById(id))
-            throw new ResourceNotFoundException("Product", "id", id);
-        else
-            return productRepository.save(product);
+    public Product save(Product productRequest, String id){
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+
+        return productRepository.save(product);
     }
 
     @Override

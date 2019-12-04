@@ -5,6 +5,7 @@ import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
+import com.future.medan.backend.services.SequenceService;
 import com.future.medan.backend.services.StorageService;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class ProductImplTests {
 
     private StorageService storageService;
 
-    private CategoryService categoryService;
+    private SequenceService sequenceService;
 
     private Product product, product2;
     private String findId, findId2;
@@ -42,7 +43,7 @@ public class ProductImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.productService = new ProductServiceImpl(productRepository, storageService, categoryService);
+        this.productService = new ProductServiceImpl(productRepository, storageService, sequenceService);
 
         this.findId = "7892b1a2-0953-4071-9ffe-a5e193255585";
         this.findId2 = "id-unavailable";
