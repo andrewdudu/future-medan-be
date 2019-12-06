@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sun.plugin.com.Utils;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

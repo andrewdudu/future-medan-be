@@ -11,8 +11,10 @@ import com.future.medan.backend.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -38,6 +40,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getById(String id){
         return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+    }
+
+    @Override
+    @Transactional
+    public Set<Product> findByIdIn(Set<String> id) {
+        return productRepository.findByIdIn(id);
     }
 
     @Override

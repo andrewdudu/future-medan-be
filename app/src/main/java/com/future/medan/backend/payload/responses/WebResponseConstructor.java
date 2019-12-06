@@ -1,6 +1,11 @@
 package com.future.medan.backend.payload.responses;
 
 import com.future.medan.backend.models.entity.*;
+import com.future.medan.backend.payload.requests.WebRequestConstructor;
+import org.hibernate.Hibernate;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class WebResponseConstructor {
 
@@ -63,8 +68,18 @@ public class WebResponseConstructor {
                 .build();
     }
 
-    public static CartWebResponse toWebResponse(Cart cart){
-        return CartWebResponse.builder().build();
+    public static CartWebResponse toWebResponse(Cart cart) {
+        Set<ProductWebResponse> productWebResponses = cart.getProducts()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toSet());
+
+        UserWebResponse user = WebResponseConstructor.toWebResponse(cart.getUser());
+
+        return CartWebResponse.builder()
+                .products(productWebResponses)
+                .user(user)
+                .build();
     }
 
     public static ForgotPasswordWebResponse toForgotPasswordWebResponse(boolean status) {
