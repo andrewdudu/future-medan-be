@@ -15,9 +15,6 @@ public class ProductWebRequest {
     private String name;
 
     @NotBlank
-    private String sku;
-
-    @NotBlank
     private String description;
 
     @NotNull

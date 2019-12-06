@@ -19,6 +19,8 @@ public class ProductWebResponse {
 
     private String sku;
 
+    private String variant;
+
     private String description;
 
     private BigDecimal price;

@@ -23,9 +23,6 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @Autowired
-    private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
     public CategoryController(CategoryService categoryService){
         this.categoryService = categoryService;
     }

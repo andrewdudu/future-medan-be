@@ -3,6 +3,7 @@ package com.future.medan.backend.constants;
 public class ProductConstant {
 
     public static final String PRODUCT_SKU = "sku";
+    public static final String PRODUCT_VARIANT = "variant";
     public static final String PRODUCT_DESCRIPTION = "description";
     public static final String PRODUCT_PRICE = "price";
     public static final String PRODUCT_IMAGE = "image";

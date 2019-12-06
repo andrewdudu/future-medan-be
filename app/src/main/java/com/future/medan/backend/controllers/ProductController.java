@@ -63,8 +63,12 @@ public class ProductController {
     }
 
     @PutMapping(value = "/api/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<ProductWebResponse> editById(@RequestBody Product product, @PathVariable String id) {
+    public Response<ProductWebResponse> editById(@Validated @RequestBody ProductWebRequest productWebRequest, @PathVariable String id) {
+        Product product = WebRequestConstructor.toProductEntity(productWebRequest);
+        Category category = categoryService.getById(productWebRequest.getCategory());
+        product.setCategory(category);
         product.setId(id);
+
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product, id)));
     }
 
