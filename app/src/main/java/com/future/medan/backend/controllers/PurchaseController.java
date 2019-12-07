@@ -2,6 +2,7 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.Purchase;
+import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.PurchaseWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.*;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Api
@@ -70,17 +72,21 @@ public class PurchaseController {
             token = bearerToken.substring(7);
         }
 
-        Product product = productService.getById(purchaseWebRequest.getProduct_id());
+        Set<Product> products = productService.findByIdIn(purchaseWebRequest.getProducts());
         String userId = jwtTokenProvider.getUserIdFromJWT(token);
+        User user = userService.getById(userId);
+        String orderId = sequenceService.save(userId.substring(0, 3).toUpperCase());
 
-        Purchase purchase = new Purchase();
-        purchase.setUser(userService.getById(userId));
-        purchase.setOrderId(sequenceService.save(userId.substring(0, 3).toUpperCase()));
-        purchase.setProduct(product);
-        purchase.setStatus("PENDING");
-        purchase.setMerchant(product.getMerchant());
+        products.forEach(product -> {
+            Purchase purchase = new Purchase();
+            purchase.setUser(user);
+            purchase.setOrderId(orderId);
+            purchase.setProduct(product);
+            purchase.setStatus("PENDING");
+            purchase.setMerchant(product.getMerchant());
 
-        Purchase purchaseResponse = purchaseService.save(purchase);
+            purchaseService.save(purchase);
+        });
 
         return ResponseHelper.ok(new SuccessWebResponse(true));
     }
