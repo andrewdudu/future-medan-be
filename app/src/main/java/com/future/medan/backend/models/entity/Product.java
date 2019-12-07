@@ -47,6 +47,10 @@ public class Product extends BaseEntity {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = ProductConstant.MERCHANT_ID)
+    private User merchant;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = ProductConstant.CATEGORY_ID)
     private Category category;
 

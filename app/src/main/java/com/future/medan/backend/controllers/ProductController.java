@@ -2,17 +2,21 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.ProductWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.ProductWebResponse;
 import com.future.medan.backend.payload.responses.Response;
 import com.future.medan.backend.payload.responses.ResponseHelper;
 import com.future.medan.backend.payload.responses.WebResponseConstructor;
+import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
+import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +33,19 @@ public class ProductController {
 
     private CategoryService categoryService;
 
+    private UserService userService;
+
+    private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    public ProductController(ProductService service, CategoryService categoryService) {
+    public ProductController(ProductService service,
+                             CategoryService categoryService,
+                             UserService userService,
+                             JwtTokenProvider jwtTokenProvider) {
         this.categoryService = categoryService;
         this.productService = service;
+        this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping("/api/products")
@@ -54,10 +67,18 @@ public class ProductController {
     }
 
     @PostMapping(value = "/api/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<ProductWebResponse> save(@Validated @RequestBody ProductWebRequest productWebRequest) throws IOException {
+    public Response<ProductWebResponse> save(@Validated @RequestBody ProductWebRequest productWebRequest, @RequestHeader("Authorization") String bearerToken) throws IOException {
+        String token = null;
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
         Product product = WebRequestConstructor.toProductEntity(productWebRequest);
         Category category = categoryService.getById(productWebRequest.getCategory());
+        User merchant = userService.getById(jwtTokenProvider.getUserIdFromJWT(token));
         product.setCategory(category);
+        product.setMerchant(merchant);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }

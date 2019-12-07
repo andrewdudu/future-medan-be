@@ -19,13 +19,6 @@ public class WebRequestConstructor {
 
     public static Purchase toPurchaseEntity(PurchaseWebRequest purchaseWebRequest) {
         return Purchase.builder()
-                .author_name(purchaseWebRequest.getAuthor_name())
-                .price(purchaseWebRequest.getPrice())
-                .product_description(purchaseWebRequest.getProduct_description())
-                .product_image(purchaseWebRequest.getProduct_image())
-                .product_name(purchaseWebRequest.getProduct_name())
-                .product_sku(purchaseWebRequest.getProduct_sku())
-                .qty(purchaseWebRequest.getQty())
                 .build();
     }
 

@@ -60,20 +60,8 @@ public class PurchaseControllerTests {
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";
         this.purchase = Purchase.builder()
-                .price(new BigDecimal("100000"))
-                .product_name("product 1")
-                .product_description("desc 1")
-                .product_sku("sku 1")
-                .product_image("img 1")
-                .author_name("Andrew")
                 .build();
         this.purchase2 = Purchase.builder()
-                .price(new BigDecimal("200000"))
-                .product_name("product 2")
-                .product_description("desc 2")
-                .product_sku("sku 2")
-                .product_image("img 2")
-                .author_name("Andrew 2")
                 .build();
 
         mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
@@ -110,13 +98,7 @@ public class PurchaseControllerTests {
 
         mockMvc.perform(get(ApiPath.PURCHASES + "/" + findId))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.price").value(purchase.getPrice()))
-                .andExpect(jsonPath("$.data.productName", is(purchase.getProduct_name())))
-                .andExpect(jsonPath("$.data.productSku", is(purchase.getProduct_sku())))
-                .andExpect(jsonPath("$.data.productDescription", is(purchase.getProduct_description())))
-                .andExpect(jsonPath("$.data.productImage", is(purchase.getProduct_image())))
-                .andExpect(jsonPath("$.data.authorName", is(purchase.getAuthor_name())));
+                .andExpect(status().isOk());
 
         verify(service, times(1)).getById(findId);
     }
@@ -128,13 +110,7 @@ public class PurchaseControllerTests {
         mockMvc.perform(post(ApiPath.PURCHASES)
                 .content(mapper.writeValueAsString(purchase))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.price").value(purchase.getPrice()))
-                .andExpect(jsonPath("$.data.productName", is(purchase.getProduct_name())))
-                .andExpect(jsonPath("$.data.productSku", is(purchase.getProduct_sku())))
-                .andExpect(jsonPath("$.data.productDescription", is(purchase.getProduct_description())))
-                .andExpect(jsonPath("$.data.productImage", is(purchase.getProduct_image())))
-                .andExpect(jsonPath("$.data.authorName", is(purchase.getAuthor_name())));
+                .andExpect(status().isOk());
 
         verify(service, times(1)).save(any(Purchase.class));
     }

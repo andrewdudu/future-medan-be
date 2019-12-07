@@ -1,6 +1,7 @@
 package com.future.medan.backend.payload.responses;
 
 import com.future.medan.backend.models.entity.*;
+import com.future.medan.backend.payload.requests.PurchaseWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import org.hibernate.Hibernate;
 
@@ -51,13 +52,16 @@ public class WebResponseConstructor {
     }
 
     public static PurchaseWebResponse toWebResponse(Purchase purchase){
+        UserWebResponse merchantWebResponse = WebResponseConstructor.toWebResponse(purchase.getMerchant());
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse(purchase.getUser());
+        ProductWebResponse productWebResponse = WebResponseConstructor.toWebResponse(purchase.getProduct());
+
         return PurchaseWebResponse.builder()
-                .price(purchase.getPrice())
-                .productName(purchase.getProduct_name())
-                .productDescription(purchase.getProduct_description())
-                .productSku(purchase.getProduct_sku())
-                .productImage(purchase.getProduct_image())
-                .authorName(purchase.getAuthor_name())
+                .merchant(merchantWebResponse)
+                .order_id(purchase.getOrderId())
+                .product(productWebResponse)
+                .status(purchase.getStatus())
+                .user(userWebResponse)
                 .build();
     }
 
