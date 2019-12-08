@@ -39,20 +39,8 @@ public class PurchaseImplTests {
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";
         this.purchase = Purchase.builder()
-                .price(new BigDecimal("100000"))
-                .product_name("product 1")
-                .product_description("desc 1")
-                .product_sku("sku 1")
-                .product_image("img 1")
-                .author_name("Andrew")
                 .build();
         this.purchase2 = Purchase.builder()
-                .price(new BigDecimal("200000"))
-                .product_name("product 2")
-                .product_description("desc 2")
-                .product_sku("sku 2")
-                .product_image("img 2")
-                .author_name("Andrew 2")
                 .build();
     }
 

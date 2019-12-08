@@ -1,5 +1,7 @@
 package com.future.medan.backend.payload.responses;
 
+import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +15,13 @@ import java.math.BigDecimal;
 @Builder
 public class PurchaseWebResponse {
 
-    private BigDecimal price;
+    private String order_id;
 
-    private String productName;
+    private UserWebResponse merchant;
 
-    private String productDescription;
+    private UserWebResponse user;
 
-    private String productSku;
+    private ProductWebResponse product;
 
-    private String productImage;
-
-    private String authorName;
+    private String status;
 }

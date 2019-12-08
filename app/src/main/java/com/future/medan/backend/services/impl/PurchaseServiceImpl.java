@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
@@ -22,6 +23,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Purchase getByProductIdAndUserId(String productId, String userId) {
         return purchaseRepository.getByProductIdAndUserId(productId, userId);
+    }
+
+    @Override
+    public Set<Purchase> getByOrderId(String orderId) {
+        return purchaseRepository.getAllByOrderId(orderId);
     }
 
     @Override

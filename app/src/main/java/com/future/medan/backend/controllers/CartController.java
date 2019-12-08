@@ -1,17 +1,26 @@
 package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Cart;
+import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.User;
+import com.future.medan.backend.payload.requests.CartWebRequest;
+import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.Response;
 import com.future.medan.backend.payload.responses.ResponseHelper;
 import com.future.medan.backend.payload.responses.WebResponseConstructor;
 import com.future.medan.backend.payload.responses.CartWebResponse;
 import com.future.medan.backend.services.CartService;
+import com.future.medan.backend.services.ProductService;
+import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Api
@@ -20,9 +29,15 @@ public class CartController {
 
     private CartService cartService;
 
+    private UserService userService;
+
+    private ProductService productService;
+
     @Autowired
-    public CartController (CartService cartService){
+    public CartController (CartService cartService, UserService userService, ProductService productService){
         this.cartService = cartService;
+        this.userService = userService;
+        this.productService = productService;
     }
 
     @GetMapping("/api/carts")
@@ -45,8 +60,14 @@ public class CartController {
     }
 
     @PostMapping(value = "/api/carts", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<CartWebResponse> save(@RequestBody Cart cart){
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart)));
+    public Response<CartWebResponse> save(@Validated @RequestBody CartWebRequest cartWebRequest) {
+        User user = userService.getById(cartWebRequest.getUser_id());
+        Set<Product> products = productService.findByIdIn(cartWebRequest.getProduct_id());
+        Cart cart = WebRequestConstructor.toCartEntity(user, products);
+
+        Cart cartResponse = cartService.save(cart);
+
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartResponse));
     }
 
     @PutMapping(value = "/api/carts/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -1,10 +1,7 @@
 package com.future.medan.backend.models.entity;
 
 import com.future.medan.backend.constants.CategoryConstant;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -33,8 +30,4 @@ public class Category extends BaseEntity {
     public void prePersist() {
         this.hidden = false;
     }
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Column(name = CategoryConstant.PRODUCT_ID)
-    private Set<Product> products;
 }
