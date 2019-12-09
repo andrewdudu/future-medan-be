@@ -1,8 +1,6 @@
 package com.future.medan.backend.payload.responses;
 
 import com.future.medan.backend.models.entity.*;
-import com.future.medan.backend.payload.requests.PurchaseWebRequest;
-import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import org.hibernate.Hibernate;
 
 import java.util.Set;
@@ -78,11 +76,13 @@ public class WebResponseConstructor {
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toSet());
 
-        UserWebResponse user = WebResponseConstructor.toWebResponse(cart.getUser());
+        User user = (User) Hibernate.unproxy(cart.getUser());
+
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse(user);
 
         return CartWebResponse.builder()
                 .products(productWebResponses)
-                .user(user)
+                .user(userWebResponse)
                 .build();
     }
 
