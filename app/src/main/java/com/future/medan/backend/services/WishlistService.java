@@ -10,6 +10,8 @@ public interface WishlistService {
 
     Wishlist getById(String id);
 
+    Wishlist getByUserId(String user_id);
+
     Wishlist save(Wishlist wishlist);
 
     Wishlist save(Wishlist wishlist, String id);

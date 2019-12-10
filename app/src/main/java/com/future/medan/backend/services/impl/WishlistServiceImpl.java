@@ -30,6 +30,14 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
+    public Wishlist getByUserId(String user_id) {
+        return wishlistRepository
+                .findByUserId(user_id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Wishlist", "user id", user_id));
+    }
+
+    @Override
     public Wishlist save(Wishlist wishlist){
         return wishlistRepository.save(wishlist);
     }

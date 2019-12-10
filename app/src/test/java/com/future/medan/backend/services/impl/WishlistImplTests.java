@@ -27,7 +27,7 @@ public class WishlistImplTests {
     private WishlistService wishlistService;
 
     private Wishlist wishlist, wishlist2;
-    private String findId, findId2;
+    private String findId, findId2, userId1, userId2;
 
     @Before
     public void setup(){
@@ -37,6 +37,8 @@ public class WishlistImplTests {
 
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";
+        this.userId1 = "syntialai";
+        this.userId2 = "andrewwijaya";
         this.wishlist = Wishlist.builder().build();
         this.wishlist2 = Wishlist.builder().build();
     }
@@ -58,6 +60,13 @@ public class WishlistImplTests {
         when(wishlistRepository.findById(findId)).thenReturn(Optional.of(wishlist2));
 
         assertEquals(wishlistService.getById(findId), wishlist2);
+    }
+
+    @Test
+    public void testGetByUserId_OK(){
+        when(wishlistRepository.findByUserId(userId1)).thenReturn(Optional.of(wishlist));
+
+        assertEquals(wishlistService.getByUserId(userId1), wishlist);
     }
 
     @Test
@@ -93,6 +102,14 @@ public class WishlistImplTests {
                 .thenThrow(new ResourceNotFoundException("Wishlist", "id", findId2));
 
         wishlistService.getById(findId2);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetByUserId_NotFound(){
+        when(wishlistRepository.findByUserId(userId2))
+            .thenThrow(new ResourceNotFoundException("Wishlist", "user id", userId2));
+
+        wishlistService.getByUserId(userId2);
     }
 
     @Test(expected = ResourceNotFoundException.class)
