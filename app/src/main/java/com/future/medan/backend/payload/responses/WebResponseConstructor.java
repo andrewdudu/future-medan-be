@@ -1,8 +1,6 @@
 package com.future.medan.backend.payload.responses;
 
 import com.future.medan.backend.models.entity.*;
-import com.future.medan.backend.payload.requests.PurchaseWebRequest;
-import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import org.hibernate.Hibernate;
 
 import java.util.Set;
@@ -62,9 +60,13 @@ public class WebResponseConstructor {
     }
 
     public static PurchaseWebResponse toWebResponse(Purchase purchase){
-        UserWebResponse merchantWebResponse = WebResponseConstructor.toWebResponse(purchase.getMerchant());
-        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse(purchase.getUser());
-        ProductWebResponse productWebResponse = WebResponseConstructor.toWebResponse(purchase.getProduct());
+        User merchant = (User) Hibernate.unproxy(purchase.getMerchant());
+        User user = (User) Hibernate.unproxy(purchase.getUser());
+        Product product = (Product) Hibernate.unproxy(purchase.getProduct());
+
+        UserWebResponse merchantWebResponse = WebResponseConstructor.toWebResponse(merchant);
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse(user);
+        ProductWebResponse productWebResponse = WebResponseConstructor.toWebResponse(product);
 
         return PurchaseWebResponse.builder()
                 .merchant(merchantWebResponse)
@@ -88,11 +90,13 @@ public class WebResponseConstructor {
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toSet());
 
-        UserWebResponse user = WebResponseConstructor.toWebResponse(cart.getUser());
+        User user = (User) Hibernate.unproxy(cart.getUser());
+
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse(user);
 
         return CartWebResponse.builder()
                 .products(productWebResponses)
-                .user(user)
+                .user(userWebResponse)
                 .build();
     }
 
@@ -111,6 +115,15 @@ public class WebResponseConstructor {
     public static FileWebResponse toFileWebResponse(String base64) {
         return FileWebResponse.builder()
                 .base64(base64)
+                .build();
+    }
+
+    public static PaymentMethodWebResponse toPaymentMethodWebResponse (PaymentMethod paymentMethod) {
+        return PaymentMethodWebResponse.builder()
+                .id(paymentMethod.getId())
+                .name(paymentMethod.getName())
+                .type(paymentMethod.getType())
+                .active(paymentMethod.getActive())
                 .build();
     }
 }

@@ -15,6 +15,8 @@ public interface PurchaseService {
 
     Set<Purchase> getByOrderId(String orderId);
 
+    Set<Purchase> getAllByUserId(String userId);
+
     Purchase save(Purchase purchase);
 
     Purchase save(Purchase purchase, String id);

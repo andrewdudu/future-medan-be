@@ -9,9 +9,6 @@ import java.util.Set;
 @Data
 public class CartWebRequest {
 
-    @NotBlank
-    private String user_id;
-
     @NotEmpty
-    private Set<String> product_id;
+    private String product_id;
 }

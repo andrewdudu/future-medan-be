@@ -3,10 +3,7 @@ package com.future.medan.backend.services.impl;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.repositories.ProductRepository;
-import com.future.medan.backend.services.CategoryService;
-import com.future.medan.backend.services.ProductService;
-import com.future.medan.backend.services.SequenceService;
-import com.future.medan.backend.services.StorageService;
+import com.future.medan.backend.services.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -34,6 +31,8 @@ public class ProductImplTests {
 
     private StorageService storageService;
 
+    private PurchaseService purchaseService;
+
     private SequenceService sequenceService;
 
     private Product product, product2;
@@ -43,7 +42,7 @@ public class ProductImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.productService = new ProductServiceImpl(productRepository, storageService, sequenceService);
+        this.productService = new ProductServiceImpl(productRepository, storageService, purchaseService, sequenceService);
 
         this.findId = "7892b1a2-0953-4071-9ffe-a5e193255585";
         this.findId2 = "id-unavailable";

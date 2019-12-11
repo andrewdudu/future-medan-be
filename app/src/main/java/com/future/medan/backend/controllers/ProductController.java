@@ -2,13 +2,11 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.ProductWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
-import com.future.medan.backend.payload.responses.ProductWebResponse;
-import com.future.medan.backend.payload.responses.Response;
-import com.future.medan.backend.payload.responses.ResponseHelper;
-import com.future.medan.backend.payload.responses.WebResponseConstructor;
+import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
@@ -20,9 +18,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Api
@@ -51,6 +51,24 @@ public class ProductController {
     @GetMapping("/api/products")
     public Response<List<ProductWebResponse>> getAll() {
         return ResponseHelper.ok(productService.getAll()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/api/my-products")
+    @Transactional
+    public Response<List<PurchaseWebResponse>> getMyProducts(@RequestHeader("Authorization") String bearerToken) {
+        String token = null;
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+        String userId = jwtTokenProvider.getUserIdFromJWT(token);
+        Set<Purchase> purchases = productService.getPurchasedProduct(userId);
+
+        return ResponseHelper.ok(purchases
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList()));
