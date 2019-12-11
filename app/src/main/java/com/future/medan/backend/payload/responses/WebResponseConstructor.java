@@ -48,7 +48,17 @@ public class WebResponseConstructor {
     }
 
     public static WishlistWebResponse toWebResponse(Wishlist wishlist){
-        return WishlistWebResponse.builder().build();
+        Set<ProductWebResponse> productWebResponses = wishlist.getProducts()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toSet());
+
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse(wishlist.getUser());
+
+        return WishlistWebResponse.builder()
+                .user(userWebResponse)
+                .products(productWebResponses)
+                .build();
     }
 
     public static PurchaseWebResponse toWebResponse(Purchase purchase){

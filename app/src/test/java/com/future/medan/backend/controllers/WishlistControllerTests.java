@@ -46,7 +46,7 @@ public class WishlistControllerTests {
     private MockMvc mockMvc;
 
     private Wishlist wishlist, wishlist2;
-    private String findId, findId2;
+    private String findId, findId2, userId1, userId2;
 
     @Before
     public void setup() {
@@ -56,6 +56,8 @@ public class WishlistControllerTests {
 
         this.findId = "wishlist-id-1";
         this.findId2 = "id-unavailable";
+        this.userId1 = "syntialai";
+        this.userId2 = "andrewwijaya";
         this.wishlist = Wishlist.builder().build();
         this.wishlist2 = Wishlist.builder().build();
 

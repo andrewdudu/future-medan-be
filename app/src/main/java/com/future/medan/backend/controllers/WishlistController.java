@@ -39,6 +39,11 @@ public class WishlistController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.getById(id)));
     }
 
+    @GetMapping("/api/wishlists/{user_id}")
+    public Response<WishlistWebResponse> getByUserId(@PathVariable String user_id){
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.getByUserId(user_id)));
+    }
+
     @PostMapping(value = "/api/wishlists", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<WishlistWebResponse> save(@RequestBody Wishlist wishlist){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist)));
