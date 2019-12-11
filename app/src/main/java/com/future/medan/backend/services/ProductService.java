@@ -1,6 +1,7 @@
 package com.future.medan.backend.services;
 
 import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.Purchase;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +12,8 @@ public interface ProductService {
     List<Product> getAll();
 
     Set<Product> findByIdIn(Set<String> id);
+
+    Set<Purchase> getPurchasedProduct(String userId);
 
     Product getById(String id);
 

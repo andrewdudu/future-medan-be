@@ -31,6 +31,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
+    public Set<Purchase> getAllByUserId(String userId) {
+        return purchaseRepository.getAllByUserIdAndStatusIsNot(userId, "CANCEL");
+    }
+
+    @Override
     public List<Purchase> getAll(){
         return purchaseRepository.findAll();
     }

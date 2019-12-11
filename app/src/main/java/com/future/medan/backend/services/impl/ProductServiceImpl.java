@@ -1,13 +1,10 @@
 package com.future.medan.backend.services.impl;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
-import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.repositories.ProductRepository;
-import com.future.medan.backend.services.CategoryService;
-import com.future.medan.backend.services.ProductService;
-import com.future.medan.backend.services.SequenceService;
-import com.future.medan.backend.services.StorageService;
+import com.future.medan.backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +20,18 @@ public class ProductServiceImpl implements ProductService {
 
     private StorageService storageService;
 
+    private PurchaseService purchaseService;
+
     private SequenceService sequenceService;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository repository, StorageService storageService, SequenceService sequenceService) {
+    public ProductServiceImpl(ProductRepository repository,
+                              StorageService storageService,
+                              PurchaseService purchaseService,
+                              SequenceService sequenceService) {
         this.sequenceService = sequenceService;
         this.storageService = storageService;
+        this.purchaseService = purchaseService;
         this.productRepository = repository;
     }
 
@@ -40,6 +43,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getById(String id){
         return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+    }
+
+    @Override
+    public Set<Purchase> getPurchasedProduct(String userId) {
+        return purchaseService.getAllByUserId(userId);
     }
 
     @Override
