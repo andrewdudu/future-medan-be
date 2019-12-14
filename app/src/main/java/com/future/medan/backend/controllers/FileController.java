@@ -1,6 +1,5 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.payload.requests.PdfFileWebRequest;
 import com.future.medan.backend.payload.responses.FileWebResponse;
 import com.future.medan.backend.payload.responses.Response;
 import com.future.medan.backend.payload.responses.ResponseHelper;
@@ -15,10 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 
