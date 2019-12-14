@@ -22,7 +22,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public Purchase getByProductIdAndUserId(String productId, String userId) {
-        return purchaseRepository.getByProductIdAndUserId(productId, userId);
+        return purchaseRepository.getByProductIdAndUserIdAndStatusIs(productId, userId, "APPROVED");
     }
 
     @Override
