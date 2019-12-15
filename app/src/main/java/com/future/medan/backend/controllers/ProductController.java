@@ -10,6 +10,7 @@ import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.CategoryService;
 import com.future.medan.backend.services.ProductService;
+import com.future.medan.backend.services.PurchaseService;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,20 @@ public class ProductController {
 
     private UserService userService;
 
+    private PurchaseService purchaseService;
+
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public ProductController(ProductService service,
                              CategoryService categoryService,
                              UserService userService,
+                             PurchaseService purchaseService,
                              JwtTokenProvider jwtTokenProvider) {
         this.categoryService = categoryService;
         this.productService = service;
         this.userService = userService;
+        this.purchaseService = purchaseService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -66,7 +71,7 @@ public class ProductController {
         }
 
         String userId = jwtTokenProvider.getUserIdFromJWT(token);
-        Set<Purchase> purchases = productService.getPurchasedProduct(userId);
+        Set<Purchase> purchases = purchaseService.getPurchasedProduct(userId);
 
         return ResponseHelper.ok(purchases
                 .stream()

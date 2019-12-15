@@ -15,4 +15,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, String> {
     Set<Purchase> getAllByOrderId(String orderId);
 
     Set<Purchase> getAllByUserIdAndStatusIsNot(String userId, String status);
+
+    Boolean existsByUserIdAndProductId(String userId, String productId);
 }

@@ -30,28 +30,12 @@ public class PurchaseController {
 
     private PurchaseService purchaseService;
 
-    private UserService userService;
-
-    private ProductService productService;
-
-    private SequenceService sequenceService;
-
-    private CartService cartService;
-
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public PurchaseController (PurchaseService purchaseService,
-                               ProductService productService,
-                               UserService userService,
-                               SequenceService sequenceService,
-                               CartService cartService,
                                JwtTokenProvider jwtTokenProvider){
         this.purchaseService = purchaseService;
-        this.productService = productService;
-        this.userService = userService;
-        this.sequenceService = sequenceService;
-        this.cartService = cartService;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -77,48 +61,14 @@ public class PurchaseController {
             token = bearerToken.substring(7);
         }
 
-        Set<Product> products = productService.findByIdIn(purchaseWebRequest.getProducts());
-        String userId = jwtTokenProvider.getUserIdFromJWT(token);
-        User user = userService.getById(userId);
-        String orderId = sequenceService.save(userId.substring(0, 3).toUpperCase());
-        Cart cart = cartService.getByUserId(userId);
-        Set<Product> filteredProducts = cart.getProducts();
-        Set<Product> tempProducts = new HashSet<>();
-
-        filteredProducts.forEach(filteredProduct -> {
-            products.forEach(product -> {
-               if (filteredProduct.equals(product)) {
-                   tempProducts.add(product);
-               }
-            });
-        });
-
-        if (tempProducts.size() != products.size()) throw new ResourceNotFoundException("Product", "id", purchaseWebRequest.getProducts());
-
-        products.forEach(product -> {
-            Purchase purchase = new Purchase();
-            purchase.setUser(user);
-            purchase.setOrderId(orderId);
-            purchase.setProduct(product);
-            purchase.setStatus("PENDING");
-            purchase.setMerchant(product.getMerchant());
-
-            purchaseService.save(purchase);
-
-            filteredProducts.remove(product);
-        });
-
-        cart.setProducts(filteredProducts);
-
-        cartService.save(cart, cart.getId());
+        purchaseService.save(purchaseWebRequest, jwtTokenProvider.getUserIdFromJWT(token));
 
         return ResponseHelper.ok(new SuccessWebResponse(true));
     }
 
     @PutMapping(value = "/api/purchases/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
-        purchase.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase, id)));
     }
 
     @DeleteMapping("/api/purchases/{id}")
