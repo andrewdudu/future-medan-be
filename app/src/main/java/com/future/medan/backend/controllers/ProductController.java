@@ -80,8 +80,9 @@ public class ProductController {
     }
 
     @GetMapping("/api/products/{id}")
-    public Response<ProductWebResponse> getById(@PathVariable String id) {
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.getById(id)));
+    @Transactional
+    public Response<ProductByIdWebResponse> getById(@PathVariable String id) {
+        return ResponseHelper.ok(WebResponseConstructor.toProductByIdWebResponse(productService.getById(id)));
     }
 
     @PostMapping(value = "/api/products/hide/{id}")

@@ -126,4 +126,24 @@ public class WebResponseConstructor {
                 .active(paymentMethod.getActive())
                 .build();
     }
+
+    public static ProductByIdWebResponse toProductByIdWebResponse(Product product) {
+        User merchant = (User) Hibernate.unproxy(product.getMerchant());
+
+        UserWebResponse merchantWebResponse = WebResponseConstructor.toWebResponse(merchant);
+
+        return ProductByIdWebResponse.builder()
+                .id(product.getId())
+                .sku(product.getSku())
+                .variant(product.getVariant())
+                .name(product.getName())
+                .author(product.getAuthor())
+                .description(product.getDescription())
+                .image(product.getImage())
+                .price(product.getPrice())
+                .pdf(product.getPdf())
+                .hidden(product.getHidden())
+                .merchant(merchantWebResponse)
+                .build();
+    }
 }
