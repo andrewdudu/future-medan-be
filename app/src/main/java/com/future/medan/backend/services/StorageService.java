@@ -11,7 +11,7 @@ public interface StorageService {
 
     String storeImage(String file, String fileName) throws  IOException;
 
-    String loadBook(String fileName) throws IOException;
+    byte[] loadBook(String fileName) throws IOException;
 
     String loadImage(String fileName) throws IOException;
 }

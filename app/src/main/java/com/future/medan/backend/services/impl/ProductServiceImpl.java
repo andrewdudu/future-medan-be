@@ -20,18 +20,14 @@ public class ProductServiceImpl implements ProductService {
 
     private StorageService storageService;
 
-    private PurchaseService purchaseService;
-
     private SequenceService sequenceService;
 
     @Autowired
     public ProductServiceImpl(ProductRepository repository,
                               StorageService storageService,
-                              PurchaseService purchaseService,
                               SequenceService sequenceService) {
         this.sequenceService = sequenceService;
         this.storageService = storageService;
-        this.purchaseService = purchaseService;
         this.productRepository = repository;
     }
 
@@ -43,11 +39,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getById(String id){
         return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
-    }
-
-    @Override
-    public Set<Purchase> getPurchasedProduct(String userId) {
-        return purchaseService.getAllByUserId(userId);
     }
 
     @Override

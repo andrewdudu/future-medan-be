@@ -1,6 +1,7 @@
 package com.future.medan.backend.services;
 
 import com.future.medan.backend.models.entity.Purchase;
+import com.future.medan.backend.payload.requests.PurchaseWebRequest;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +16,9 @@ public interface PurchaseService {
 
     Set<Purchase> getByOrderId(String orderId);
 
-    Set<Purchase> getAllByUserId(String userId);
+    Set<Purchase> getPurchasedProduct(String userId);
+
+    void save(PurchaseWebRequest purchaseWebRequest, String userId);
 
     Purchase save(Purchase purchase);
 

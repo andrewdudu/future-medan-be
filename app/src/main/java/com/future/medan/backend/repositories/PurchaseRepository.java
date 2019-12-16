@@ -10,9 +10,11 @@ import java.util.Set;
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, String> {
 
-    Purchase getByProductIdAndUserId(String productId, String userId);
+    Purchase getByProductIdAndUserIdAndStatusIs(String productId, String userId, String status);
 
     Set<Purchase> getAllByOrderId(String orderId);
 
     Set<Purchase> getAllByUserIdAndStatusIsNot(String userId, String status);
+
+    Boolean existsByUserIdAndProductId(String userId, String productId);
 }

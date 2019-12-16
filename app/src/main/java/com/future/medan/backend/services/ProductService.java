@@ -13,8 +13,6 @@ public interface ProductService {
 
     Set<Product> findByIdIn(Set<String> id);
 
-    Set<Purchase> getPurchasedProduct(String userId);
-
     Product getById(String id);
 
     Product hide(String id);

@@ -31,8 +31,6 @@ public class ProductImplTests {
 
     private StorageService storageService;
 
-    private PurchaseService purchaseService;
-
     private SequenceService sequenceService;
 
     private Product product, product2;
@@ -42,7 +40,7 @@ public class ProductImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.productService = new ProductServiceImpl(productRepository, storageService, purchaseService, sequenceService);
+        this.productService = new ProductServiceImpl(productRepository, storageService, sequenceService);
 
         this.findId = "7892b1a2-0953-4071-9ffe-a5e193255585";
         this.findId2 = "id-unavailable";
