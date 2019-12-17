@@ -10,9 +10,6 @@ import java.util.Set;
 @Data
 public class WishlistWebRequest {
 
-    @NotBlank
-    private String user_id;
-
     @NotEmpty
-    private Set<Product> product_id;
+    private String product_id;
 }

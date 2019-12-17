@@ -1,5 +1,7 @@
 package com.future.medan.backend.services;
 
+import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.entity.Wishlist;
 
 import java.util.List;
@@ -12,9 +14,9 @@ public interface WishlistService {
 
     Wishlist getByUserId(String user_id);
 
-    Wishlist save(Wishlist wishlist);
+    Wishlist save(User user, Product product);
 
     Wishlist save(Wishlist wishlist, String id);
 
-    void deleteById(String id);
+    Wishlist deleteByProductId(String product_id, String user_id);
 }
