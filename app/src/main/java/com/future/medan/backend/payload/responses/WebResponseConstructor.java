@@ -146,4 +146,17 @@ public class WebResponseConstructor {
                 .merchant(merchantWebResponse)
                 .build();
     }
+
+    public static ReviewWebResponse toReviewEntity(Review review) {
+
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse((User) Hibernate.unproxy(review.getUser()));
+        ProductWebResponse productWebResponse = WebResponseConstructor.toWebResponse((Product) Hibernate.unproxy(review.getProduct()));
+
+        return ReviewWebResponse.builder()
+                .comment(review.getComment())
+                .product(productWebResponse)
+                .rating(review.getRating())
+                .user(userWebResponse)
+                .build();
+    }
 }
