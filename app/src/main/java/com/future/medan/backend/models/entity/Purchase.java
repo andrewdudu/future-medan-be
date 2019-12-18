@@ -17,30 +17,19 @@ import java.math.BigDecimal;
 @Table(name = "purchases")
 public class Purchase extends BaseEntity {
 
-    @Column(name = PurchaseConstant.PURCHASE_PRICE)
-    private BigDecimal price;
+    @Column(name = PurchaseConstant.ORDER_ID)
+    private String orderId;
 
-    @Column(name = PurchaseConstant.PURCHASE_AUTHOR_NAME)
-    private String author_name;
-
-    @Column(name = PurchaseConstant.PURCHASE_PRODUCT_DESCRIPTION)
-    private String product_description;
-
-    @Column(name = PurchaseConstant.PURCHASE_PRODUCT_IMAGE)
-    private String product_image;
-
-    @Column(name = PurchaseConstant.PURCHASE_PRODUCT_NAME)
-    private String product_name;
-
-    @Column(name = PurchaseConstant.PURCHASE_PRODUCT_SKU)
-    private String product_sku;
-
-    @Column(name = PurchaseConstant.PURCHASE_QTY)
-    private Integer qty;
+    @Column(name = PurchaseConstant.STATUS)
+    private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = PurchaseConstant.USER_ID)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = PurchaseConstant.MERCHANT_ID)
+    private User merchant;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = PurchaseConstant.PRODUCT_ID)

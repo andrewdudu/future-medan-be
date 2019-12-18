@@ -1,38 +1,42 @@
 package com.future.medan.backend.controllers;
 
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
+import com.future.medan.backend.models.entity.Cart;
+import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.Purchase;
+import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.PurchaseWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
-import com.future.medan.backend.payload.responses.PurchaseWebResponse;
-import com.future.medan.backend.payload.responses.Response;
-import com.future.medan.backend.payload.responses.ResponseHelper;
-import com.future.medan.backend.payload.responses.WebResponseConstructor;
-import com.future.medan.backend.services.ProductService;
-import com.future.medan.backend.services.PurchaseService;
-import com.future.medan.backend.services.UserService;
+import com.future.medan.backend.payload.responses.*;
+import com.future.medan.backend.security.JwtTokenProvider;
+import com.future.medan.backend.services.*;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Api
 @RestController
+@Transactional
 public class PurchaseController {
 
     private PurchaseService purchaseService;
 
-    private UserService userService;
-
-    private ProductService productService;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public PurchaseController (PurchaseService purchaseService, ProductService productService, UserService userService){
+    public PurchaseController (PurchaseService purchaseService,
+                               JwtTokenProvider jwtTokenProvider){
         this.purchaseService = purchaseService;
-        this.productService = productService;
-        this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping("/api/purchases")
@@ -50,18 +54,21 @@ public class PurchaseController {
     }
 
     @PostMapping(value = "/api/purchases", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<PurchaseWebResponse> save(@RequestBody PurchaseWebRequest purchaseWebRequest) {
-        Purchase purchase = WebRequestConstructor.toPurchaseEntity(purchaseWebRequest);
-        purchase.setUser(userService.getById(purchaseWebRequest.getUser()));
-        purchase.setProduct(productService.getById(purchaseWebRequest.getProduct()));
+    public Response<SuccessWebResponse> save(@Validated @RequestBody PurchaseWebRequest purchaseWebRequest, @RequestHeader("Authorization") String bearerToken) {
+        String token = null;
 
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+        purchaseService.save(purchaseWebRequest, jwtTokenProvider.getUserIdFromJWT(token));
+
+        return ResponseHelper.ok(new SuccessWebResponse(true));
     }
 
     @PutMapping(value = "/api/purchases/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
-        purchase.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase)));
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase, id)));
     }
 
     @DeleteMapping("/api/purchases/{id}")

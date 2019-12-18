@@ -3,7 +3,7 @@ package com.future.medan.backend.services.impl;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.repositories.PurchaseRepository;
-import com.future.medan.backend.services.PurchaseService;
+import com.future.medan.backend.services.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -27,6 +27,14 @@ public class PurchaseImplTests {
 
     private PurchaseService purchaseService;
 
+    private ProductService productService;
+
+    private UserService userService;
+
+    private CartService cartService;
+
+    private SequenceService sequenceService;
+
     private Purchase purchase, purchase2;
     private String findId, findId2;
 
@@ -34,25 +42,13 @@ public class PurchaseImplTests {
     public void setup(){
         MockitoAnnotations.initMocks(this);
 
-        this.purchaseService = new PurchaseServiceImpl(purchaseRepository);
+        this.purchaseService = new PurchaseServiceImpl(purchaseRepository, productService,  userService, cartService, sequenceService);
 
         this.findId = "ABCD";
         this.findId2 = "id-unavailable";
         this.purchase = Purchase.builder()
-                .price(new BigDecimal("100000"))
-                .product_name("product 1")
-                .product_description("desc 1")
-                .product_sku("sku 1")
-                .product_image("img 1")
-                .author_name("Andrew")
                 .build();
         this.purchase2 = Purchase.builder()
-                .price(new BigDecimal("200000"))
-                .product_name("product 2")
-                .product_description("desc 2")
-                .product_sku("sku 2")
-                .product_image("img 2")
-                .author_name("Andrew 2")
                 .build();
     }
 

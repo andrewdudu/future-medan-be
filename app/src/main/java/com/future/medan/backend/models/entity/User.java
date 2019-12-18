@@ -1,5 +1,6 @@
 package com.future.medan.backend.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.constants.UserConstant;
 import lombok.*;
 
@@ -7,7 +8,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @NoArgsConstructor

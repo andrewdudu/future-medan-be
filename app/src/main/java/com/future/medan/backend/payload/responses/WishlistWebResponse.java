@@ -5,8 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class WishlistWebResponse {
+
+    private UserWebResponse user;
+
+    private Set<ProductWebResponse> products;
 }
