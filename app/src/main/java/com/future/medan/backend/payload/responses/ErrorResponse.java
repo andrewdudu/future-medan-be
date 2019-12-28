@@ -25,7 +25,4 @@ public class ErrorResponse<T> {
 
     @JsonProperty("message")
     private T message;
-
-//    @JsonProperty("path")
-//    private T path;
 }
