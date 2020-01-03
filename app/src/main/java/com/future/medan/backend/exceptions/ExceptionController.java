@@ -36,6 +36,14 @@ public class ExceptionController {
         return ResponseEntity.status(httpStatus).body(ResponseHelper.error(httpStatus, ex.getMessage()));
     }
 
+    @ExceptionHandler(AuthenticationFailException.class)
+    public ResponseEntity<?> handleException(AuthenticationFailException ex) {
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        log(ex);
+
+        return ResponseEntity.status(httpStatus).body(ResponseHelper.error(httpStatus, ex.getMessage()));
+    }
+
     private void log (Exception ex){
         Logger logger = LoggerFactory.getLogger(ex.getClass());
         logger.error(ex.getMessage());
