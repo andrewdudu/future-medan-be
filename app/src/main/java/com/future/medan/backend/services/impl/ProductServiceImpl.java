@@ -37,6 +37,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllWithoutHidden() {
+        return productRepository.getAllByHiddenIs(false);
+    }
+
+    @Override
     public Product getById(String id){
         return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
