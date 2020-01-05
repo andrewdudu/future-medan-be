@@ -2,6 +2,7 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.exceptions.AppException;
+import com.future.medan.backend.exceptions.AuthenticationFailException;
 import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
@@ -61,6 +62,8 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+
+        if (!userPrincipal.getStatus()) throw new AuthenticationFailException("User has been blocked");
 
         String jwt = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userPrincipal.getAuthorities()));

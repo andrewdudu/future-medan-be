@@ -60,8 +60,6 @@ public class CartController {
 
         Cart cart = cartService.getByUserId(jwtTokenProvider.getUserIdFromJWT(token));
 
-        System.out.println(cart.getUser());
-
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cart));
     }
 

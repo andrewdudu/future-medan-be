@@ -45,13 +45,14 @@ public class WebResponseConstructor {
                 .build();
     }
 
-    public static WishlistWebResponse toWebResponse(Wishlist wishlist){
-        Set<ProductWebResponse> productWebResponses = wishlist.getProducts()
+    public static WishlistWebResponse toWebResponse(Wishlist wishlist) {
+        Set<Product> products = (Set<Product>) Hibernate.unproxy(wishlist.getProducts());
+        Set<ProductWebResponse> productWebResponses = products
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toSet());
 
-        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse(wishlist.getUser());
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse((User) Hibernate.unproxy(wishlist.getUser()));
 
         return WishlistWebResponse.builder()
                 .user(userWebResponse)
@@ -144,6 +145,19 @@ public class WebResponseConstructor {
                 .pdf(product.getPdf())
                 .hidden(product.getHidden())
                 .merchant(merchantWebResponse)
+                .build();
+    }
+
+    public static ReviewWebResponse toReviewEntity(Review review) {
+
+        UserWebResponse userWebResponse = WebResponseConstructor.toWebResponse((User) Hibernate.unproxy(review.getUser()));
+        ProductWebResponse productWebResponse = WebResponseConstructor.toWebResponse((Product) Hibernate.unproxy(review.getProduct()));
+
+        return ReviewWebResponse.builder()
+                .comment(review.getComment())
+                .product(productWebResponse)
+                .rating(review.getRating())
+                .user(userWebResponse)
                 .build();
     }
 }

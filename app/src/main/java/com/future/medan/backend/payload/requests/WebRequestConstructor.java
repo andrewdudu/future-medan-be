@@ -31,6 +31,15 @@ public class WebRequestConstructor {
                 .build();
     }
 
+    public static Review toReviewEntity(ReviewWebRequest reviewWebRequest, User user, Product product) {
+        return Review.builder()
+                .comment(reviewWebRequest.getComment())
+                .rating(reviewWebRequest.getRating())
+                .product(product)
+                .user(user)
+                .build();
+    }
+
     public static Cart toCartEntity(User user, Set<Product> products) {
         return Cart.builder()
                 .user(user)

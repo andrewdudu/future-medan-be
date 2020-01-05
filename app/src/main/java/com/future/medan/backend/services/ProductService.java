@@ -11,6 +11,8 @@ public interface ProductService {
 
     List<Product> getAll();
 
+    List<Product> getAllWithoutHidden();
+
     Set<Product> findByIdIn(Set<String> id);
 
     Product getById(String id);

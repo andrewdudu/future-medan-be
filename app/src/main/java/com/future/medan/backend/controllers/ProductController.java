@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -53,9 +54,18 @@ public class ProductController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @GetMapping("/api/products")
+    @GetMapping("/api/all-products")
+    @RolesAllowed("ROLE_ADMIN")
     public Response<List<ProductWebResponse>> getAll() {
         return ResponseHelper.ok(productService.getAll()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/api/products")
+    public Response<List<ProductWebResponse>> getAllWithoutHidden() {
+        return ResponseHelper.ok(productService.getAllWithoutHidden()
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList()));

@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,6 +61,7 @@ public class WishlistController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.getById(id)));
     }
 
+    @Transactional
     @GetMapping("/api/my-wishlists")
     public Response<WishlistWebResponse> getByUserId(@RequestHeader("Authorization") String bearerToken){
         String token = null;
@@ -75,6 +77,7 @@ public class WishlistController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlist));
     }
 
+    @Transactional
     @PostMapping(value = "/api/wishlists", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<WishlistWebResponse> save(@Validated @RequestBody WishlistWebRequest wishlist, @RequestHeader("Authorization") String bearerToken){
         String token = null;
@@ -97,6 +100,7 @@ public class WishlistController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist, id)));
     }
 
+    @Transactional
     @DeleteMapping("/api/wishlists")
     public void deleteById(@Validated @RequestBody WishlistWebRequest wishlist, @RequestHeader("Authorization") String bearerToken){
         String token = null;
