@@ -51,7 +51,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public String storeImage(String fileStr, String fileName) throws IOException {
-        return "/images/" + store(fileStr, fileName + ".png", this.rootLocationImage);
+        return "/api/get-image/" + store(fileStr, fileName + ".png", this.rootLocationImage);
     }
 
     private String store(String fileStr, String fileName, Path path) {
@@ -82,10 +82,19 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String loadImage(String fileName) throws IOException {
+    public byte[] loadImage(String fileName) throws IOException {
         File file = new File(this.storageProperties.getLocationImage() + "/" + fileName);
 
-        return getFileToBase64(file);
+        try {
+            FileInputStream fileInputStreamReader = new FileInputStream(file);
+            byte[] bytes = new byte[(int)file.length()];
+            fileInputStreamReader.read(bytes);
+
+            return bytes;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new FileNotFoundException(e.getMessage());
+        }
     }
 
     @Override

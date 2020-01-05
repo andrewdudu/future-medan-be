@@ -17,6 +17,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 
 @Api
@@ -37,8 +38,11 @@ public class FileController {
     }
 
     @GetMapping("/api/get-image/{filePath}")
-    public Response<FileWebResponse> imageToBase64(@PathVariable String filePath) throws IOException {
-        return ResponseHelper.ok(WebResponseConstructor.toFileWebResponse(storageService.loadImage(filePath)));
+    public ResponseEntity<byte[]> imageToBase64(@PathVariable String filePath) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<byte[]>(storageService.loadImage(filePath), headers, HttpStatus.OK);
     }
 
     @GetMapping("/api/get-pdf")
