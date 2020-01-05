@@ -18,4 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     Set<Product> findByIdIn(Collection<String> ids);
 
     List<Product> getAllByHiddenIs(Boolean hidden);
+
+    @Query(value = "SELECT * FROM products p " +
+            "WHERE LOWER(p.name) LIKE %:term%", nativeQuery = true)
+    List<Product> searchProduct(String term);
 }
