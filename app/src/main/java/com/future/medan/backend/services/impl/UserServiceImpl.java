@@ -2,18 +2,22 @@ package com.future.medan.backend.services.impl;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.PasswordResetToken;
+import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
+import com.future.medan.backend.models.enums.RoleEnum;
 import com.future.medan.backend.repositories.PasswordResetTokenRepository;
+import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.MailService;
 import com.future.medan.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import sun.plugin.com.Utils;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+
+    private RoleRepository roleRepository;
 
     private JwtTokenProvider jwtTokenProvider;
 
@@ -33,11 +39,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(
             UserRepository userRepository,
+            RoleRepository roleRepository,
             JwtTokenProvider jwtTokenProvider,
             PasswordResetTokenRepository passwordResetTokenRepository,
             MailService mailService,
             PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.mailService = mailService;
@@ -47,6 +55,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAll(){
         return userRepository.findAll();
+    }
+
+    @Override
+    public Page<User> findPaginatedUser(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Role role = roleRepository.findByName(RoleEnum.ROLE_USER).orElseThrow(() -> new ResourceNotFoundException("Role", "name", "ROLE_USER"));
+
+        return userRepository.findAllByRoles(role, paging);
+    }
+
+    @Override
+    public Page<User> findPaginatedMerchant(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Role role = roleRepository.findByName(RoleEnum.ROLE_MERCHANT).orElseThrow(() -> new ResourceNotFoundException("Role", "name", "ROLE_USER"));
+
+        return userRepository.findAllByRoles(role, paging);
     }
 
     @Override

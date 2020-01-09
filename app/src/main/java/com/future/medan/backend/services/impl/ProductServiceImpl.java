@@ -6,6 +6,9 @@ import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,6 +42,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllWithoutHidden() {
         return productRepository.getAllByHiddenIs(false);
+    }
+
+    @Override
+    public Page<Product> findPaginated(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+
+        return productRepository.findAll(paging);
     }
 
     @Override
