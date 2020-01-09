@@ -14,6 +14,7 @@ import com.future.medan.backend.services.PurchaseService;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -69,6 +70,17 @@ public class ProductController {
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList()));
+    }
+
+    @GetMapping(value = "/api/products/paginate", params = {"page", "size"})
+    @RolesAllowed("ROLE_ADMIN")
+    public PaginationResponse<List<ProductWebResponse>> findPaginated(@RequestParam("page") final int page, @RequestParam("size") final int size) {
+        Page<Product> resultPage = productService.findPaginated(page, size);
+
+        return ResponseHelper.ok(resultPage.getContent()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()), resultPage.getTotalElements(), resultPage.getTotalPages());
     }
 
     @GetMapping("/api/my-products")

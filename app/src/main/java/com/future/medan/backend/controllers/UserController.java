@@ -8,6 +8,7 @@ import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,28 @@ public class UserController {
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/api/users/paginate")
+    @RolesAllowed("ROLE_ADMIN")
+    public PaginationResponse<List<UserWebResponse>> findPaginatedUser(@RequestParam("page") final int page, @RequestParam("size") final int size) {
+        Page<User> resultPage = userService.findPaginatedUser(page, size);
+
+        return ResponseHelper.ok(resultPage.getContent()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()), resultPage.getTotalElements(), resultPage.getTotalPages());
+    }
+
+    @GetMapping("/api/merchants/paginate")
+    @RolesAllowed("ROLE_ADMIN")
+    public PaginationResponse<List<UserWebResponse>> findPaginatedMerchant(@RequestParam("page") final int page, @RequestParam("size") final int size) {
+        Page<User> resultPage = userService.findPaginatedMerchant(page, size);
+
+        return ResponseHelper.ok(resultPage.getContent()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()), resultPage.getTotalElements(), resultPage.getTotalPages());
     }
 
     @GetMapping("/api/users/{id}")

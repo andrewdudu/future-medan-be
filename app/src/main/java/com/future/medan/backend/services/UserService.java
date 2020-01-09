@@ -1,6 +1,7 @@
 package com.future.medan.backend.services;
 
 import com.future.medan.backend.models.entity.User;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,10 @@ import java.util.Optional;
 public interface UserService {
 
     List<User> getAll();
+
+    Page<User> findPaginatedUser(int page, int size);
+
+    Page<User> findPaginatedMerchant(int page, int size);
 
     User getById(String id);
 
