@@ -72,9 +72,9 @@ public class CartControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    private Cart cart, cart2;
+    private Cart cart;
 
-    private String cartId, cartId2, token, userId, productId, notFoundProductId;
+    private String token, userId, productId, notFoundProductId;
 
     private Product product;
 
@@ -124,16 +124,7 @@ public class CartControllerTests {
                 .variant("ABCD-0001-0001")
                 .build();
 
-        this.cartId = "ABCD";
-
-        this.cartId2 = "id-unavailable";
-
         this.cart = Cart.builder()
-                .products(new HashSet<>(Collections.singletonList(product)))
-                .user(user)
-                .build();
-
-        this.cart2 = Cart.builder()
                 .products(new HashSet<>(Collections.singletonList(product)))
                 .user(user)
                 .build();
