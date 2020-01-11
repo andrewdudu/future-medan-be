@@ -1,5 +1,6 @@
 package com.future.medan.backend.services.impl;
 
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.Review;
 import com.future.medan.backend.models.entity.Role;
@@ -112,8 +113,22 @@ public class ReviewImplTests {
         assertEquals(expected, actual);
     }
 
-//    @Test
-//    public void testGetReviewByProductId_Ok(){
-//
-//    }
+    @Test
+    public void testGetReviewByProductId_Ok(){
+        List<Review> expected = Arrays.asList(reviewSuccess);
+
+        when(reviewRepository.getAllByProductId(productIdSuccess)).thenReturn(expected);
+        List<Review> actual = reviewService.getReviewByProductId(productIdSuccess);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetReviewByProductId_NotFound(){
+        when(reviewRepository.getAllByProductId(productIdNotFound)).thenThrow(
+                new ResourceNotFoundException("Review", "product id", productIdNotFound)
+        );
+
+        reviewService.getReviewByProductId(productIdNotFound);
+    }
 }
