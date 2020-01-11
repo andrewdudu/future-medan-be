@@ -123,6 +123,13 @@ public class ReviewImplTests {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testSave() {
+        when(reviewRepository.save(any(Review.class))).thenReturn(reviewSuccess);
+
+        assertEquals(reviewService.save(reviewSuccess), reviewSuccess);
+    }
+
     @Test(expected = ResourceNotFoundException.class)
     public void testGetReviewByProductId_NotFound(){
         when(reviewRepository.getAllByProductId(productIdNotFound)).thenThrow(
