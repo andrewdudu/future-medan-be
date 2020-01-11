@@ -76,7 +76,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart deleteByProductId(String productId, String userId) {
+    public void deleteByProductId(String productId, String userId) {
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
         Set<Product> products = cart.getProducts();
@@ -89,6 +89,6 @@ public class CartServiceImpl implements CartService {
 
         cart.setProducts(filteredProducts);
 
-        return cartRepository.save(cart);
+        cartRepository.save(cart);
     }
 }
