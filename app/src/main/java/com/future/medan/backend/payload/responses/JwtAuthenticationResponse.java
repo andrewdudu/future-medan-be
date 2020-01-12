@@ -16,7 +16,16 @@ public class JwtAuthenticationResponse {
 
     private String tokenType = "Bearer";
 
-    public JwtAuthenticationResponse(String accessToken, Collection<? extends GrantedAuthority> roles) {
+    private String username;
+
+    private String name;
+
+    private String email;
+
+    public JwtAuthenticationResponse(String name, String username, String email, String accessToken, Collection<? extends GrantedAuthority> roles) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
         this.accessToken = accessToken;
         this.roles = roles;
     }
