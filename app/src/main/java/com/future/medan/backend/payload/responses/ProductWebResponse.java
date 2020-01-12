@@ -23,6 +23,8 @@ public class ProductWebResponse {
 
     private String description;
 
+    private String ISBN;
+
     private BigDecimal price;
 
     private String image;

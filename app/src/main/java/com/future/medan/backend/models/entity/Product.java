@@ -38,6 +38,9 @@ public class Product extends BaseEntity {
     @Column(name = ProductConstant.PRODUCT_AUTHOR)
     private String author;
 
+    @Column(name = ProductConstant.PRODUCT_ISBN)
+    private String ISBN;
+
     @Column(name = ProductConstant.PRODUCT_HIDDEN)
     private Boolean hidden;
 

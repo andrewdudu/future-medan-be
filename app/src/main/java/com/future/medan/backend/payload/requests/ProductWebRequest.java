@@ -2,10 +2,7 @@ package com.future.medan.backend.payload.requests;
 
 import lombok.Data;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Data
@@ -26,6 +23,9 @@ public class ProductWebRequest {
 
     @NotBlank
     private String category;
+
+    @NotBlank
+    private String ISBN;
 
     @NotBlank
     private String pdf;
