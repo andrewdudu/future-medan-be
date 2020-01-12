@@ -1,5 +1,6 @@
 package com.future.medan.backend.controllers;
 
+import com.future.medan.backend.exceptions.AuthenticationFailException;
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.Purchase;
@@ -13,6 +14,7 @@ import com.future.medan.backend.services.ProductService;
 import com.future.medan.backend.services.PurchaseService;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
@@ -83,6 +85,23 @@ public class ProductController {
                 .collect(Collectors.toList()), resultPage.getTotalElements(), resultPage.getTotalPages());
     }
 
+    @GetMapping("/api/merchant/products")
+    public Response<List<ProductWebResponse>> getMerchantProducts(@RequestHeader("Authorization") String bearerToken) {
+        String token = null;
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+        String merchantId = jwtTokenProvider.getUserIdFromJWT(token);
+        List<Product> products = productService.getByMerchantId(merchantId);
+
+        return ResponseHelper.ok(products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+    }
+
     @GetMapping("/api/my-products")
     @Transactional
     public Response<List<PurchaseWebResponse>> getMyProducts(@RequestHeader("Authorization") String bearerToken) {
@@ -96,6 +115,14 @@ public class ProductController {
         Set<Purchase> purchases = purchaseService.getPurchasedProduct(userId);
 
         return ResponseHelper.ok(purchases
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/api/products/category/{categoryId}")
+    public Response<List<ProductWebResponse>> getProductsByCategory(@PathVariable String categoryId) {
+        return ResponseHelper.ok(productService.getByCategoryIdWithoutHidden(categoryId)
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList()));
@@ -130,13 +157,29 @@ public class ProductController {
     }
 
     @PutMapping(value = "/api/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<ProductWebResponse> editById(@Validated @RequestBody ProductWebRequest productWebRequest, @PathVariable String id) {
-        Product product = WebRequestConstructor.toProductEntity(productWebRequest);
-        Category category = categoryService.getById(productWebRequest.getCategory());
-        product.setCategory(category);
-        product.setId(id);
+    @Transactional
+    public Response<ProductWebResponse> editById(@Validated @RequestBody ProductWebRequest productWebRequest, @PathVariable String id, @RequestHeader("Authorization") String bearerToken) throws IOException {
+        String token = null;
 
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product, id)));
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+        Product productRequest = WebRequestConstructor.toProductEntity(productWebRequest);
+        Product product = productService.getById(id);
+        User merchant = (User) Hibernate.unproxy(product.getMerchant());
+
+        if (merchant.getId().equals(jwtTokenProvider.getUserIdFromJWT(token))) {
+            Category category = categoryService.getById(productWebRequest.getCategory());
+            productRequest.setCategory(category);
+            productRequest.setSku(product.getSku());
+            productRequest.setVariant(product.getVariant());
+            productRequest.setId(id);
+
+            return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(productRequest, id)));
+        }
+
+        throw new AuthenticationFailException("You are unauthorized to change this product");
     }
 
     @DeleteMapping("/api/products/{id}")
