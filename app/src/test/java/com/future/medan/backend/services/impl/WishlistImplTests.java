@@ -154,7 +154,7 @@ public class WishlistImplTests {
     @Test(expected = ResourceNotFoundException.class)
     public void testDeleteById_NotFound(){
         when(wishlistRepository.findByUserId(userId2))
-                .thenThrow(new ResourceNotFoundException("Wishlist", "id", findId2));
+                .thenThrow(new ResourceNotFoundException("Wishlist", "user id", findId2));
 
         wishlistService.deleteByProductId(findId, userId1);
     }

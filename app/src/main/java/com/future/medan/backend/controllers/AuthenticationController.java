@@ -74,7 +74,14 @@ public class AuthenticationController {
         if (!userPrincipal.getStatus()) throw new AuthenticationFailException("User has been blocked");
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userPrincipal.getAuthorities()));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(
+                userPrincipal.getId(),
+                userPrincipal.getName(),
+                userPrincipal.getUsername(),
+                userPrincipal.getEmail(),
+                jwt,
+                userPrincipal.getAuthorities())
+        );
     }
 
     @PostMapping(ApiPath.VALIDATE_ADMIN_TOKEN)
