@@ -13,6 +13,10 @@ public interface ProductService {
 
     List<Product> getAllWithoutHidden();
 
+    List<Product> getByCategoryIdWithoutHidden(String categoryId);
+
+    List<Product> getByMerchantId(String merchantId);
+
     Set<Product> findByIdIn(Set<String> id);
 
     Product getById(String id);
@@ -21,7 +25,7 @@ public interface ProductService {
 
     Product save(Product product) throws IOException;
 
-    Product save(Product product, String id);
+    Product save(Product product, String id) throws IOException;
 
     Page<Product> findPaginated(int page, int size);
 

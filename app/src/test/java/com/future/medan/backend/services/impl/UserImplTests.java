@@ -3,6 +3,7 @@ package com.future.medan.backend.services.impl;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.repositories.PasswordResetTokenRepository;
+import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.MailService;
@@ -29,6 +30,9 @@ public class UserImplTests {
     private UserRepository userRepository;
 
     @Mock
+    private RoleRepository roleRepository;
+
+    @Mock
     private JwtTokenProvider jwtTokenProvider;
 
     @Mock
@@ -51,6 +55,7 @@ public class UserImplTests {
 
         this.userService = new UserServiceImpl(
                 userRepository,
+                roleRepository,
                 jwtTokenProvider,
                 passwordResetTokenRepository,
                 mailService,

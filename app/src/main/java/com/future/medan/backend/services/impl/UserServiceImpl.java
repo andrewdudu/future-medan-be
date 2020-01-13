@@ -18,6 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +82,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public User getMerchantById(String id) {
+        User merchant = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Merchant", "id", id));
+
+        if (!merchant.getRoles().equals(new HashSet<>(Collections.singletonList(new Role(RoleEnum.ROLE_MERCHANT))))) throw new ResourceNotFoundException("Merchant", "id", id);
+
+        return merchant;
+    }
+
+    @Override
     public User save(User user, String id){
         if (!userRepository.existsById(id))
             throw new ResourceNotFoundException("User", "id", id);
@@ -104,7 +117,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email);
 
         if (user == null) {
-            return false;
+            throw new ResourceNotFoundException("User", "email", email);
         }
 
         String token = jwtTokenProvider.generatePasswordResetToken(user.getId());

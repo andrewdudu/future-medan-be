@@ -1,10 +1,14 @@
 package com.future.medan.backend.payload.requests;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryWebRequest {
 
     @NotBlank
@@ -16,6 +20,5 @@ public class CategoryWebRequest {
     @NotBlank
     private String image;
 
-    @NotBlank
     private Boolean hidden;
 }

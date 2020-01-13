@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -62,7 +63,7 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/api/categories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<CategoryWebResponse> save(@RequestBody CategoryWebRequest categoryWebRequest) throws IOException {
+    public Response<CategoryWebResponse> save(@Validated @RequestBody CategoryWebRequest categoryWebRequest) throws IOException {
         Category category = WebRequestConstructor.toCategoryEntity(categoryWebRequest);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category)));
@@ -76,7 +77,7 @@ public class CategoryController {
 
     @PutMapping(value = "/api/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed("ROLE_ADMIN")
-    public Response<CategoryWebResponse> editById(@RequestBody CategoryWebRequest categoryWebRequest, @PathVariable String id) throws IOException {
+    public Response<CategoryWebResponse> editById(@Validated @RequestBody CategoryWebRequest categoryWebRequest, @PathVariable String id) throws IOException {
         Category category = WebRequestConstructor.toCategoryEntity(categoryWebRequest);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category, id)));
