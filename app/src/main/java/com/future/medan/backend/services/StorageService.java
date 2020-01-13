@@ -1,5 +1,6 @@
 package com.future.medan.backend.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -13,5 +14,5 @@ public interface StorageService {
 
     byte[] loadBook(String fileName) throws IOException;
 
-    String loadImage(String fileName) throws IOException;
+    byte[] loadImage(String fileName) throws IOException;
 }

@@ -2,6 +2,7 @@ package com.future.medan.backend.controllers;
 
 import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.exceptions.AppException;
+import com.future.medan.backend.exceptions.AuthenticationFailException;
 import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
@@ -33,20 +34,28 @@ import java.util.Collections;
 @RestController
 public class AuthenticationController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+
+    private UserRepository userRepository;
+
+    private RoleRepository roleRepository;
+
+    private PasswordEncoder passwordEncoder;
+
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtTokenProvider tokenProvider;
+    public AuthenticationController(AuthenticationManager authenticationManager,
+                                    UserRepository userRepository,
+                                    RoleRepository roleRepository,
+                                    PasswordEncoder passwordEncoder,
+                                    JwtTokenProvider jwtTokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = jwtTokenProvider;
+    }
 
     @PostMapping(ApiPath.LOGIN)
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginWebRequest loginWebRequest) {
@@ -62,8 +71,17 @@ public class AuthenticationController {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
+        if (!userPrincipal.getStatus()) throw new AuthenticationFailException("User has been blocked");
+
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt, userPrincipal.getAuthorities()));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(
+                userPrincipal.getId(),
+                userPrincipal.getName(),
+                userPrincipal.getUsername(),
+                userPrincipal.getEmail(),
+                jwt,
+                userPrincipal.getAuthorities())
+        );
     }
 
     @PostMapping(ApiPath.VALIDATE_ADMIN_TOKEN)

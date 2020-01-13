@@ -36,6 +36,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> getAllWithoutHidden() {
+        return categoryRepository.getAllByHiddenIs(false);
+    }
+
+    @Override
     public Page<Category> findPaginated(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
 

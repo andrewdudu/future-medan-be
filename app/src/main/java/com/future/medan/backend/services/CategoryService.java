@@ -10,6 +10,8 @@ public interface CategoryService {
 
     List<Category> getAll();
 
+    List<Category> getAllWithoutHidden();
+
     Category getById(String id);
 
     Category hide(String id);

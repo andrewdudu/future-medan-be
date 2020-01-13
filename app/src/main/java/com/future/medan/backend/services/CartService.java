@@ -18,5 +18,5 @@ public interface CartService {
 
     Cart save(Cart cart, String id);
 
-    Cart deleteByProductId(String productId, String userId);
+    void deleteByProductId(String productId, String userId);
 }

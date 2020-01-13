@@ -90,12 +90,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .antMatchers("/api/user/register",
                         "/api/merchant/register",
-                        "/api/login"
+                        "/api/login",
+                        "/api/forgot-password",
+                        "/api/reset-password",
+                        "/api/products/category/**",
+                        "/api/merchant/**"
                         )
                     .permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/api/products/**",
+                        "/api/search/**",
                         "/api/purchases/**",
+                        "/api/review/**",
                         "/api/categories/**",
                         "/api/wishlists/**",
                         "/api/products",
@@ -103,8 +109,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/purchases",
                         "/api/categories",
                         "/api/wishlists")
-                    .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset-password")
                     .permitAll()
                 .anyRequest()
                 .authenticated();

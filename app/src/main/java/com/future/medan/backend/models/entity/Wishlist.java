@@ -17,11 +17,10 @@ import java.util.Set;
 @Table(name = "wishlists")
 public class Wishlist extends BaseEntity {
 
-    @Column(name = WishlistConstant.WISHLIST_QTY)
-    private Integer qty;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = WishlistConstant.PRODUCT_ID)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "wishlist_products",
+        joinColumns = @JoinColumn(name = "wishlist_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id"))
     private Set<Product> products;
 
     @OneToOne(fetch = FetchType.LAZY)

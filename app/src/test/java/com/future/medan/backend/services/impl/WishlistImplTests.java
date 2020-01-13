@@ -1,6 +1,8 @@
 package com.future.medan.backend.services.impl;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
+import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.entity.Wishlist;
 import com.future.medan.backend.repositories.WishlistRepository;
 import com.future.medan.backend.services.WishlistService;
@@ -9,9 +11,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -29,6 +29,9 @@ public class WishlistImplTests {
     private Wishlist wishlist, wishlist2;
     private String findId, findId2, userId1, userId2;
 
+    private User user1, user2;
+    private Product product1, product2;
+
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
@@ -41,6 +44,19 @@ public class WishlistImplTests {
         this.userId2 = "andrewwijaya";
         this.wishlist = Wishlist.builder().build();
         this.wishlist2 = Wishlist.builder().build();
+
+        this.user1 = User.builder().build();
+        user1.setId(userId1);
+
+        this.product1 = Product.builder().build();
+        product1.setId(findId);
+        product1.setName("product1");
+        product1.setHidden(false);
+
+        this.product2 = Product.builder().build();
+        product2.setId(findId2);
+        product2.setName("product2");
+        product2.setHidden(false);
     }
 
     @Test
@@ -71,9 +87,14 @@ public class WishlistImplTests {
 
     @Test
     public void testSave(){
+        Set<Product> products = new HashSet<>();
+        products.add(product1);
+
+        wishlist.setId(userId1);
+        wishlist.setProducts(products);
         when(wishlistRepository.save(any(Wishlist.class))).thenReturn(wishlist);
 
-        assertThat(wishlistService.save(wishlist), is(notNullValue()));
+        assertEquals(wishlistService.save(user1, product1), wishlist);
     }
 
     @Test
@@ -86,14 +107,24 @@ public class WishlistImplTests {
         assertEquals(actual, wishlist);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
-    public void testDeleteById_OK(){
-        when(wishlistRepository.existsById(findId)).thenReturn(Boolean.TRUE);
-        when(wishlistRepository.findById(findId))
-                .thenThrow(new ResourceNotFoundException("Wishlist", "id", findId2));
+    @Test
+    public void testDeleteByProductId_OK(){
+        Set<Product> products = new HashSet<>();
+        Set<Product> filteredProducts = new HashSet<>();
 
-        wishlistService.deleteById(findId);
-        wishlistService.getById(findId2);
+        filteredProducts.add(product2);
+        products.add(product1);
+        products.add(product2);
+
+        wishlist.setId(userId1);
+        wishlist.setProducts(products);
+        wishlist2.setId(userId1);
+        wishlist2.setProducts(filteredProducts);
+
+        when(wishlistRepository.findByUserId(userId1)).thenReturn(Optional.ofNullable(wishlist));
+        when(wishlistRepository.save(wishlist2)).thenReturn(wishlist2);
+
+        assertEquals(wishlistService.deleteByProductId(findId, userId1), wishlist2);
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -122,9 +153,9 @@ public class WishlistImplTests {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testDeleteById_NotFound(){
-        when(wishlistRepository.existsById(findId2))
-                .thenThrow(new ResourceNotFoundException("Wishlist", "id", findId2));
+        when(wishlistRepository.findByUserId(userId2))
+                .thenThrow(new ResourceNotFoundException("Wishlist", "user id", findId2));
 
-        wishlistService.deleteById(findId2);
+        wishlistService.deleteByProductId(findId, userId1);
     }
 }

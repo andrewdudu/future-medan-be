@@ -2,16 +2,20 @@ package com.future.medan.backend.services.impl;
 
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Product;
-import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.repositories.ProductRepository;
 import com.future.medan.backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -34,6 +38,32 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getAllWithoutHidden() {
+        return productRepository.getAllByHiddenIs(false);
+    }
+
+    @Override
+    public List<Product> getByCategoryIdWithoutHidden(String categoryId) {
+        List<Product> products = productRepository.getByCategoryIdAndHiddenIs(categoryId, false);
+
+        if (products == null) throw new ResourceNotFoundException("Product", "Category", categoryId);
+
+        return products;
+    }
+
+    @Override
+    public List<Product> getByMerchantId(String merchantId) {
+        return productRepository.getByMerchantId(merchantId);
+    }
+
+    @Override
+    public Page<Product> findPaginated(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+
+        return productRepository.findAll(paging);
     }
 
     @Override
@@ -73,10 +103,36 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(Product productRequest, String id){
+    public Product save(Product productRequest, String id) throws IOException {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
 
-        return productRepository.save(product);
+        String pdfPath = storageService.storePdf(productRequest.getPdf(), product.getSku());
+
+
+        String imageName = product.getImage().split("/")[3].split("\\.")[0];
+
+        Pattern pattern = Pattern.compile("(.*?)(?:\\((\\d+)\\))?(\\.[^.]*)?");
+        Matcher m = pattern.matcher(imageName);
+
+        if (m.matches()) {
+            String prefix = m.group(1);
+            String last = m.group(2);
+            String suffix = m.group(3);
+            if (suffix == null) suffix = "";
+
+            int count = last != null ? Integer.parseInt(last) : 0;
+
+            count++;
+            imageName = prefix + "(" + count + ")" + suffix;
+        }
+
+        String imagePath = storageService.storeImage(productRequest.getImage(), imageName);
+
+        productRequest.setPdf(pdfPath);
+        productRequest.setImage(imagePath);
+        productRequest.setHidden(product.getHidden());
+
+        return productRepository.save(productRequest);
     }
 
     @Override

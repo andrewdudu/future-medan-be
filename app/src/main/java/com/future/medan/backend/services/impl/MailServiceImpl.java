@@ -11,7 +11,7 @@ public class MailServiceImpl implements MailService {
 
     private JavaMailSender javaMailSender;
 
-    @Value("${frontend.url}/password-reset")
+    @Value("${frontend.url}/reset-password")
     private String url;
 
     public MailServiceImpl(JavaMailSender javaMailSender) {

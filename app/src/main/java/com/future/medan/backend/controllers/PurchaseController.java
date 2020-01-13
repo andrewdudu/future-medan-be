@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +52,15 @@ public class PurchaseController {
     @GetMapping("/api/purchases/{id}")
     public Response<PurchaseWebResponse> getById(@PathVariable String id){
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.getById(id)));
+    }
+
+    @GetMapping("/api/merchant/purchases/{id}")
+    @RolesAllowed("ROLE_MERCHANT")
+    public Response<List<PurchaseWebResponse>> getByMerchantId(@PathVariable String id) {
+        return ResponseHelper.ok(purchaseService.getIncomingOrderByMerchantId(id)
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
     }
 
     @PostMapping(value = "/api/purchases", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

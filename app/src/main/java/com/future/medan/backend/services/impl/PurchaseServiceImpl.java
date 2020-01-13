@@ -9,9 +9,11 @@ import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.PurchaseWebRequest;
 import com.future.medan.backend.repositories.PurchaseRepository;
 import com.future.medan.backend.services.*;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +52,25 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Purchase getByProductIdAndUserId(String productId, String userId) {
         return purchaseRepository.getByProductIdAndUserIdAndStatusIs(productId, userId, "APPROVED");
+    }
+
+    @Override
+    public List<Purchase> getIncomingOrderByMerchantId(String merchantId) {
+        return purchaseRepository.getByMerchantIdAndStatus(merchantId, "WAITING");
+    }
+
+    @Override
+    @Transactional
+    public Boolean approveByOrderIdAndProductIdAndMerchantId(String orderId, String productId, String merchantId) {
+        Purchase purchase = purchaseRepository.findOneByOrderIdAndProductId(orderId, productId);
+        User merchant = (User) Hibernate.unproxy(purchase.getMerchant());
+
+        if (!merchant.getId().equals(merchantId)) throw new ResourceNotFoundException("Order", "id", orderId);
+
+        purchase.setStatus("APPROVED");
+        purchaseRepository.save(purchase);
+
+        return true;
     }
 
     @Override

@@ -60,8 +60,6 @@ public class CartController {
 
         Cart cart = cartService.getByUserId(jwtTokenProvider.getUserIdFromJWT(token));
 
-        System.out.println(cart.getUser());
-
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cart));
     }
 
@@ -81,11 +79,12 @@ public class CartController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartResponse));
     }
 
-    @PutMapping(value = "/api/carts/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<CartWebResponse> editById(@RequestBody Cart cart, @PathVariable String id){
-        cart.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart, id)));
-    }
+    // TODO: Delete this method if it's not used (Please check)
+//    @PutMapping(value = "/api/carts/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public Response<CartWebResponse> editById(@RequestBody Cart cart, @PathVariable String id){
+//        cart.setId(id);
+//        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart, id)));
+//    }
 
     @DeleteMapping("/api/carts")
     public void deleteById(@Validated @RequestBody CartWebRequest cartWebRequest, @RequestHeader("Authorization") String bearerToken) {

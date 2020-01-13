@@ -1,5 +1,6 @@
 package com.future.medan.backend.exceptions;
 
+import com.future.medan.backend.payload.responses.ErrorResponse;
 import com.future.medan.backend.payload.responses.ResponseHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,24 +14,38 @@ public class ExceptionController {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<?> handleException(BadRequestException ex){
-        return errorResponse(HttpStatus.BAD_REQUEST, ex);
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        log(ex);
+
+        return ResponseEntity.status(httpStatus).body(ResponseHelper.error(httpStatus, ex.getMessage()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleException(ResourceNotFoundException ex){
-        return errorResponse(HttpStatus.NOT_FOUND, ex);
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+        log(ex);
+
+        return ResponseEntity.status(httpStatus).body(ResponseHelper.error(httpStatus, ex.getMessage()));
     }
 
     @ExceptionHandler(AppException.class)
     public ResponseEntity<?> handleException(AppException ex){
-        return errorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex);
+        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        log(ex);
+
+        return ResponseEntity.status(httpStatus).body(ResponseHelper.error(httpStatus, ex.getMessage()));
     }
 
-    private ResponseEntity<Object> errorResponse (HttpStatus httpStatus, Exception ex){
+    @ExceptionHandler(AuthenticationFailException.class)
+    public ResponseEntity<?> handleException(AuthenticationFailException ex) {
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        log(ex);
+
+        return ResponseEntity.status(httpStatus).body(ResponseHelper.error(httpStatus, ex.getMessage()));
+    }
+
+    private void log (Exception ex){
         Logger logger = LoggerFactory.getLogger(ex.getClass());
         logger.error(ex.getMessage());
-
-        return ResponseEntity.status(httpStatus).body(logger);
-        // ResponseHelper.error(httpStatus, ex.getMessage())
     }
 }

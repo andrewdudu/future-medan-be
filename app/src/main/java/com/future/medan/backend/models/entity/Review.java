@@ -1,7 +1,6 @@
 package com.future.medan.backend.models.entity;
 
 import com.future.medan.backend.constants.ReviewConstant;
-import com.future.medan.backend.models.enums.ReviewStarEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +16,8 @@ import javax.persistence.*;
 @Table(name = "reviews")
 public class Review extends BaseEntity {
 
-    @Enumerated(EnumType.STRING)
     @Column(name = ReviewConstant.REVIEW_STAR)
-    private ReviewStarEnum rating;
+    private Integer rating;
 
     @Column(name = ReviewConstant.REVIEW_COMMENT)
     private String comment;
