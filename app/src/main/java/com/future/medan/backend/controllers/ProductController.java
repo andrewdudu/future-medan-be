@@ -154,6 +154,7 @@ public class ProductController {
         User merchant = userService.getById(jwtTokenProvider.getUserIdFromJWT(token));
         product.setCategory(category);
         product.setMerchant(merchant);
+        product.setHidden(false);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }
@@ -179,6 +180,7 @@ public class ProductController {
             productRequest.setSku(product.getSku());
             productRequest.setVariant(product.getVariant());
             productRequest.setId(id);
+            productRequest.setHidden(product.getHidden());
 
             return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(productRequest, id)));
         }
