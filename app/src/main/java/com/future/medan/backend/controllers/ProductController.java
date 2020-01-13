@@ -135,11 +135,13 @@ public class ProductController {
     }
 
     @PostMapping(value = "/api/products/hide/{id}")
+    @RolesAllowed("ROLE_ADMIN")
     public Response<ProductWebResponse> hideProduct(@PathVariable String id) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.hide(id)));
     }
 
     @PostMapping(value = "/api/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed("ROLE_MERCHANT")
     public Response<ProductWebResponse> save(@Validated @RequestBody ProductWebRequest productWebRequest, @RequestHeader("Authorization") String bearerToken) throws IOException {
         String token = null;
 
@@ -158,6 +160,7 @@ public class ProductController {
 
     @PutMapping(value = "/api/products/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
+    @RolesAllowed("ROLE_MERCHANT")
     public Response<ProductWebResponse> editById(@Validated @RequestBody ProductWebRequest productWebRequest, @PathVariable String id, @RequestHeader("Authorization") String bearerToken) throws IOException {
         String token = null;
 
@@ -172,6 +175,7 @@ public class ProductController {
         if (merchant.getId().equals(jwtTokenProvider.getUserIdFromJWT(token))) {
             Category category = categoryService.getById(productWebRequest.getCategory());
             productRequest.setCategory(category);
+            productRequest.setMerchant(merchant);
             productRequest.setSku(product.getSku());
             productRequest.setVariant(product.getVariant());
             productRequest.setId(id);
@@ -183,6 +187,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/api/products/{id}")
+    @RolesAllowed("ROLE_ADMIN")
     public void deleteById(@PathVariable String id){
         productService.deleteById(id);
     }

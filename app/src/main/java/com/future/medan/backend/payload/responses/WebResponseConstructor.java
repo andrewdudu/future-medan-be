@@ -17,7 +17,7 @@ public class WebResponseConstructor {
                 .name(product.getName())
                 .author(product.getAuthor())
                 .description(product.getDescription())
-                .ISBN(product.getISBN())
+                .isbn(product.getIsbn())
                 .image(product.getImage())
                 .price(product.getPrice())
                 .pdf(product.getPdf())

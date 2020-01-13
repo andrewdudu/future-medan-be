@@ -29,7 +29,7 @@ public class ProductWebRequest {
     private String category;
 
     @NotBlank
-    private String ISBN;
+    private String isbn;
 
     @NotBlank
     private String pdf;

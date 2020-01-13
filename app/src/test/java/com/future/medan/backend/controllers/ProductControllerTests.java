@@ -353,7 +353,7 @@ public class ProductControllerTests {
 
         Response<ProductWebResponse> response = ResponseHelper.ok(WebResponseConstructor.toWebResponse(expected));
 
-        ProductWebRequest request = new ProductWebRequest("Test", "Test", new BigDecimal(100), "Test", categoryId, "Test", "Test");
+        ProductWebRequest request = new ProductWebRequest("Test", "Test", new BigDecimal(100), "Test", categoryId, "Test", "TEST", "Test");
 
         mockMvc.perform(post("/api/products")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
@@ -374,7 +374,7 @@ public class ProductControllerTests {
         mockMvc.perform(post("/api/categories")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(mapper.writeValueAsString(new ProductWebRequest(null, "Test", BigDecimal.valueOf(100), "Test", "Test", "Test", "Test"))))
+                .content(mapper.writeValueAsString(new ProductWebRequest(null, "Test", BigDecimal.valueOf(100), "Test", "Test", "Test", "Test", "Test"))))
                 .andExpect(status().isBadRequest());
     }
 
