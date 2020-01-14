@@ -76,10 +76,11 @@ public class PurchaseController {
         return ResponseHelper.ok(new SuccessWebResponse(true));
     }
 
-    @PutMapping(value = "/api/purchases/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase, id)));
-    }
+    // TODO: Need to check this API whether not used
+//    @PutMapping(value = "/api/purchases/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
+//        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase, id)));
+//    }
 
     @DeleteMapping("/api/purchases/{id}")
     public void deleteById(@PathVariable String id) {

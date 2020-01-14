@@ -4,8 +4,10 @@ import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.ForgotPasswordWebRequest;
 import com.future.medan.backend.payload.requests.ResetPasswordWebRequest;
+import com.future.medan.backend.payload.requests.UserWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.*;
+import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.ProductService;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -27,12 +30,16 @@ public class UserController {
 
     private ProductService productService;
 
+    private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
     public UserController (
             UserService userService,
-            ProductService productService){
+            ProductService productService,
+            JwtTokenProvider jwtTokenProvider){
         this.userService = userService;
         this.productService = productService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping("/api/users")
@@ -79,10 +86,10 @@ public class UserController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(merchant, products));
     }
 
-    @PostMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<UserWebResponse> save(@RequestBody User user) {
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
-    }
+//    @PostMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public Response<UserWebResponse> save(@RequestBody User user) {
+//        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
+//    }
 
     @PostMapping(value = "/api/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> blockUser(@PathVariable String id) {
@@ -106,10 +113,15 @@ public class UserController {
         return ResponseHelper.ok(WebResponseConstructor.toResetPasswordWebResponse(userService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword())));
     }
 
-    @PutMapping(value = "/api/users/{id}", produces =  MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<UserWebResponse> editById(@RequestBody User user, @PathVariable String id){
-        user.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user, id)));
+    @PutMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Response<UserWebResponse> editById(@RequestBody UserWebRequest userWebRequest, @RequestHeader("Authorization") String bearerToken) {
+        String token = null;
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            token = bearerToken.substring(7);
+        }
+
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(userWebRequest, jwtTokenProvider.getUserIdFromJWT(token))));
     }
 
     @DeleteMapping(value = "/api/users/{id}")
