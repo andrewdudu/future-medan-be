@@ -5,6 +5,8 @@ import com.future.medan.backend.models.entity.PasswordResetToken;
 import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
+import com.future.medan.backend.payload.requests.UserWebRequest;
+import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.repositories.PasswordResetTokenRepository;
 import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
@@ -92,11 +94,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user, String id){
+    public User save(UserWebRequest userWebRequest, String id){
         if (!userRepository.existsById(id))
             throw new ResourceNotFoundException("User", "id", id);
-        else
+        else {
+            User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+            user.setDescription(userWebRequest.getDescription());
+            user.setName(userWebRequest.getName());
+
             return userRepository.save(user);
+        }
     }
 
     @Override

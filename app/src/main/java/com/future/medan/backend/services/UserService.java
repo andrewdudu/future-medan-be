@@ -1,6 +1,7 @@
 package com.future.medan.backend.services;
 
 import com.future.medan.backend.models.entity.User;
+import com.future.medan.backend.payload.requests.UserWebRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface UserService {
 
     User save(User user);
 
-    User save(User user, String id);
+    User save(UserWebRequest userWebRequest, String id);
 
     User block(String id);
 

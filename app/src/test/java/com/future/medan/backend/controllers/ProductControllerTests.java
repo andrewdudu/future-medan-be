@@ -1,13 +1,10 @@
 package com.future.medan.backend.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.*;
 import com.future.medan.backend.models.enums.RoleEnum;
-import com.future.medan.backend.payload.requests.CategoryWebRequest;
 import com.future.medan.backend.payload.requests.ProductWebRequest;
 import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
@@ -18,7 +15,6 @@ import com.future.medan.backend.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.restassured.RestAssured;
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +32,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -279,6 +274,28 @@ public class ProductControllerTests {
     }
 
     @Test
+    public void testGetMerchantProducts() throws Exception {
+        List<Product> products = Arrays.asList(product, product2);
+
+        when(productService.getByMerchantId(userId)).thenReturn(products);
+
+        Response<List<ProductWebResponse>> response = ResponseHelper.ok(products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+
+        mockMvc.perform(get("/api/merchant/products").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(productService).getByMerchantId(userId);
+    }
+
+    @Test
     public void testGetById_Ok() throws Exception {
         Product expected = product;
 
@@ -305,6 +322,28 @@ public class ProductControllerTests {
                 .andExpect(status().isNotFound());
 
         verify(productService).getById(productId);
+    }
+
+    @Test
+    public void testGetProductByCategory_Ok() throws Exception {
+        List<Product> products = Collections.singletonList(product);
+
+        when(productService.getByCategoryIdWithoutHidden(categoryId)).thenReturn(products);
+
+        Response<List<ProductWebResponse>> response = ResponseHelper.ok(products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+
+        mockMvc.perform(get("/api/products/category/{id}", categoryId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(productService).getByCategoryIdWithoutHidden(categoryId);
     }
 
     @Test

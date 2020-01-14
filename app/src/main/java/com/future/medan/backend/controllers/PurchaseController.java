@@ -65,20 +65,11 @@ public class PurchaseController {
 
     @PostMapping(value = "/api/purchases", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<SuccessWebResponse> save(@Validated @RequestBody PurchaseWebRequest purchaseWebRequest, @RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         purchaseService.save(purchaseWebRequest, jwtTokenProvider.getUserIdFromJWT(token));
 
         return ResponseHelper.ok(new SuccessWebResponse(true));
-    }
-
-    @PutMapping(value = "/api/purchases/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<PurchaseWebResponse> editById(@RequestBody Purchase purchase, @PathVariable String id) {
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(purchaseService.save(purchase, id)));
     }
 
     @DeleteMapping("/api/purchases/{id}")
