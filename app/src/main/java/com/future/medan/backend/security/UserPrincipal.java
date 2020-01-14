@@ -2,6 +2,7 @@ package com.future.medan.backend.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.models.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
 
     private String id;
