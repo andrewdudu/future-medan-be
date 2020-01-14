@@ -81,7 +81,6 @@ public class ReviewControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-
     @Before
     public void setup() {
         RestAssured.port = port;
@@ -125,7 +124,7 @@ public class ReviewControllerTests {
                 .sku("ABCD-0001")
                 .pdf("HEA-0002.pdf")
                 .hidden(false)
-                .ISBN("978-3-16-148410-0")
+                .isbn("978-3-16-148410-0")
                 .variant("ABCD-0001-0001")
                 .build();
         this.product2 = Product.builder()
@@ -137,7 +136,7 @@ public class ReviewControllerTests {
                 .sku("ABCD-0002")
                 .pdf("HEA-0003.pdf")
                 .hidden(false)
-                .ISBN("978-3-16-148410-1")
+                .isbn("978-3-16-148410-1")
                 .variant("ABCD-0001-0002")
                 .build();
 
@@ -206,6 +205,11 @@ public class ReviewControllerTests {
     }
 
     @Test
+    public void testGetReviewByUserIdAndProductId () throws Exception {
+        Review expected = review1;
+    }
+
+    @Test
     public void testAddReview_Ok() throws Exception {
         Review expected = review1;
 
@@ -217,7 +221,10 @@ public class ReviewControllerTests {
                 WebResponseConstructor.toReviewEntity(expected)
         );
 
-        ReviewWebRequest reviewWebRequest = new ReviewWebRequest(5,"OK",productIdSuccess);
+        ReviewWebRequest reviewWebRequest = new ReviewWebRequest();
+        reviewWebRequest.setProductId(productIdSuccess);
+        reviewWebRequest.setRating(5);
+        reviewWebRequest.setComment("OK");
 
         mockMvc.perform(
                 post("/api/review")
@@ -247,7 +254,24 @@ public class ReviewControllerTests {
     }
 
     @Test
-    public void testAddReview_NotFound() throws Exception {
+    public void testAddReview_ProductNotFound() throws Exception {
+        when(productService.getById(productIdNotFound)).thenThrow(
+                new ResourceNotFoundException("Product", "id", productIdNotFound)
+        );
 
+        ReviewWebRequest reviewWebRequest = new ReviewWebRequest();
+        reviewWebRequest.setProductId(productIdNotFound);
+        reviewWebRequest.setRating(1);
+        reviewWebRequest.setComment("401");
+
+        mockMvc.perform(
+                post("/api/review")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(mapper.writeValueAsString(reviewWebRequest))
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNotFound());
+
+        verify(productService).getById(productIdNotFound);
     }
 }

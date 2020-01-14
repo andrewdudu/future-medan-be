@@ -71,7 +71,7 @@ public class SearchControllerTests {
                 .sku("ABCD-0001")
                 .pdf("HEA-0002.pdf")
                 .hidden(false)
-                .ISBN("978-3-16-148410-0")
+                .isbn("978-3-16-148410-0")
                 .variant("ABCD-0001-0001")
                 .build();
         this.product2 = Product.builder()
@@ -83,7 +83,7 @@ public class SearchControllerTests {
                 .sku("ABCD-0002")
                 .pdf("HEA-0003.pdf")
                 .hidden(false)
-                .ISBN("978-3-16-148410-1")
+                .isbn("978-3-16-148410-1")
                 .variant("ABCD-0001-0002")
                 .build();
 
