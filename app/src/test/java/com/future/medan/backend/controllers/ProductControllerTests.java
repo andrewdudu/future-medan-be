@@ -274,6 +274,28 @@ public class ProductControllerTests {
     }
 
     @Test
+    public void testGetMerchantProducts() throws Exception {
+        List<Product> products = Arrays.asList(product, product2);
+
+        when(productService.getByMerchantId(userId)).thenReturn(products);
+
+        Response<List<ProductWebResponse>> response = ResponseHelper.ok(products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+
+        mockMvc.perform(get("/api/merchant/products").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(productService).getByMerchantId(userId);
+    }
+
+    @Test
     public void testGetById_Ok() throws Exception {
         Product expected = product;
 
@@ -300,6 +322,28 @@ public class ProductControllerTests {
                 .andExpect(status().isNotFound());
 
         verify(productService).getById(productId);
+    }
+
+    @Test
+    public void testGetProductByCategory_Ok() throws Exception {
+        List<Product> products = Collections.singletonList(product);
+
+        when(productService.getByCategoryIdWithoutHidden(categoryId)).thenReturn(products);
+
+        Response<List<ProductWebResponse>> response = ResponseHelper.ok(products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+
+        mockMvc.perform(get("/api/products/category/{id}", categoryId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(productService).getByCategoryIdWithoutHidden(categoryId);
     }
 
     @Test

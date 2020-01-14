@@ -86,11 +86,6 @@ public class UserController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(merchant, products));
     }
 
-//    @PostMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public Response<UserWebResponse> save(@RequestBody User user) {
-//        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(user)));
-//    }
-
     @PostMapping(value = "/api/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> blockUser(@PathVariable String id) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.block(id)));
@@ -115,17 +110,8 @@ public class UserController {
 
     @PutMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<UserWebResponse> editById(@RequestBody UserWebRequest userWebRequest, @RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(userWebRequest, jwtTokenProvider.getUserIdFromJWT(token))));
-    }
-
-    @DeleteMapping(value = "/api/users/{id}")
-    public void deleteById(@PathVariable String id){
-        userService.deleteById(id);
     }
 }

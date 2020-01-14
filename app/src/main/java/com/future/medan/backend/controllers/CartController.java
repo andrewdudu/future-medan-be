@@ -52,11 +52,7 @@ public class CartController {
 
     @GetMapping("/api/carts")
     public Response<CartWebResponse> getByUserId(@RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         Cart cart = cartService.getByUserId(jwtTokenProvider.getUserIdFromJWT(token));
 
@@ -65,11 +61,7 @@ public class CartController {
 
     @PostMapping(value = "/api/carts", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<CartWebResponse> save(@Validated @RequestBody CartWebRequest cartWebRequest, @RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         User user = userService.getById(jwtTokenProvider.getUserIdFromJWT(token));
         Product product = productService.getById(cartWebRequest.getProduct_id());
@@ -79,20 +71,9 @@ public class CartController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartResponse));
     }
 
-    // TODO: Delete this method if it's not used (Please check)
-//    @PutMapping(value = "/api/carts/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public Response<CartWebResponse> editById(@RequestBody Cart cart, @PathVariable String id){
-//        cart.setId(id);
-//        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(cartService.save(cart, id)));
-//    }
-
     @DeleteMapping("/api/carts")
     public void deleteById(@Validated @RequestBody CartWebRequest cartWebRequest, @RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         cartService.deleteByProductId(cartWebRequest.getProduct_id(), jwtTokenProvider.getUserIdFromJWT(token));
     }

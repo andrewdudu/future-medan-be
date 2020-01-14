@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,6 +49,7 @@ public class WishlistController {
     }
 
     @GetMapping("/api/wishlists")
+    @RolesAllowed("ROLE_ADMIN")
     public Response<List<WishlistWebResponse>> getAll(){
         return ResponseHelper.ok(wishlistService.getAll()
                 .stream()
@@ -56,23 +58,12 @@ public class WishlistController {
         );
     }
 
-    @GetMapping("/api/wishlists/{id}")
-    public Response<WishlistWebResponse> getById(@PathVariable String id){
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.getById(id)));
-    }
-
     @Transactional
     @GetMapping("/api/my-wishlists")
     public Response<WishlistWebResponse> getByUserId(@RequestHeader("Authorization") String bearerToken){
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         Wishlist wishlist = wishlistService.getByUserId(jwtTokenProvider.getUserIdFromJWT(token));
-
-        System.out.println(wishlist.getUser());
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlist));
     }
@@ -80,11 +71,7 @@ public class WishlistController {
     @Transactional
     @PostMapping(value = "/api/wishlists", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Response<WishlistWebResponse> save(@Validated @RequestBody WishlistWebRequest wishlist, @RequestHeader("Authorization") String bearerToken){
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         User user = userService.getById(jwtTokenProvider.getUserIdFromJWT(token));
         Product product = productService.getById(wishlist.getProduct_id());
@@ -94,20 +81,10 @@ public class WishlistController {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistResponse));
     }
 
-    @PutMapping(value = "/api/wishlists/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<WishlistWebResponse> editById(@RequestBody Wishlist wishlist, @PathVariable String id){
-        wishlist.setId(id);
-        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(wishlistService.save(wishlist, id)));
-    }
-
     @Transactional
     @DeleteMapping("/api/wishlists")
     public void deleteById(@Validated @RequestBody WishlistWebRequest wishlist, @RequestHeader("Authorization") String bearerToken){
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         wishlistService.deleteByProductId(wishlist.getProduct_id(), jwtTokenProvider.getUserIdFromJWT(token));
     }

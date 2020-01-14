@@ -1,11 +1,11 @@
 package com.future.medan.backend.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.medan.backend.constants.ApiPath;
+import com.future.medan.backend.exceptions.AuthenticationFailException;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Category;
+import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
@@ -36,12 +36,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -74,13 +73,19 @@ public class UserControllerTests {
 
     private User user, user2;
 
-    private String userId, userId2, token;
+    private Product product;
+
+    private Category category;
+
+    private String userId, userId2, token, categoryId;
 
     @Before
     public void setup() {
         RestAssured.port = port;
 
         mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService, productService, jwtTokenProvider)).build();
+
+        this.categoryId = "category-id-test";
 
         this.token = Jwts.builder()
                 .setSubject(userId)
@@ -90,6 +95,28 @@ public class UserControllerTests {
                 .compact();
 
         mapper = new ObjectMapper();
+
+        this.category = Category.builder()
+                .hidden(false)
+                .image("TEST")
+                .name("TEST")
+                .description("TEST")
+                .build();
+
+        this.category.setId(categoryId);
+
+        this.product = Product.builder()
+                .name("string")
+                .description("string")
+                .price(new BigDecimal("100000"))
+                .image("string")
+                .pdf("test")
+                .author("string")
+                .isbn("test")
+                .hidden(false)
+                .merchant(user)
+                .category(category)
+                .build();
 
         this.userId = "user1-id";
         this.userId2 = "id-unavailable";
@@ -115,6 +142,9 @@ public class UserControllerTests {
                 .status(true)
                 .username("testusername")
                 .build();
+
+        when(jwtTokenProvider.getUserIdFromJWT(token)).thenReturn(userId);
+        when(jwtTokenProvider.validateToken(token)).thenReturn(false);
 
         mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
     }
@@ -216,6 +246,35 @@ public class UserControllerTests {
 
         verify(userService).getById(userId);
     }
+    @Test
+    public void testGetByMerchantId_Ok() throws Exception {
+        when(userService.getMerchantById(userId)).thenReturn(user);
+        when(productService.getByMerchantId(userId)).thenReturn(Collections.singletonList(product));
+
+        Response<MerchantWebResponse> response = ResponseHelper.ok(WebResponseConstructor.toWebResponse(user, Collections.singletonList(product)));
+
+        mockMvc.perform(get("/api/merchant/{id}", userId))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(userService).getMerchantById(userId);
+        verify(productService).getByMerchantId(userId);
+    }
+
+    @Test
+    public void testGetByMerchantId_NotFound() throws Exception {
+        when(userService.getMerchantById(userId)).thenThrow(new ResourceNotFoundException("Merchant", "id", userId));
+
+        mockMvc.perform(get("/api/merchant/{id}", userId))
+                .andExpect(status().isNotFound());
+
+        verify(userService).getMerchantById(userId);
+    }
+
 
     @Test
     public void testBlockUser_Ok() throws Exception {
@@ -316,12 +375,11 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testDeleteById_Ok() throws Exception {
-        doNothing().when(userService).deleteById(userId);
-
-        mockMvc.perform(delete(ApiPath.USERS + "/" + userId))
-                .andExpect(status().isOk());
-
-        verify(userService, times(1)).deleteById(userId);
+    public void testEditById_BadRequest() throws Exception {
+        mockMvc.perform(put("/api/users")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content("BAD REQUEST"))
+                .andExpect(status().isBadRequest());
     }
 }
