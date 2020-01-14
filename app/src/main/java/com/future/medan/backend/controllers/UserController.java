@@ -1,10 +1,12 @@
 package com.future.medan.backend.controllers;
 
+import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.ForgotPasswordWebRequest;
 import com.future.medan.backend.payload.requests.ResetPasswordWebRequest;
 import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.*;
+import com.future.medan.backend.services.ProductService;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,14 @@ public class UserController {
 
     private UserService userService;
 
+    private ProductService productService;
+
     @Autowired
     public UserController (
             UserService userService,
-            PasswordEncoder passwordEncoder){
+            ProductService productService){
         this.userService = userService;
+        this.productService = productService;
     }
 
     @GetMapping("/api/users")
@@ -64,6 +69,14 @@ public class UserController {
     @GetMapping("/api/users/{id}")
     public Response<UserWebResponse> getById(@PathVariable String id) {
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.getById(id)));
+    }
+
+    @GetMapping("/api/merchant/{id}")
+    public Response<MerchantWebResponse> getByMerchantId(@PathVariable String id) {
+        User merchant = userService.getMerchantById(id);
+        List<Product> products = productService.getByMerchantId(id);
+
+        return ResponseHelper.ok(WebResponseConstructor.toWebResponse(merchant, products));
     }
 
     @PostMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)

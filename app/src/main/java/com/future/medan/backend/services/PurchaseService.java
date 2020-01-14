@@ -14,7 +14,11 @@ public interface PurchaseService {
 
     Purchase getByProductIdAndUserId(String productId, String userId);
 
+    List<Purchase> getIncomingOrderByMerchantId(String merchantId);
+
     Set<Purchase> getByOrderId(String orderId);
+
+    Boolean approveByOrderIdAndProductIdAndMerchantId(String orderId, String productId, String merchantId);
 
     Set<Purchase> getPurchasedProduct(String userId);
 

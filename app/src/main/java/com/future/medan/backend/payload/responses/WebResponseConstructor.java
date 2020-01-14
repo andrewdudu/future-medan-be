@@ -3,6 +3,7 @@ package com.future.medan.backend.payload.responses;
 import com.future.medan.backend.models.entity.*;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class WebResponseConstructor {
                 .name(product.getName())
                 .author(product.getAuthor())
                 .description(product.getDescription())
-                .ISBN(product.getISBN())
+                .isbn(product.getIsbn())
                 .image(product.getImage())
                 .price(product.getPrice())
                 .pdf(product.getPdf())
@@ -111,6 +112,20 @@ public class WebResponseConstructor {
     public static ResetPasswordWebResponse toResetPasswordWebResponse(boolean status) {
         return ResetPasswordWebResponse.builder()
                 .success(status)
+                .build();
+    }
+
+    public static MerchantWebResponse toWebResponse(User merchant, List<Product> products) {
+        List<ProductWebResponse> productWebResponses = products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList());
+
+        UserWebResponse merchantWebResponse = WebResponseConstructor.toWebResponse(merchant);
+
+        return MerchantWebResponse.builder()
+                .products(productWebResponses)
+                .user(merchantWebResponse)
                 .build();
     }
 

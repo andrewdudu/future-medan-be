@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Category;
+import com.future.medan.backend.payload.requests.CategoryWebRequest;
 import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.CategoryService;
@@ -206,6 +207,37 @@ public class CategoryControllerTests {
     }
 
     @Test
+    public void testSave_Ok() throws Exception {
+        Category expected = category;
+
+        when(categoryService.save(category)).thenReturn(expected);
+
+        Response<CategoryWebResponse> response = ResponseHelper.ok(WebResponseConstructor.toWebResponse(expected));
+
+        mockMvc.perform(post("/api/categories")
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .content(mapper.writeValueAsString(category)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(categoryService).save(category);
+    }
+
+    @Test
+    public void testSave_BadRequest() throws Exception {
+        mockMvc.perform(post("/api/categories")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(mapper.writeValueAsString(new CategoryWebRequest(null, null, null, false))))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void testHide_Ok() throws Exception {
         Category expected = category;
 
@@ -266,6 +298,15 @@ public class CategoryControllerTests {
                 .andExpect(status().isNotFound());
 
         verify(categoryService).save(category, categoryId);
+    }
+
+    @Test
+    public void testEditById_BadRequest() throws Exception {
+        mockMvc.perform(put("/api/categories/{id}", categoryId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("BAD_REQUEST"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

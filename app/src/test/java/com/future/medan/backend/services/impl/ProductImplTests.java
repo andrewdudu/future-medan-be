@@ -89,7 +89,7 @@ public class ProductImplTests {
     }
 
     @Test
-    public void testEditById_OK(){
+    public void testEditById_OK() throws IOException {
         when(productRepository.existsById(findId)).thenReturn(Boolean.TRUE);
         when(productRepository.save(product)).thenReturn(product);
 
@@ -117,7 +117,7 @@ public class ProductImplTests {
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testEditById_NotFound(){
+    public void testEditById_NotFound() throws IOException {
         when(productRepository.existsById(findId2))
                 .thenThrow(new ResourceNotFoundException("Product", "id", findId2));
 

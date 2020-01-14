@@ -39,7 +39,7 @@ public class Product extends BaseEntity {
     private String author;
 
     @Column(name = ProductConstant.PRODUCT_ISBN)
-    private String ISBN;
+    private String isbn;
 
     @Column(name = ProductConstant.PRODUCT_HIDDEN)
     private Boolean hidden;

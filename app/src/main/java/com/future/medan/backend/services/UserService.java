@@ -16,6 +16,8 @@ public interface UserService {
 
     User getById(String id);
 
+    User getMerchantById(String id);
+
     User save(User user);
 
     User save(User user, String id);

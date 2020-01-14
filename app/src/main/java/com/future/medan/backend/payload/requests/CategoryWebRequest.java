@@ -20,6 +20,5 @@ public class CategoryWebRequest {
     @NotBlank
     private String image;
 
-    @NotBlank
     private Boolean hidden;
 }

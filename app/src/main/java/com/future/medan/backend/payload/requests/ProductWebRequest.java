@@ -1,11 +1,15 @@
 package com.future.medan.backend.payload.requests;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductWebRequest {
 
     @NotBlank
@@ -25,7 +29,7 @@ public class ProductWebRequest {
     private String category;
 
     @NotBlank
-    private String ISBN;
+    private String isbn;
 
     @NotBlank
     private String pdf;
