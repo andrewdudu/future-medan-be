@@ -1,13 +1,10 @@
 package com.future.medan.backend.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.*;
 import com.future.medan.backend.models.enums.RoleEnum;
-import com.future.medan.backend.payload.requests.CategoryWebRequest;
 import com.future.medan.backend.payload.requests.ProductWebRequest;
 import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
@@ -18,7 +15,6 @@ import com.future.medan.backend.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.restassured.RestAssured;
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpHeaders;
@@ -37,16 +32,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.transaction.Transactional;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -115,11 +104,8 @@ public class ProductControllerTests {
         mapper = new ObjectMapper();
 
         this.productId = "7892b1a2-0953-4071-9ffe-a5e193255585";
-
         this.productId2 = "id-unavailable";
-
         this.purchaseId = "purchase-id";
-
         this.categoryId = "category-id";
 
         this.user = User.builder()
@@ -155,11 +141,12 @@ public class ProductControllerTests {
 
         this.product = Product.builder()
                 .name("string")
-                .sku("string")
                 .description("string")
                 .price(new BigDecimal("100000"))
                 .image("string")
+                .pdf("test")
                 .author("string")
+                .isbn("test")
                 .hidden(false)
                 .merchant(merchant)
                 .category(category)
@@ -175,11 +162,12 @@ public class ProductControllerTests {
 
         this.product2 = Product.builder()
                 .name("string")
-                .sku("string")
                 .description("string")
                 .price(new BigDecimal("100000"))
                 .image("string")
+                .isbn("test")
                 .author("string")
+                .pdf("test")
                 .hidden(false)
                 .merchant(merchant)
                 .category(category)
@@ -286,6 +274,28 @@ public class ProductControllerTests {
     }
 
     @Test
+    public void testGetMerchantProducts() throws Exception {
+        List<Product> products = Arrays.asList(product, product2);
+
+        when(productService.getByMerchantId(userId)).thenReturn(products);
+
+        Response<List<ProductWebResponse>> response = ResponseHelper.ok(products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+
+        mockMvc.perform(get("/api/merchant/products").header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(productService).getByMerchantId(userId);
+    }
+
+    @Test
     public void testGetById_Ok() throws Exception {
         Product expected = product;
 
@@ -312,6 +322,28 @@ public class ProductControllerTests {
                 .andExpect(status().isNotFound());
 
         verify(productService).getById(productId);
+    }
+
+    @Test
+    public void testGetProductByCategory_Ok() throws Exception {
+        List<Product> products = Collections.singletonList(product);
+
+        when(productService.getByCategoryIdWithoutHidden(categoryId)).thenReturn(products);
+
+        Response<List<ProductWebResponse>> response = ResponseHelper.ok(products
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()));
+
+        mockMvc.perform(get("/api/products/category/{id}", categoryId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(productService).getByCategoryIdWithoutHidden(categoryId);
     }
 
     @Test
@@ -353,14 +385,20 @@ public class ProductControllerTests {
 
         Response<ProductWebResponse> response = ResponseHelper.ok(WebResponseConstructor.toWebResponse(expected));
 
-        ProductWebRequest request = new ProductWebRequest("Test", "Test", new BigDecimal(100), "Test", categoryId, "Test", "TEST", "Test");
+        ProductWebRequest request = new ProductWebRequest(product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getAuthor(),
+                categoryId,
+                product.getIsbn(),
+                product.getPdf(),
+                product.getImage());
 
         mockMvc.perform(post("/api/products")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andDo(mvcResult -> {
                     String json = mvcResult.getResponse().getContentAsString();
                     assertEquals(mapper.writeValueAsString(response), json);
@@ -371,7 +409,7 @@ public class ProductControllerTests {
 
     @Test
     public void testSave_BadRequest() throws Exception {
-        mockMvc.perform(post("/api/categories")
+        mockMvc.perform(post("/api/products")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(mapper.writeValueAsString(new ProductWebRequest(null, "Test", BigDecimal.valueOf(100), "Test", "Test", "Test", "Test", "Test"))))
@@ -379,27 +417,121 @@ public class ProductControllerTests {
     }
 
     @Test
-    public void testEditById_Ok() {
+    public void testEditById_Ok() throws Exception {
+        Product expected = product;
 
+        Response<ProductWebResponse> response = ResponseHelper.ok(WebResponseConstructor.toWebResponse(expected));
+
+        merchant.setId(userId);
+
+        when(productService.save(product, productId)).thenReturn(expected);
+        when(productService.getById(productId)).thenReturn(product);
+        when(categoryService.getById(categoryId)).thenReturn(category);
+
+        ProductWebRequest request = new ProductWebRequest(
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getAuthor(),
+                categoryId,
+                product.getIsbn(),
+                product.getPdf(),
+                product.getImage()
+        );
+
+        mockMvc.perform(put("/api/products/{id}", productId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(productService).save(product, productId);
+        verify(productService).getById(productId);
+        verify(categoryService).getById(categoryId);
     }
 
     @Test
-    public void testEditById_BadRequest() {
+    public void testEditById_Unauthorized() throws Exception {
+        merchant.setId("wrong-id");
 
+        when(productService.getById(productId)).thenReturn(product);
+
+        ProductWebRequest request = new ProductWebRequest(
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getAuthor(),
+                categoryId,
+                product.getIsbn(),
+                product.getPdf(),
+                product.getImage()
+        );
+
+        mockMvc.perform(put("/api/products/{id}", productId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isUnauthorized());
+
+        verify(productService).getById(productId);
     }
 
     @Test
-    public void testEditById_NotFound() {
-
+    public void testEditById_BadRequest() throws Exception {
+        mockMvc.perform(put("/api/products/{id}", productId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("BAD REQUEST"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void deleteById_Ok() {
+    public void testEditById_NotFound() throws Exception {
+        when(productService.getById(productId)).thenThrow(new ResourceNotFoundException("Product", "id", productId));
 
+        ProductWebRequest request = new ProductWebRequest(
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getAuthor(),
+                categoryId,
+                product.getIsbn(),
+                product.getPdf(),
+                product.getImage()
+        );
+
+        mockMvc.perform(put("/api/products/{id}", productId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
+
+        verify(productService).getById(productId);
     }
 
     @Test
-    public void deleteById_NotFound() {
+    public void deleteById_Ok() throws Exception {
+        doNothing().when(productService).deleteById(productId);
 
+        mockMvc.perform(delete("/api/products/{id}", productId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk());
+
+        verify(productService).deleteById(productId);
+    }
+
+    @Test
+    public void deleteById_NotFound() throws Exception {
+        doThrow(new ResourceNotFoundException("Product", "id", productId)).when(productService).deleteById(productId);
+
+        mockMvc.perform(delete("/api/products/{id}", productId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isNotFound());
+
+        verify(productService).deleteById(productId);
     }
 }

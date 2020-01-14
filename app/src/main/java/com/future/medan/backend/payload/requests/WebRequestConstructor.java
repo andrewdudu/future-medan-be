@@ -14,6 +14,7 @@ public class WebRequestConstructor {
                 .image(productWebRequest.getImage())
                 .price(productWebRequest.getPrice())
                 .pdf(productWebRequest.getPdf())
+                .isbn(productWebRequest.getIsbn())
                 .build();
     }
 

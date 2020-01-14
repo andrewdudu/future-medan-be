@@ -301,6 +301,15 @@ public class CategoryControllerTests {
     }
 
     @Test
+    public void testEditById_BadRequest() throws Exception {
+        mockMvc.perform(put("/api/categories/{id}", categoryId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("BAD_REQUEST"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void testDeleteById_Ok() throws Exception {
         doNothing().when(categoryService).deleteById(categoryId);
 

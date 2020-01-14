@@ -87,11 +87,7 @@ public class ProductController {
 
     @GetMapping("/api/merchant/products")
     public Response<List<ProductWebResponse>> getMerchantProducts(@RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         String merchantId = jwtTokenProvider.getUserIdFromJWT(token);
         List<Product> products = productService.getByMerchantId(merchantId);
@@ -105,11 +101,7 @@ public class ProductController {
     @GetMapping("/api/my-products")
     @Transactional
     public Response<List<PurchaseWebResponse>> getMyProducts(@RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         String userId = jwtTokenProvider.getUserIdFromJWT(token);
         Set<Purchase> purchases = purchaseService.getPurchasedProduct(userId);
@@ -143,17 +135,14 @@ public class ProductController {
     @PostMapping(value = "/api/products", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed("ROLE_MERCHANT")
     public Response<ProductWebResponse> save(@Validated @RequestBody ProductWebRequest productWebRequest, @RequestHeader("Authorization") String bearerToken) throws IOException {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         Product product = WebRequestConstructor.toProductEntity(productWebRequest);
         Category category = categoryService.getById(productWebRequest.getCategory());
         User merchant = userService.getById(jwtTokenProvider.getUserIdFromJWT(token));
         product.setCategory(category);
         product.setMerchant(merchant);
+        product.setHidden(false);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(product)));
     }
@@ -162,11 +151,7 @@ public class ProductController {
     @Transactional
     @RolesAllowed("ROLE_MERCHANT")
     public Response<ProductWebResponse> editById(@Validated @RequestBody ProductWebRequest productWebRequest, @PathVariable String id, @RequestHeader("Authorization") String bearerToken) throws IOException {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         Product productRequest = WebRequestConstructor.toProductEntity(productWebRequest);
         Product product = productService.getById(id);
@@ -179,6 +164,7 @@ public class ProductController {
             productRequest.setSku(product.getSku());
             productRequest.setVariant(product.getVariant());
             productRequest.setId(id);
+            productRequest.setHidden(product.getHidden());
 
             return ResponseHelper.ok(WebResponseConstructor.toWebResponse(productService.save(productRequest, id)));
         }
