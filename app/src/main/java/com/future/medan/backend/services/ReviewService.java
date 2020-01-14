@@ -10,5 +10,7 @@ public interface ReviewService {
 
     List<Review> getReviewByProductId(String productId);
 
+    Review getReviewByUserIdAndProductId(String userId, String productId);
+
     Review save(Review review);
 }
