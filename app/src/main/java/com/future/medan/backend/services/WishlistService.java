@@ -3,6 +3,7 @@ package com.future.medan.backend.services;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.entity.Wishlist;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public interface WishlistService {
     Wishlist getById(String id);
 
     Wishlist getByUserId(String user_id);
+
+    Page<Wishlist> findPaginated(int page, int size);
 
     Wishlist save(User user, Product product);
 

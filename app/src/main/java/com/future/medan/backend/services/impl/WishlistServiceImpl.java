@@ -7,6 +7,9 @@ import com.future.medan.backend.models.entity.Wishlist;
 import com.future.medan.backend.repositories.WishlistRepository;
 import com.future.medan.backend.services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -62,6 +65,13 @@ public class WishlistServiceImpl implements WishlistService {
         }
 
         return wishlistRepository.save(wishlist);
+    }
+
+    @Override
+    public Page<Wishlist> findPaginated(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+
+        return wishlistRepository.findAll(paging);
     }
 
     @Override
