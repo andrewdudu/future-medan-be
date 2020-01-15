@@ -18,7 +18,7 @@
         <java.version>1.8</java.version>
         <jjwt.version>0.9.0</jjwt.version>
         <swagger.version>2.8.0</swagger.version>
-        <sonar.exclusions>
+        <sonar.coverage.exclusions>
             **/payload/**,
             **/models/**,
             **/configurations/**,
@@ -29,7 +29,7 @@
             **/exceptions/**,
             **/security/**,
             **/BackendApplication.java
-        </sonar.exclusions>
+        </sonar.coverage.exclusions>
     </properties>
 
     <dependencyManagement>

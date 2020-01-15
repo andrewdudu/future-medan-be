@@ -1,9 +1,5 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.payload.responses.FileWebResponse;
-import com.future.medan.backend.payload.responses.Response;
-import com.future.medan.backend.payload.responses.ResponseHelper;
-import com.future.medan.backend.payload.responses.WebResponseConstructor;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.PurchaseService;
 import com.future.medan.backend.services.StorageService;
@@ -17,7 +13,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 
 @Api

@@ -1,8 +1,10 @@
 package com.future.medan.backend.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.future.medan.backend.constants.UserConstant;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;

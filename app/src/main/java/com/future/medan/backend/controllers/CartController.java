@@ -4,27 +4,21 @@ import com.future.medan.backend.models.entity.Cart;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.CartWebRequest;
-import com.future.medan.backend.payload.requests.WebRequestConstructor;
+import com.future.medan.backend.payload.responses.CartWebResponse;
 import com.future.medan.backend.payload.responses.Response;
 import com.future.medan.backend.payload.responses.ResponseHelper;
 import com.future.medan.backend.payload.responses.WebResponseConstructor;
-import com.future.medan.backend.payload.responses.CartWebResponse;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.CartService;
 import com.future.medan.backend.services.ProductService;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Api
 @RestController

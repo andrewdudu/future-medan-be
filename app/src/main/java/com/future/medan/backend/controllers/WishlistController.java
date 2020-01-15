@@ -1,6 +1,5 @@
 package com.future.medan.backend.controllers;
 
-import com.future.medan.backend.models.entity.Cart;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.entity.Wishlist;
@@ -16,7 +15,6 @@ import com.future.medan.backend.services.WishlistService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
