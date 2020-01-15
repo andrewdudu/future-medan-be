@@ -11,7 +11,6 @@ import com.future.medan.backend.services.ReviewService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
@@ -21,7 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 public class ReviewImplTests {
 
@@ -35,7 +35,7 @@ public class ReviewImplTests {
     private Review reviewSuccess, reviewNotFound;
 
     private String reviewIdSuccess, reviewIdNotFound,
-                   productIdSuccess, productIdNotFound;
+                   productIdSuccess, productIdNotFound, userId;
 
     @Before
     public void setup() {
@@ -47,6 +47,7 @@ public class ReviewImplTests {
         this.reviewIdNotFound = "review-id-test-failed";
         this.productIdSuccess = "product-id-test";
         this.productIdNotFound = "product-id-test-failed";
+        this.userId = "user-id-test";
 
         this.user1 = User.builder()
                 .name("User Test")
@@ -128,6 +129,13 @@ public class ReviewImplTests {
         when(reviewRepository.save(any(Review.class))).thenReturn(reviewSuccess);
 
         assertEquals(reviewService.save(reviewSuccess), reviewSuccess);
+    }
+
+    @Test
+    public void testGetReviewByUserIdAndProductId() {
+        when(reviewRepository.getByUserIdAndAndProductId(userId, productIdSuccess)).thenReturn(reviewSuccess);
+
+        assertEquals(reviewService.getReviewByUserIdAndProductId(userId, productIdSuccess), reviewSuccess);
     }
 
     @Test(expected = ResourceNotFoundException.class)

@@ -2,15 +2,11 @@ package com.future.medan.backend.controllers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.medan.backend.constants.ApiPath;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.*;
 import com.future.medan.backend.models.enums.RoleEnum;
 import com.future.medan.backend.payload.requests.WishlistWebRequest;
-import com.future.medan.backend.payload.responses.Response;
-import com.future.medan.backend.payload.responses.ResponseHelper;
-import com.future.medan.backend.payload.responses.WebResponseConstructor;
-import com.future.medan.backend.payload.responses.WishlistWebResponse;
+import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.ProductService;
 import com.future.medan.backend.services.UserService;
@@ -27,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -190,6 +188,28 @@ public class WishlistControllerTests {
                 });
 
         verify(wishlistService).getAll();
+    }
+
+    @Test
+    public void testFindPaginated_Ok() throws Exception {
+        Page<Wishlist> expected = new PageImpl<>(Arrays.asList(wishlist, wishlist2));
+
+        when(wishlistService.findPaginated(1, 2)).thenReturn(expected);
+
+        PaginationResponse<List<WishlistWebResponse>> response = ResponseHelper.ok(expected
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()), 2, 1);
+
+        mockMvc.perform(get("/api/wishlists/paginate?page=1&size=2")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andDo(mvcResult -> {
+                    String json = mvcResult.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(response), json);
+                });
+
+        verify(wishlistService).findPaginated(1, 2);
     }
 
     @Test
