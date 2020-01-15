@@ -7,6 +7,7 @@ import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.MailService;
+import com.future.medan.backend.services.StorageService;
 import com.future.medan.backend.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +43,9 @@ public class UserImplTests {
     private MailService mailService;
 
     @Mock
+    private StorageService storageService;
+
+    @Mock
     private PasswordEncoder passwordEncoder;
 
     private UserService userService;
@@ -59,6 +63,7 @@ public class UserImplTests {
                 jwtTokenProvider,
                 passwordResetTokenRepository,
                 mailService,
+                storageService,
                 passwordEncoder);
 
         this.findId = "user1-id";

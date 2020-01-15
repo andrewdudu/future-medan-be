@@ -6,12 +6,12 @@ import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
 import com.future.medan.backend.payload.requests.UserWebRequest;
-import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.repositories.PasswordResetTokenRepository;
 import com.future.medan.backend.repositories.RoleRepository;
 import com.future.medan.backend.repositories.UserRepository;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.MailService;
+import com.future.medan.backend.services.StorageService;
 import com.future.medan.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,10 +21,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,6 +40,8 @@ public class UserServiceImpl implements UserService {
 
     private MailService mailService;
 
+    private StorageService storageService;
+
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -48,12 +51,14 @@ public class UserServiceImpl implements UserService {
             JwtTokenProvider jwtTokenProvider,
             PasswordResetTokenRepository passwordResetTokenRepository,
             MailService mailService,
+            StorageService storageService,
             PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.mailService = mailService;
+        this.storageService = storageService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -94,11 +99,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserWebRequest userWebRequest, String id){
+    public User save(UserWebRequest userWebRequest, String id) throws IOException {
         if (!userRepository.existsById(id))
             throw new ResourceNotFoundException("User", "id", id);
         else {
             User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+            if (!userWebRequest.getImage().equals("")) {
+                String imagePath = storageService.storeImage(userWebRequest.getImage(), UUID.randomUUID().toString());
+                user.setImage(imagePath);
+            }
 
             user.setDescription(userWebRequest.getDescription());
             user.setName(userWebRequest.getName());
