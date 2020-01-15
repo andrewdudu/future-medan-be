@@ -1,0 +1,182 @@
+package com.future.medan.backend.controllers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.future.medan.backend.exceptions.ResourceNotFoundException;
+import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.Purchase;
+import com.future.medan.backend.models.entity.Role;
+import com.future.medan.backend.models.entity.User;
+import com.future.medan.backend.models.enums.RoleEnum;
+import com.future.medan.backend.security.JwtTokenProvider;
+import com.future.medan.backend.services.PurchaseService;
+import com.future.medan.backend.services.StorageService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+public class FileControllerTests {
+
+    @Value("${local.server.port}")
+    private int port;
+
+    @Value("${app.jwtSecret}")
+    private String jwtSecret;
+
+    @Mock
+    private StorageService storageService;
+
+    @Mock
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Mock
+    private PurchaseService purchaseService;
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    private ObjectMapper mapper;
+
+    private String productIdSuccess, productIdNotFound, userId, token,
+            purchaseIdSuccess, purchaseIdNotFound, filePath;
+
+    private User user, user2;
+
+    private Product product1, product2;
+
+    private Purchase purchaseSuccess, purchaseNotFound;
+
+    @Before
+    public void setup () {
+        MockitoAnnotations.initMocks(this);
+
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new FileController(storageService, jwtTokenProvider, purchaseService)).build();
+        this.mapper = new ObjectMapper();
+
+        this.productIdSuccess = "AB-0001-0001";
+        this.productIdNotFound = "AB-1110-1110";
+        this.userId = "user-test-id";
+        this.purchaseIdSuccess = "purchase-success";
+        this.purchaseIdNotFound = "purchase-not-found";
+        this.filePath = "/img/this";
+
+        this.user = User.builder()
+                .description("Test Description")
+                .email("test@example.com")
+                .image("/api/get-img/1cab35be-cb0f-4db9-87f9-7b47db38f7ac.png")
+                .name("Test Book")
+                .password("Test")
+                .roles(new HashSet(Collections.singleton(new Role(RoleEnum.ROLE_USER))))
+                .status(true)
+                .username("testusername")
+                .build();
+        this.user2 = User.builder()
+                .description("Test Description")
+                .email("test@example.com")
+                .image("/api/get-img/1cab35be-cb0f-4db9-87f9-7b47db38f7ac.png")
+                .name("Test Book")
+                .password("Test")
+                .roles(new HashSet(Collections.singleton(new Role(RoleEnum.ROLE_USER))))
+                .status(true)
+                .username("testusername")
+                .build();
+
+        this.product1 = Product.builder()
+                .author("Test")
+                .image("/api/get-img/1cab35be-cb0f-4db9-87f9-7b47db38f7ac.png")
+                .description("Test")
+                .name("Test")
+                .price(new BigDecimal(123123))
+                .sku("ABCD-0001")
+                .pdf("HEA-0002.pdf")
+                .hidden(false)
+                .isbn("978-3-16-148410-0")
+                .variant("ABCD-0001-0001")
+                .build();
+        this.product2 = Product.builder()
+                .author("Test2")
+                .image("/api/get-img/1cab35be-cb0f-4db9-87f9-7b47db38f7ac.png")
+                .description("Test2")
+                .name("Test2")
+                .price(new BigDecimal(321321))
+                .sku("ABCD-0002")
+                .pdf("HEA-0003.pdf")
+                .hidden(false)
+                .isbn("978-3-16-148410-1")
+                .variant("ABCD-0001-0002")
+                .build();
+
+        this.purchaseSuccess = Purchase.builder()
+                .user(user)
+                .merchant(user2)
+                .orderId("order-1")
+                .product(product1)
+                .status("status")
+                .build();
+        this.purchaseNotFound = Purchase.builder()
+                .user(user2)
+                .merchant(user2)
+                .orderId("order-2")
+                .product(product2)
+                .status("status-2")
+                .build();
+
+        this.token = Jwts.builder()
+                .setSubject(userId)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + 604800000))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
+    @Test
+    public void testImageToBase64_Ok() throws Exception {
+
+    }
+
+    @Test
+    public void testPdfToBase64_Ok() throws Exception {
+
+    }
+
+    @Test
+    public void testIsPurchased_Ok() {
+        Boolean expected = true;
+
+        when(purchaseService.getByProductIdAndUserId(productIdSuccess, userId))
+                .thenReturn(purchaseSuccess);
+
+        Boolean actual = purchaseService.getByProductIdAndUserId(productIdSuccess, userId) != null;
+
+        assertEquals(expected, actual);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testIsPurchased_NotFound() {
+        when(purchaseService.getByProductIdAndUserId(productIdNotFound, userId))
+            .thenThrow(new ResourceNotFoundException("Purchase", "product id", productIdNotFound));
+
+        Boolean actual = purchaseService.getByProductIdAndUserId(productIdNotFound, userId) != null;
+    }
+}
