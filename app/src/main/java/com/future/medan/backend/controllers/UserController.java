@@ -5,7 +5,6 @@ import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.ForgotPasswordWebRequest;
 import com.future.medan.backend.payload.requests.ResetPasswordWebRequest;
 import com.future.medan.backend.payload.requests.UserWebRequest;
-import com.future.medan.backend.payload.requests.WebRequestConstructor;
 import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.ProductService;
@@ -14,8 +13,6 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;

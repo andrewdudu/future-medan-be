@@ -55,6 +55,11 @@ public class ReviewController {
                 .collect(Collectors.toList()));
     }
 
+    @GetMapping("/api/review/{userId}/{productId}")
+    public Response<ReviewWebResponse> getReviewByUserIdAndProductId(@PathVariable String userId, @PathVariable String productId) {
+        return ResponseHelper.ok(WebResponseConstructor.toReviewEntity(reviewService.getReviewByUserIdAndProductId(userId, productId)));
+    }
+
     @PostMapping("/api/review")
     public Response<ReviewWebResponse> addReview(@Validated @RequestBody ReviewWebRequest reviewWebRequest, @RequestHeader("Authorization") String bearerToken) {
         String token = null;

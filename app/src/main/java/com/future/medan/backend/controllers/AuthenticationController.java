@@ -86,19 +86,19 @@ public class AuthenticationController {
 
     @PostMapping(ApiPath.VALIDATE_ADMIN_TOKEN)
     @RolesAllowed("ROLE_ADMIN")
-    public Response<AuthenticationApiResponse> validateAdminToken(@RequestBody String token) {
+    public Response<AuthenticationApiResponse> validateAdminToken() {
         return ResponseHelper.ok(WebResponseConstructor.toValidateToken(true));
     }
 
     @PostMapping(ApiPath.VALIDATE_USER_TOKEN)
     @RolesAllowed("ROLE_USER")
-    public Response<AuthenticationApiResponse> validateUserToken(@RequestBody String token) {
+    public Response<AuthenticationApiResponse> validateUserToken() {
         return ResponseHelper.ok(WebResponseConstructor.toValidateToken(true));
     }
 
     @PostMapping(ApiPath.VALIDATE_MERCHANT_TOKEN)
     @RolesAllowed("ROLE_MERCHANT")
-    public Response<AuthenticationApiResponse> validateMerchantToken(@RequestBody String token) {
+    public Response<AuthenticationApiResponse> validateMerchantToken() {
         return ResponseHelper.ok(WebResponseConstructor.toValidateToken(true));
     }
 
