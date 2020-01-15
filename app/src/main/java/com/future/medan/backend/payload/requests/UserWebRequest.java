@@ -16,4 +16,7 @@ public class UserWebRequest {
 
     @NotEmpty
     private String description;
+
+    @NotEmpty
+    private String image;
 }

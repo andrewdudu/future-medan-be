@@ -2,7 +2,6 @@ package com.future.medan.backend.controllers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.medan.backend.exceptions.AuthenticationFailException;
 import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
@@ -43,7 +42,7 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -354,7 +353,7 @@ public class UserControllerTests {
     public void testEditById_Ok() throws Exception {
         String name = "test-name", description = "test-description";
 
-        UserWebRequest request = new UserWebRequest(name, description);
+        UserWebRequest request = new UserWebRequest(name, description, "test");
         user.setDescription(description);
         user.setName(name);
         Response<UserWebResponse> response = ResponseHelper.ok(WebResponseConstructor.toWebResponse(user));

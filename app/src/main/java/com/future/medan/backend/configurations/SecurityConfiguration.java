@@ -78,14 +78,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .antMatchers("/",
-                        "/favicon.ico",
                         "/**/*.png",
                         "/**/*.gif",
                         "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
+                        "/**/*.jpg"
                         )
                     .permitAll()
                 .antMatchers("/api/user/register",
@@ -101,6 +97,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/api/products/**",
                         "/api/search/**",
                         "/api/purchases/**",
+                        "/api/users/**",
                         "/api/review/**",
                         "/api/categories/**",
                         "/api/wishlists/**",

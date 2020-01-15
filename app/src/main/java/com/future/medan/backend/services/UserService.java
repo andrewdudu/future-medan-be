@@ -4,6 +4,7 @@ import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.payload.requests.UserWebRequest;
 import org.springframework.data.domain.Page;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ public interface UserService {
 
     User save(User user);
 
-    User save(UserWebRequest userWebRequest, String id);
+    User save(UserWebRequest userWebRequest, String id) throws IOException;
 
     User block(String id);
 

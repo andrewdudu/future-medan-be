@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,7 +107,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Response<UserWebResponse> editById(@RequestBody UserWebRequest userWebRequest, @RequestHeader("Authorization") String bearerToken) {
+    public Response<UserWebResponse> editById(@RequestBody UserWebRequest userWebRequest, @RequestHeader("Authorization") String bearerToken) throws IOException {
         String token = bearerToken.substring(7);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(userService.save(userWebRequest, jwtTokenProvider.getUserIdFromJWT(token))));

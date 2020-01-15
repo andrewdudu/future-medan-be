@@ -108,7 +108,6 @@ public class ProductServiceImpl implements ProductService {
 
         String pdfPath = storageService.storePdf(productRequest.getPdf(), product.getSku());
 
-
         String imageName = product.getImage().split("/")[3].split("\\.")[0];
 
         Pattern pattern = Pattern.compile("(.*?)(?:\\((\\d+)\\))?(\\.[^.]*)?");
