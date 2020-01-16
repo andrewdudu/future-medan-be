@@ -111,6 +111,37 @@ public class CategoryServiceImplTests {
     }
 
     @Test
+    public void testHide() {
+        String categoryId = "category-id-test";
+
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.ofNullable(category));
+        when(categoryRepository.save(category)).thenReturn(category);
+
+        assertEquals(category, categoryService.hide(categoryId));
+    }
+
+    @Test
+    public void testHideFalse() {
+        String categoryId = "category-id-test";
+
+        category.setHidden(true);
+
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.ofNullable(category));
+        when(categoryRepository.save(category)).thenReturn(category);
+
+        assertEquals(category, categoryService.hide(categoryId));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testHide_NotFound() {
+        String categoryId = "category-id-test";
+
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
+
+        categoryService.hide(categoryId);
+    }
+
+    @Test
     public void testEditById_OK() throws IOException {
         when(categoryRepository.existsById(findId)).thenReturn(Boolean.TRUE);
         when(categoryRepository.save(category)).thenReturn(category);
