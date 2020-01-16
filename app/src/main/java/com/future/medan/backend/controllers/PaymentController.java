@@ -3,18 +3,13 @@ package com.future.medan.backend.controllers;
 import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.payload.requests.ApprovePurchaseWebRequest;
 import com.future.medan.backend.payload.requests.PaymentWebRequest;
-import com.future.medan.backend.payload.requests.ProductWebRequest;
 import com.future.medan.backend.payload.responses.Response;
 import com.future.medan.backend.payload.responses.ResponseHelper;
 import com.future.medan.backend.payload.responses.SuccessWebResponse;
-import com.future.medan.backend.payload.responses.WebResponseConstructor;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.PurchaseService;
 import io.swagger.annotations.Api;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Set;
 
 @Api
@@ -58,11 +52,7 @@ public class PaymentController {
     @PostMapping("/api/approved")
     @RolesAllowed("ROLE_MERCHANT")
     public Response<SuccessWebResponse> approved(@Validated @RequestBody ApprovePurchaseWebRequest approvePurchaseWebRequest, @RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         Boolean response = purchaseService.approveByOrderIdAndProductIdAndMerchantId(approvePurchaseWebRequest.getOrder_id(),
                 approvePurchaseWebRequest.getProduct_id(),

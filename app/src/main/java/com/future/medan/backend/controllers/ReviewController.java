@@ -15,7 +15,6 @@ import com.future.medan.backend.services.ReviewService;
 import com.future.medan.backend.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,11 +61,7 @@ public class ReviewController {
 
     @PostMapping("/api/review")
     public Response<ReviewWebResponse> addReview(@Validated @RequestBody ReviewWebRequest reviewWebRequest, @RequestHeader("Authorization") String bearerToken) {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         Product product = productService.getById(reviewWebRequest.getProductId());
         User user = userService.getById(jwtTokenProvider.getUserIdFromJWT(token));

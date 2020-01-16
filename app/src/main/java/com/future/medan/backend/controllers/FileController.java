@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -42,11 +41,7 @@ public class FileController {
 
     @GetMapping("/api/get-pdf")
     public ResponseEntity<byte[]> pdfToBase64(@RequestParam("file-path") String filePath, @RequestParam("product-id") String productId, @RequestHeader("Authorization") String bearerToken) throws IOException {
-        String token = null;
-
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token = bearerToken.substring(7);
-        }
+        String token = bearerToken.substring(7);
 
         if (isPurchased(productId, jwtTokenProvider.getUserIdFromJWT(token))) {
             byte[] contents = storageService.loadBook(filePath);
