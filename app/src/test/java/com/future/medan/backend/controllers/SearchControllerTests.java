@@ -1,8 +1,8 @@
 package com.future.medan.backend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Product;
+import com.future.medan.backend.models.entity.Category;
 import com.future.medan.backend.models.entity.Role;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.enums.RoleEnum;
@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -49,6 +51,10 @@ public class SearchControllerTests {
 
     private ObjectMapper mapper;
 
+    private Product product1, product2;
+
+    private String termSuccess, termNotFound;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -58,9 +64,12 @@ public class SearchControllerTests {
     public void setup() {
         RestAssured.port = port;
 
-        mockMvc = MockMvcBuilders.standaloneSetup(new SearchController(searchService)).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new SearchController(searchService)).build();
 
-        mapper = new ObjectMapper();
+        this.mapper = new ObjectMapper();
+
+        this.termSuccess = "Test";
+        this.termNotFound = "Test2";
 
         User merchant = User.builder()
                 .description("Test Description")
@@ -80,15 +89,32 @@ public class SearchControllerTests {
                 .description("TEST")
                 .build();
 
-        this.product = Product.builder()
-                .name("string")
-                .description("string")
-                .price(new BigDecimal("100000"))
-                .image("string")
-                .pdf("test")
-                .author("string")
-                .isbn("test")
+        this.product1 = Product.builder()
+                .author("Test")
+                .image("/api/get-img/1cab35be-cb0f-4db9-87f9-7b47db38f7ac.png")
+                .description("Test")
+                .name("Test")
+                .price(new BigDecimal(123123))
+                .sku("ABCD-0001")
+                .pdf("HEA-0002.pdf")
                 .hidden(false)
+                .isbn("978-3-16-148410-0")
+                .variant("ABCD-0001-0001")
+                .merchant(merchant)
+                .category(category)
+                .build();
+
+        this.product2 = Product.builder()
+                .author("Test2")
+                .image("/api/get-img/1cab35be-cb0f-4db9-87f9-7b47db38f7ac.png")
+                .description("Test2")
+                .name("Test2")
+                .price(new BigDecimal(321321))
+                .sku("ABCD-0002")
+                .pdf("HEA-0003.pdf")
+                .hidden(false)
+                .isbn("978-3-16-148410-1")
+                .variant("ABCD-0001-0002")
                 .merchant(merchant)
                 .category(category)
                 .build();
@@ -100,23 +126,24 @@ public class SearchControllerTests {
     }
 
     @Test
-    public void testSearch() throws Exception {
-        List<Product> products = Collections.singletonList(product);
+    public void testSearch_Ok() throws Exception {
+        List<Product> expected = Arrays.asList(product1, product2);
 
-        Response<List<ProductWebResponse>> response = ResponseHelper.ok(products
-            .stream()
-            .map(WebResponseConstructor::toWebResponse)
-            .collect(Collectors.toList()));
+        when(searchService.search(termSuccess)).thenReturn(expected);
 
-        when(searchService.search("test")).thenReturn(products);
+        Response<List<ProductWebResponse>> responseExpected = ResponseHelper.ok(expected
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList())
+        );
 
-        mockMvc.perform(get("/api/search?term=test"))
+        mockMvc.perform(get("/api/search?term="+termSuccess))
                 .andExpect(status().isOk())
-                .andDo(mvcResult -> {
-                    String json = mvcResult.getResponse().getContentAsString();
-                    assertEquals(mapper.writeValueAsString(response), json);
+                .andDo(actual -> {
+                    String responseActual = actual.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(responseExpected), responseActual);
                 });
 
-        verify(searchService).search("test");
+        verify(searchService).search(termSuccess);
     }
 }
