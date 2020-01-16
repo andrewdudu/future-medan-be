@@ -32,6 +32,7 @@ import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -152,7 +153,9 @@ public class FileControllerTests {
 
     @Test
     public void testImageToBase64_Ok() throws Exception {
-
+//        when(storageService.storeImage()
+//
+//        mockMvc.perform(get("/api/get-image/{filePath}"), filePath));
     }
 
     @Test
@@ -161,7 +164,7 @@ public class FileControllerTests {
     }
 
     @Test
-    public void testIsPurchased_Ok() {
+    public void testIsPurchased_True() {
         Boolean expected = true;
 
         when(purchaseService.getByProductIdAndUserId(productIdSuccess, userId))
@@ -172,11 +175,13 @@ public class FileControllerTests {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
-    public void testIsPurchased_NotFound() {
+    @Test
+    public void testIsPurchased_False() {
         when(purchaseService.getByProductIdAndUserId(productIdNotFound, userId))
-            .thenThrow(new ResourceNotFoundException("Purchase", "product id", productIdNotFound));
+            .thenReturn(null);
 
         Boolean actual = purchaseService.getByProductIdAndUserId(productIdNotFound, userId) != null;
+
+        assertEquals(false, actual);
     }
 }

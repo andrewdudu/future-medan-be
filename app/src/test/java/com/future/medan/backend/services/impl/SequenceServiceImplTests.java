@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class SequenceImplTests {
+public class SequenceServiceImplTests {
 
     @Mock
     private SequenceRepository sequenceRepository;
@@ -46,13 +46,15 @@ public class SequenceImplTests {
     }
 
     @Test
+
     public void save_SequenceNull() {
         String expected = "NU-0001";
-        when(sequenceRepository.findByKey(key2)).thenReturn(sequenceNew);
-
         sequenceNew = new Sequence();
         sequenceNew.setKey(key2);
         sequenceNew.setValue(0);
+
+        when(sequenceRepository.findByKey(key2)).thenReturn(null);
+        sequenceNew.setValue(1);
         when(sequenceRepository.save(sequenceNew)).thenReturn(sequenceNew);
 
         String actual = sequenceService.save(key2);

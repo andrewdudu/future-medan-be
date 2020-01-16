@@ -10,16 +10,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
+import org.springframework.data.domain.Pageable;
 import java.util.*;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class WishlistImplTests {
+public class WishlistServiceImplTests {
 
     @Mock
     private WishlistRepository wishlistRepository;
@@ -86,12 +92,35 @@ public class WishlistImplTests {
     }
 
     @Test
+    public void testFindPaginated() {
+        Pageable paging = PageRequest.of(1, 2);
+        Page<Wishlist> expected = new PageImpl<>(Arrays.asList(wishlist, wishlist2));
+
+        when(wishlistRepository.findAll(paging)).thenReturn(expected);
+
+        assertEquals(expected, wishlistService.findPaginated(1, 2));
+    }
+
+    @Test
     public void testSave(){
         Set<Product> products = new HashSet<>();
         products.add(product1);
 
         wishlist.setId(userId1);
         wishlist.setProducts(products);
+        when(wishlistRepository.save(any(Wishlist.class))).thenReturn(wishlist);
+
+        assertEquals(wishlistService.save(user1, product1), wishlist);
+    }
+
+    @Test
+    public void testSaveNull(){
+        Set<Product> products = new HashSet<>();
+        products.add(product1);
+
+        wishlist.setId(userId1);
+        wishlist.setProducts(products);
+        when(wishlistRepository.findByUserId(userId1)).thenReturn(Optional.ofNullable(wishlist));
         when(wishlistRepository.save(any(Wishlist.class))).thenReturn(wishlist);
 
         assertEquals(wishlistService.save(user1, product1), wishlist);
@@ -129,18 +158,16 @@ public class WishlistImplTests {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testGetById_NotFound(){
-        when(wishlistRepository.findById(findId2))
-                .thenThrow(new ResourceNotFoundException("Wishlist", "id", findId2));
+        when(wishlistRepository.findById(findId2)).thenReturn(Optional.empty());
 
         wishlistService.getById(findId2);
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testGetByUserId_NotFound(){
-        when(wishlistRepository.findByUserId(userId2))
-            .thenThrow(new ResourceNotFoundException("Wishlist", "user id", userId2));
+    public void testGetByUserId_NotFound() {
+            when(wishlistRepository.findByUserId(userId2)).thenReturn(Optional.empty());
 
-        wishlistService.getByUserId(userId2);
+            wishlistService.getByUserId(userId2);
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -149,6 +176,13 @@ public class WishlistImplTests {
                 .thenThrow(new ResourceNotFoundException("Wishlist", "id", findId2));
 
         wishlistService.save(wishlist2, findId2);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testSave_NotFound() {
+        when(wishlistRepository.existsById(userId1)).thenReturn(false);
+
+        wishlistService.save(wishlist, userId1);
     }
 
     @Test(expected = ResourceNotFoundException.class)

@@ -21,7 +21,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ProductImplTests {
+public class ProductServiceImplTests {
 
     @Mock
     private ProductRepository productRepository;

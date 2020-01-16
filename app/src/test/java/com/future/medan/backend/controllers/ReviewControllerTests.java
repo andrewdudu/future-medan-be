@@ -207,6 +207,30 @@ public class ReviewControllerTests {
     @Test
     public void testGetReviewByUserIdAndProductId () throws Exception {
         Review expected = review1;
+
+        when(reviewService.getReviewByUserIdAndProductId(userId, productIdSuccess)).thenReturn(expected);
+
+        Response<ReviewWebResponse> responseExpected = ResponseHelper.ok(WebResponseConstructor.toReviewEntity(expected));
+
+        mockMvc.perform(get("/api/review/{userId}/{productId}", userId, productIdSuccess))
+                .andExpect(status().isOk())
+                .andDo( actual ->{
+                    String responseActual = actual.getResponse().getContentAsString();
+                    assertEquals(mapper.writeValueAsString(responseExpected), responseActual);
+                });
+
+        verify(reviewService).getReviewByUserIdAndProductId(userId, productIdSuccess);
+    }
+
+    @Test
+    public void testGetReviewByUserIdAndProductId_NotFound() throws Exception {
+        when(reviewService.getReviewByUserIdAndProductId(userId, productIdNotFound))
+                .thenThrow(new ResourceNotFoundException("Review", "product id", productIdNotFound));
+
+        mockMvc.perform(get("/api/review/{userId}/{productId}", userId, productIdNotFound))
+                .andExpect(status().isNotFound());
+
+        verify(reviewService).getReviewByUserIdAndProductId(userId, productIdNotFound);
     }
 
     @Test

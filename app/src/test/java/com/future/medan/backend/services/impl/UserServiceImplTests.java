@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class UserImplTests {
+public class UserServiceImplTests {
     
     @Mock
     private UserRepository userRepository;

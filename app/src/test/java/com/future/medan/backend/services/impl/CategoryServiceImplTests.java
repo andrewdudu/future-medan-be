@@ -9,19 +9,25 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CategoryImplTests {
+public class CategoryServiceImplTests {
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -46,11 +52,13 @@ public class CategoryImplTests {
                 .name("category 1")
                 .description("one")
                 .image("string")
+                .hidden(false)
                 .build();
         this.category2 = Category.builder()
                 .name("category 2")
                 .description("not available")
                 .image("img")
+                .hidden(false)
                 .build();
     }
 
@@ -67,6 +75,28 @@ public class CategoryImplTests {
     }
 
     @Test
+    public void testGetAllWithoutHidden() {
+        List<Category> expected = Arrays.asList(category, category2);
+
+        when(categoryRepository.getAllByHiddenIs(false)).thenReturn(expected);
+        List<Category> actual = categoryService.getAllWithoutHidden();
+
+        assertThat(actual, is(notNullValue()));
+        assertThat(actual, hasItem(category));
+        assertThat(actual, hasItem(category2));
+    }
+
+    @Test
+    public void testFindPaginated() {
+        Pageable paging = PageRequest.of(1, 2);
+        Page<Category> expected = new PageImpl<>(Arrays.asList(category, category2));
+
+        when(categoryRepository.findAll(paging)).thenReturn(expected);
+
+        assertEquals(expected, categoryService.findPaginated(1, 2));
+    }
+
+    @Test
     public void testGetById_OK(){
         when(categoryRepository.findById(findId)).thenReturn(Optional.of(category2));
 
@@ -78,6 +108,37 @@ public class CategoryImplTests {
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
 
         assertThat(categoryService.save(category), is(notNullValue()));
+    }
+
+    @Test
+    public void testHide() {
+        String categoryId = "category-id-test";
+
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.ofNullable(category));
+        when(categoryRepository.save(category)).thenReturn(category);
+
+        assertEquals(category, categoryService.hide(categoryId));
+    }
+
+    @Test
+    public void testHideFalse() {
+        String categoryId = "category-id-test";
+
+        category.setHidden(true);
+
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.ofNullable(category));
+        when(categoryRepository.save(category)).thenReturn(category);
+
+        assertEquals(category, categoryService.hide(categoryId));
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testHide_NotFound() {
+        String categoryId = "category-id-test";
+
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
+
+        categoryService.hide(categoryId);
     }
 
     @Test
@@ -110,16 +171,14 @@ public class CategoryImplTests {
 
     @Test(expected = ResourceNotFoundException.class)
     public void testEditById_NotFound() throws IOException {
-        when(categoryRepository.existsById(findId2))
-                .thenThrow(new ResourceNotFoundException("Category", "id", findId2));
+        when(categoryRepository.existsById(findId2)).thenReturn(false);
 
         categoryService.save(category2, findId2);
     }
 
     @Test(expected = ResourceNotFoundException.class)
     public void testDeleteById_NotFound(){
-        when(categoryRepository.existsById(findId2))
-                .thenThrow(new ResourceNotFoundException("Category", "id", findId2));
+        when(categoryRepository.existsById(findId2)).thenReturn(false);
 
         categoryService.deleteById(findId2);
     }

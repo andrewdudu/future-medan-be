@@ -71,8 +71,6 @@ public class ReviewController {
         Product product = productService.getById(reviewWebRequest.getProductId());
         User user = userService.getById(jwtTokenProvider.getUserIdFromJWT(token));
 
-
-
         Review review = reviewService.save(WebRequestConstructor.toReviewEntity(reviewWebRequest, user, product));
 
         return ResponseHelper.ok(WebResponseConstructor.toReviewEntity(review));

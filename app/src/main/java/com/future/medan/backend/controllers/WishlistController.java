@@ -4,16 +4,14 @@ import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.User;
 import com.future.medan.backend.models.entity.Wishlist;
 import com.future.medan.backend.payload.requests.WishlistWebRequest;
-import com.future.medan.backend.payload.responses.Response;
-import com.future.medan.backend.payload.responses.ResponseHelper;
-import com.future.medan.backend.payload.responses.WebResponseConstructor;
-import com.future.medan.backend.payload.responses.WishlistWebResponse;
+import com.future.medan.backend.payload.responses.*;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.ProductService;
 import com.future.medan.backend.services.UserService;
 import com.future.medan.backend.services.WishlistService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,12 +46,25 @@ public class WishlistController {
 
     @GetMapping("/api/wishlists")
     @RolesAllowed("ROLE_ADMIN")
+    @Transactional
     public Response<List<WishlistWebResponse>> getAll(){
         return ResponseHelper.ok(wishlistService.getAll()
                 .stream()
                 .map(WebResponseConstructor::toWebResponse)
                 .collect(Collectors.toList())
         );
+    }
+
+    @GetMapping(value = "/api/wishlists/paginate", params = {"page", "size"})
+    @RolesAllowed("ROLE_ADMIN")
+    @Transactional
+    public PaginationResponse<List<WishlistWebResponse>> findPaginated(@RequestParam("page") final int page, @RequestParam("size") final int size) {
+        Page<Wishlist> resultPage = wishlistService.findPaginated(page, size);
+
+        return ResponseHelper.ok(resultPage.getContent()
+                .stream()
+                .map(WebResponseConstructor::toWebResponse)
+                .collect(Collectors.toList()), resultPage.getTotalElements(), resultPage.getTotalPages());
     }
 
     @Transactional
