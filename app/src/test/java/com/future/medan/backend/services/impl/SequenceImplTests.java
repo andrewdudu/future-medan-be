@@ -42,4 +42,18 @@ public class SequenceImplTests {
 
         assertEquals(expected, sequenceService.save(key));
     }
+
+    @Test
+    public void saveSequenceNull_Ok() {
+        String expected = "11-0001";
+        Sequence seq = new Sequence();
+        seq.setKey(key);
+        seq.setValue(0);
+
+        when(sequenceRepository.findByKey(key)).thenReturn(null);
+        seq.setValue(1);
+        when(sequenceRepository.save(seq)).thenReturn(seq);
+
+        assertEquals(expected, sequenceService.save(key));
+    }
 }

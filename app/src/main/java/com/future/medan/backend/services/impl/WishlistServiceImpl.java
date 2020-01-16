@@ -37,11 +37,11 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    public Wishlist getByUserId(String user_id) {
+    public Wishlist getByUserId(String userId) {
         return wishlistRepository
-                .findByUserId(user_id)
+                .findByUserId(userId)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Wishlist", "user id", user_id));
+                        new ResourceNotFoundException("Wishlist", "user id", userId));
     }
 
     @Override

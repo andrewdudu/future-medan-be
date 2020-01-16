@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 
 @Api
 @RestController
-public class PaymentMethod {
+public class PaymentMethodController {
 
     private PaymentMethodService paymentMethodService;
 
     @Autowired
-    public PaymentMethod(PaymentMethodService paymentMethodService) {
+    public PaymentMethodController(PaymentMethodService paymentMethodService) {
         this.paymentMethodService = paymentMethodService;
     }
 
