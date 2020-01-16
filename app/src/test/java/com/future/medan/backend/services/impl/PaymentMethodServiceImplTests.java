@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class PaymentMethodImplTests {
+public class PaymentMethodServiceImplTests {
 
     @Mock
     private PaymentMethodRepository paymentMethodRepository;

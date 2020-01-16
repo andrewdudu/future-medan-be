@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class SequenceImplTests {
+public class SequenceServiceImplTests {
 
     @Mock
     private SequenceRepository sequenceRepository;

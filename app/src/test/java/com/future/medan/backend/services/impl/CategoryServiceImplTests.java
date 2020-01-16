@@ -27,7 +27,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CategoryImplTests {
+public class CategoryServiceImplTests {
 
     @Mock
     private CategoryRepository categoryRepository;
