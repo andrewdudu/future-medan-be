@@ -54,9 +54,18 @@ public class ReviewController {
                 .collect(Collectors.toList()));
     }
 
-    @GetMapping("/api/review/{userId}/{productId}")
-    public Response<ReviewWebResponse> getReviewByUserIdAndProductId(@PathVariable String userId, @PathVariable String productId) {
-        return ResponseHelper.ok(WebResponseConstructor.toReviewEntity(reviewService.getReviewByUserIdAndProductId(userId, productId)));
+    @GetMapping("/api/my-review/{productId}")
+    public Response<ReviewWebResponse> getReviewByUserIdAndProductId(
+            @PathVariable String productId,
+            @RequestHeader("Authorization") String bearerToken
+    ) {
+        String token = bearerToken.substring(7);
+
+        return ResponseHelper.ok(WebResponseConstructor.toReviewEntity(
+                reviewService.getReviewByUserIdAndProductId(
+                        jwtTokenProvider.getUserIdFromJWT(token),
+                        productId))
+        );
     }
 
     @PostMapping("/api/review")

@@ -205,14 +205,15 @@ public class ReviewControllerTests {
     }
 
     @Test
-    public void testGetReviewByUserIdAndProductId () throws Exception {
+    public void testGetReviewByUserIdAndProductId_Ok () throws Exception {
         Review expected = review1;
 
         when(reviewService.getReviewByUserIdAndProductId(userId, productIdSuccess)).thenReturn(expected);
 
         Response<ReviewWebResponse> responseExpected = ResponseHelper.ok(WebResponseConstructor.toReviewEntity(expected));
 
-        mockMvc.perform(get("/api/review/{userId}/{productId}", userId, productIdSuccess))
+        mockMvc.perform(get("/api/my-review/{productId}", productIdSuccess)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isOk())
                 .andDo( actual ->{
                     String responseActual = actual.getResponse().getContentAsString();
@@ -227,7 +228,8 @@ public class ReviewControllerTests {
         when(reviewService.getReviewByUserIdAndProductId(userId, productIdNotFound))
                 .thenThrow(new ResourceNotFoundException("Review", "product id", productIdNotFound));
 
-        mockMvc.perform(get("/api/review/{userId}/{productId}", userId, productIdNotFound))
+        mockMvc.perform(get("/api/my-review/{productId}", productIdNotFound)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isNotFound());
 
         verify(reviewService).getReviewByUserIdAndProductId(userId, productIdNotFound);
