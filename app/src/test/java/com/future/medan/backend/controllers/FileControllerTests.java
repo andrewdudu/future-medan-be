@@ -69,13 +69,14 @@ public class FileControllerTests {
 
     private Product product1, product2;
 
-    private Purchase purchaseSuccess, purchaseNotFound;
+    private Purchase purchaseSuccess, purchaseNotFound, purchaseNull;
 
     @Before
     public void setup () {
         MockitoAnnotations.initMocks(this);
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(new FileController(storageService, jwtTokenProvider, purchaseService)).build();
+
         this.mapper = new ObjectMapper();
 
         this.productIdSuccess = "AB-0001-0001";
@@ -153,10 +154,13 @@ public class FileControllerTests {
                 .setExpiration(new Date(new Date().getTime() + 604800000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+
+        when(jwtTokenProvider.getUserIdFromJWT(token)).thenReturn(userId);
+        when(jwtTokenProvider.validateToken(token)).thenReturn(false);
     }
 
     @Test
-    public void testImageToBase64_Ok() throws Exception {
+    public void testGetImage_Ok() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
 
@@ -164,15 +168,36 @@ public class FileControllerTests {
 
         when(storageService.loadImage(fileName)).thenReturn(expected);
 
-        mockMvc.perform(get("/api/get-image/{filePath}", filePath))
+        mockMvc.perform(get("/api/get-image/{filePath}", fileName))
                 .andExpect(status().isOk());
 
         verify(storageService).loadImage(fileName);
     }
 
     @Test
-    public void testPdfToBase64_Ok() throws Exception {
+    public void testGetPdf_Ok() throws Exception {
+        byte[] content = fileName.getBytes();
+        when(storageService.loadBook(fileName)).thenReturn(content);
+        when(purchaseService.getByProductIdAndUserId(productIdSuccess, userId))
+                .thenReturn(purchaseSuccess);
 
+        mockMvc.perform(get("/api/get-pdf?file-path=" + fileName + "&product-id=" + productIdSuccess, filePath)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk());
+
+        verify(storageService).loadBook(fileName);
+    }
+
+    @Test
+    public void testGetPdf_Unauthorized() throws Exception {
+        when(purchaseService.getByProductIdAndUserId(productIdSuccess, userId))
+                .thenReturn(null);
+
+        mockMvc.perform(get("/api/get-pdf?file-path=" + fileName + "&product-id=" + productIdSuccess, filePath)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isUnauthorized());
+
+        verify(purchaseService).getByProductIdAndUserId(productIdSuccess, userId);
     }
 
     @Test

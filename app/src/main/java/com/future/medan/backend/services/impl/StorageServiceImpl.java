@@ -92,7 +92,6 @@ public class StorageServiceImpl implements StorageService {
 
             return bytes;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             throw new FileNotFoundException(e.getMessage());
         }
     }
@@ -108,7 +107,6 @@ public class StorageServiceImpl implements StorageService {
 
             return bytes;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             throw new FileNotFoundException(e.getMessage());
         }
     }
@@ -122,7 +120,6 @@ public class StorageServiceImpl implements StorageService {
             fileInputStreamReader.read(bytes);
             encodedFile = Base64.getEncoder().encodeToString(bytes);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             throw new FileNotFoundException(e.getMessage());
         }
 
