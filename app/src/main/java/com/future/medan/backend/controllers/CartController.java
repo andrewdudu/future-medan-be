@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 
 @Api
@@ -45,6 +46,7 @@ public class CartController {
     }
 
     @GetMapping("/api/carts")
+    @RolesAllowed("ROLE_USER")
     public Response<CartWebResponse> getByUserId(@RequestHeader("Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
 
@@ -54,6 +56,7 @@ public class CartController {
     }
 
     @PostMapping(value = "/api/carts", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed("ROLE_USER")
     public Response<CartWebResponse> save(@Validated @RequestBody CartWebRequest cartWebRequest, @RequestHeader("Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
 
@@ -66,6 +69,7 @@ public class CartController {
     }
 
     @DeleteMapping("/api/carts")
+    @RolesAllowed("ROLE_USER")
     public void deleteById(@Validated @RequestBody CartWebRequest cartWebRequest, @RequestHeader("Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
 

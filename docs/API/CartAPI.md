@@ -6,28 +6,55 @@
 + HTTP Method : `GET`
 + Request Header : 
 	+ Accept: `application/json`
+    + Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjY1NTE5ODksImlhdCI6MTU2NjUzMzk4OX0.Kvx2VZkmckMexnTwK8A3vHSDar3J-K-dCrkJ2jmQtKdAWbw1dAjJ34WXCQXs-WO23OQPTqVF36E1STEhGZFZfg`
 + Response Body (Success) : 
 
 ```json
 {
     "code": 200,
     "status": "OK",
-    "data": [{
-        "id": 1,
-        "userId": 1,
-        "productId": 1,
-        "qty": 2
-    }, {
-        "id": 2,
-        "userId": 2,
-        "productId": 2,
-        "qty": 2
-    }, {
-        "id": 3,
-        "userId": 3,
-        "productId": 3,
-        "qty": 2
-    }]
+    "data": {
+        products: [{
+            "id": 1,
+            "name": 1,
+            "sku": "sku",
+            "variant": "variant",
+            "description": "description",
+            "isbn": "isbn",
+            "price": 10000,
+            "image": "/api/get-image/test.png",
+            "pdf": "HEA-0001.pdf",
+            "author": "Example Author",
+            "qty": 2
+        }, {
+            "id": 2,
+            "name": 2,
+            "sku": "sku",
+            "variant": "variant",
+            "description": "description",
+            "isbn": "isbn",
+            "price": 10000,
+            "image": "/api/get-image/test.png",
+            "pdf": "HEA-0001.pdf",
+            "author": "Example Author",
+            "qty": 2
+        }, {
+            "id": 3,
+            "name": 3,
+            "sku": "sku",
+            "variant": "variant",
+            "description": "description",
+            "isbn": "isbn",
+            "price": 10000,
+            "image": "/api/get-image/test.png",
+            "pdf": "HEA-0001.pdf",
+            "author": "Example Author",
+            "qty": 2
+        }], 
+        user: {
+            ...
+        }
+    }
 }
 ```
 
@@ -46,9 +73,16 @@
     "code": 200,
     "status": "OK",
     "data": {
-        "id": 1,
-        "userId": 1,
-        "productId": 1,
+        "id": 3,
+        "name": 3,
+        "sku": "sku",
+        "variant": "variant",
+        "description": "description",
+        "isbn": "isbn",
+        "price": 10000,
+        "image": "/api/get-image/test.png",
+        "pdf": "HEA-0001.pdf",
+        "author": "Example Author",
         "qty": 2
     }
 }

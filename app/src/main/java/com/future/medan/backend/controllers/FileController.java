@@ -1,5 +1,6 @@
 package com.future.medan.backend.controllers;
 
+import com.future.medan.backend.exceptions.AuthenticationFailException;
 import com.future.medan.backend.security.JwtTokenProvider;
 import com.future.medan.backend.services.PurchaseService;
 import com.future.medan.backend.services.StorageService;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class FileController {
     }
 
     @GetMapping("/api/get-image/{filePath}")
-    public ResponseEntity<byte[]> imageToBase64(@PathVariable String filePath) throws IOException {
+    public ResponseEntity<byte[]> getImage(@PathVariable String filePath) throws IOException {
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.IMAGE_PNG);
@@ -40,7 +40,7 @@ public class FileController {
     }
 
     @GetMapping("/api/get-pdf")
-    public ResponseEntity<byte[]> pdfToBase64(@RequestParam("file-path") String filePath, @RequestParam("product-id") String productId, @RequestHeader("Authorization") String bearerToken) throws IOException {
+    public ResponseEntity<byte[]> getPdf(@RequestParam("file-path") String filePath, @RequestParam("product-id") String productId, @RequestHeader("Authorization") String bearerToken) throws IOException {
         String token = bearerToken.substring(7);
 
         if (isPurchased(productId, jwtTokenProvider.getUserIdFromJWT(token))) {
@@ -53,7 +53,7 @@ public class FileController {
             return new ResponseEntity<byte[]>(contents, headers, HttpStatus.OK);
         }
 
-        throw new AccessDeniedException("You need to purchase the book.");
+        throw new AuthenticationFailException("You need to purchase the book.");
     }
 
     private Boolean isPurchased(String productId, String userId) {

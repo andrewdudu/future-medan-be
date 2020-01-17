@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -307,25 +307,5 @@ public class CategoryControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("BAD_REQUEST"))
                 .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void testDeleteById_Ok() throws Exception {
-        doNothing().when(categoryService).deleteById(categoryId);
-
-        mockMvc.perform(delete("/api/categories/{id}", categoryId).header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
-                .andExpect(status().isOk());
-
-        verify(categoryService).deleteById(categoryId);
-    }
-
-    @Test
-    public void testDeleteById_NotFound() throws Exception {
-        doThrow(new ResourceNotFoundException("Category", "id", categoryId)).when(categoryService).deleteById(categoryId);
-
-        mockMvc.perform(delete("/api/categories/{id}", categoryId).header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
-                .andExpect(status().isNotFound());
-
-        verify(categoryService).deleteById(categoryId);
     }
 }

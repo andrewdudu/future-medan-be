@@ -10,8 +10,7 @@
 	"name": "Andrew",
 	"username": "andrewdudu",
 	"email": "andrew@gmail.com",
-	"password": "admin123",
-	"confirmPassword": "admin123"
+	"password": "admin123"
 }
 ```
 + Request Header : 
@@ -20,7 +19,8 @@
 
 ```json
 {
-	"signup" : "true"
+	"success": "true",
+	"message": "User registered successfully"
 }
 ```
 
@@ -46,8 +46,7 @@
 	"name": "Andrew",
 	"username": "andrewdudu",
 	"email": "andrew@gmail.com",
-	"password": "admin123",
-	"confirmPassword": "admin123"
+	"password": "admin123"
 }
 ```
 + Request Header : 
@@ -56,7 +55,8 @@
 
 ```json
 {
-	"signup" : "true"
+	"success": "true",
+	"message": "Merchant registered successfully"
 }
 ```
 
@@ -79,13 +79,7 @@
 + Request Body : 
 ```json
 {
-	"username": "andrewdudu",
-	"password": "admin123"
-}
-```
-```json
-{
-	"email": "example@gmail.com",
+	"usernameOrEmail": "andrewdudu",
 	"password": "admin123"
 }
 ```
@@ -110,29 +104,12 @@
     "path": "/login"
 }
 ```
-
-## User/Merchant/Admin Logout
-
-+ Endpoint : ``/logout``
-+ HTTP Method : ``POST``
-+ Request Header : 
-	+ Accept : ``application/json``
-	+ Authorization : `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE1NjYyNDAyMjAsImlhdCI6MTU2NjIyMjIyMH0.sYLqMuG2Zr7zDEdK4YIIYX7WfTcroxl7Edc_YLU0dWncPliHfbgEfMYLoorYA_d01hPFF_fZhAyxLTIJYBRHuw`
-+ Response Body (Success) : 
-
 ```json
 {
-	"logout" : "true"
-}
-```
-
-+ Response Body (Fail) : 
-
-```json
-{
-	"code" : "400",
-    "status" : "Bad Request",
-    "message" : "Invalid Request: Invalid user authentication or invalid request format",
-    "path" : "/logout"
+    "timestamp": "2019-08-23T04:22:26.690+0000",
+    "code": 401,
+    "status": "Unauthorized",
+    "message": "Invalid Request: username/email or password is wrong",
+    "path": "/login"
 }
 ```
