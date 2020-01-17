@@ -63,6 +63,7 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/api/categories", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed("ROLE_ADMIN")
     public Response<CategoryWebResponse> save(@Validated @RequestBody CategoryWebRequest categoryWebRequest) throws IOException {
         Category category = WebRequestConstructor.toCategoryEntity(categoryWebRequest);
 
@@ -81,10 +82,5 @@ public class CategoryController {
         Category category = WebRequestConstructor.toCategoryEntity(categoryWebRequest);
 
         return ResponseHelper.ok(WebResponseConstructor.toWebResponse(categoryService.save(category, id)));
-    }
-
-    @DeleteMapping(value = "/api/categories/{id}")
-    public void deleteById(@PathVariable String id){
-        categoryService.deleteById(id);
     }
 }
