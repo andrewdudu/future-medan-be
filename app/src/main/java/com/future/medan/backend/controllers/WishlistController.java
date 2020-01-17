@@ -69,6 +69,7 @@ public class WishlistController {
 
     @Transactional
     @GetMapping("/api/my-wishlists")
+    @RolesAllowed("ROLE_USER")
     public Response<WishlistWebResponse> getByUserId(@RequestHeader("Authorization") String bearerToken){
         String token = bearerToken.substring(7);
 
@@ -79,6 +80,7 @@ public class WishlistController {
 
     @Transactional
     @PostMapping(value = "/api/wishlists", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed("ROLE_USER")
     public Response<WishlistWebResponse> save(@Validated @RequestBody WishlistWebRequest wishlist, @RequestHeader("Authorization") String bearerToken){
         String token = bearerToken.substring(7);
 

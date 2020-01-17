@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,6 +71,7 @@ public class ReviewController {
     }
 
     @PostMapping("/api/review")
+    @RolesAllowed("ROLE_USER")
     public Response<ReviewWebResponse> addReview(@Validated @RequestBody ReviewWebRequest reviewWebRequest, @RequestHeader("Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
 

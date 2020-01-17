@@ -37,6 +37,7 @@ public class PaymentController {
     }
 
     @PostMapping("/api/payment")
+    @RolesAllowed("ROLE_ADMIN")
     public Response<SuccessWebResponse> payment(@Validated @RequestBody PaymentWebRequest paymentWebRequest) {
         Set<Purchase> purchases = purchaseService.getByOrderId(paymentWebRequest.getOrder_id());
 
