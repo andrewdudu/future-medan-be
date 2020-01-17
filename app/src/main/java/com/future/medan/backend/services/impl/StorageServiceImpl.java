@@ -128,5 +128,4 @@ public class StorageServiceImpl implements StorageService {
 
         return encodedFile;
     }
-
 }

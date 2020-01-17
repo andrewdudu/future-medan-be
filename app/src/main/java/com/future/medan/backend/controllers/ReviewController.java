@@ -55,6 +55,7 @@ public class ReviewController {
     }
 
     @GetMapping("/api/my-review/{productId}")
+    @Transactional
     public Response<ReviewWebResponse> getReviewByUserIdAndProductId(
             @PathVariable String productId,
             @RequestHeader("Authorization") String bearerToken

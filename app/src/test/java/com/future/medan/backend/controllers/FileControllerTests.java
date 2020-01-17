@@ -1,7 +1,6 @@
 package com.future.medan.backend.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.future.medan.backend.exceptions.ResourceNotFoundException;
 import com.future.medan.backend.models.entity.Product;
 import com.future.medan.backend.models.entity.Purchase;
 import com.future.medan.backend.models.entity.Role;
@@ -21,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -31,8 +32,10 @@ import java.util.Date;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -60,7 +63,7 @@ public class FileControllerTests {
     private ObjectMapper mapper;
 
     private String productIdSuccess, productIdNotFound, userId, token,
-            purchaseIdSuccess, purchaseIdNotFound, filePath;
+            purchaseIdSuccess, purchaseIdNotFound, filePath, fileName;
 
     private User user, user2;
 
@@ -80,7 +83,8 @@ public class FileControllerTests {
         this.userId = "user-test-id";
         this.purchaseIdSuccess = "purchase-success";
         this.purchaseIdNotFound = "purchase-not-found";
-        this.filePath = "/img/this";
+        this.filePath = "/img/static";
+        this.fileName = "image1";
 
         this.user = User.builder()
                 .description("Test Description")
@@ -153,9 +157,17 @@ public class FileControllerTests {
 
     @Test
     public void testImageToBase64_Ok() throws Exception {
-//        when(storageService.storeImage()
-//
-//        mockMvc.perform(get("/api/get-image/{filePath}"), filePath));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+
+        byte[] expected = fileName.getBytes();
+
+        when(storageService.loadImage(fileName)).thenReturn(expected);
+
+        mockMvc.perform(get("/api/get-image/{filePath}", filePath))
+                .andExpect(status().isOk());
+
+        verify(storageService).loadImage(fileName);
     }
 
     @Test

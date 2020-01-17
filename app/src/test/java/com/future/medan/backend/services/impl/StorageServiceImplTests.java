@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class StorageImplTests {
+public class StorageServiceImplTests {
 
     @Mock
     private StorageProperties storageProperties;
