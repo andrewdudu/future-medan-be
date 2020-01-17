@@ -56,7 +56,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public List<Purchase> getIncomingOrderByMerchantId(String merchantId) {
-        return purchaseRepository.getByMerchantIdAndStatus(merchantId, "PENDING");
+        return purchaseRepository.getByMerchantIdAndStatus(merchantId, "WAITING");
     }
 
     @Override
